@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\salah\\OneDrive\\Bureau\\AWM_REPO\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\RealDolmenInetum.bundle.scp.css",
+      "PackagePath": "staticwebassets\\RealDolmenInetum.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\salah\\OneDrive\\Bureau\\AWM_REPO\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\salah\\OneDrive\\Bureau\\AWM_REPO\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\salah\\OneDrive\\Bureau\\AWM_REPO\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\salah\\OneDrive\\Bureau\\AWM_REPO\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.RealDolmenInetum.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.RealDolmenInetum.props",
+      "PackagePath": "build\\RealDolmenInetum.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.RealDolmenInetum.props",
+      "PackagePath": "buildMultiTargeting\\RealDolmenInetum.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.RealDolmenInetum.props",
+      "PackagePath": "buildTransitive\\RealDolmenInetum.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
