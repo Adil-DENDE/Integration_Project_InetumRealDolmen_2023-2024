@@ -58,3 +58,33 @@ C:\Users\adild\OneDrive\Documents\Github-Repos\Integration_Project_InetumRealDol
 C:\Users\adild\OneDrive\Documents\Github-Repos\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\RealDolmenInetum.pdb
 C:\Users\adild\OneDrive\Documents\Github-Repos\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\RealDolmenInetum.genruntimeconfig.cache
 C:\Users\adild\OneDrive\Documents\Github-Repos\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\ref\RealDolmenInetum.dll
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\bin\Debug\net8.0\appsettings.json
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\bin\Debug\net8.0\RealDolmenInetum.staticwebassets.runtime.json
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\bin\Debug\net8.0\RealDolmenInetum.exe
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\bin\Debug\net8.0\RealDolmenInetum.deps.json
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\bin\Debug\net8.0\RealDolmenInetum.runtimeconfig.json
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\bin\Debug\net8.0\RealDolmenInetum.dll
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\bin\Debug\net8.0\RealDolmenInetum.pdb
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\RealDolmenInetum.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\RealDolmenInetum.AssemblyInfoInputs.cache
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\RealDolmenInetum.AssemblyInfo.cs
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\RealDolmenInetum.csproj.CoreCompileInputs.cache
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\RealDolmenInetum.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\RealDolmenInetum.sourcelink.json
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\staticwebassets\msbuild.RealDolmenInetum.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\staticwebassets\msbuild.build.RealDolmenInetum.props
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.RealDolmenInetum.props
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.RealDolmenInetum.props
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\scopedcss\bundle\RealDolmenInetum.styles.css
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\scopedcss\projectbundle\RealDolmenInetum.bundle.scp.css
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\RealDolmenInetum.dll
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\refint\RealDolmenInetum.dll
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\RealDolmenInetum.pdb
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\RealDolmenInetum.genruntimeconfig.cache
+C:\Users\qande\Documents\github repo\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\obj\Debug\net8.0\ref\RealDolmenInetum.dll

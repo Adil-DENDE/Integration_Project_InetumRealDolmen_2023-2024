@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "7GZQYyydFbs9sFqNSVnqVf6pJEodhyqRBkhCZNPsT+k=",
+  "Hash": "X5wdGcmi8hRUPXPdquVR8rwYwXjVOk7IaFQqnuZ637c=",
   "Source": "RealDolmenInetum",
   "BasePath": "_content/RealDolmenInetum",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "RealDolmenInetum\\wwwroot",
       "Source": "RealDolmenInetum",
-      "ContentRoot": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\",
       "BasePath": "_content/RealDolmenInetum",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\bundle\\RealDolmenInetum.styles.css",
+      "Identity": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\bundle\\RealDolmenInetum.styles.css",
       "SourceId": "RealDolmenInetum",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/RealDolmenInetum",
       "RelativePath": "RealDolmenInetum.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\bundle\\RealDolmenInetum.styles.css"
+      "OriginalItemSpec": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\bundle\\RealDolmenInetum.styles.css"
     },
     {
-      "Identity": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\RealDolmenInetum.bundle.scp.css",
+      "Identity": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\RealDolmenInetum.bundle.scp.css",
       "SourceId": "RealDolmenInetum",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/RealDolmenInetum",
       "RelativePath": "RealDolmenInetum.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\RealDolmenInetum.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\RealDolmenInetum.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\app.css",
+      "Identity": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\app.css",
       "SourceId": "RealDolmenInetum",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\",
       "BasePath": "_content/RealDolmenInetum",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot\\app.css"
     },
     {
-      "Identity": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\bootstrap\\bootstrap.min.css",
       "SourceId": "RealDolmenInetum",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\",
       "BasePath": "_content/RealDolmenInetum",
       "RelativePath": "bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "RealDolmenInetum",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\",
       "BasePath": "_content/RealDolmenInetum",
       "RelativePath": "bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -112,10 +112,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\favicon.png",
+      "Identity": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\favicon.png",
       "SourceId": "RealDolmenInetum",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\adild\\OneDrive\\Documents\\Github-Repos\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\qande\\Documents\\github repo\\Integration_Project_InetumRealDolmen_2023-2024\\RealDolmenInetum\\RealDolmenInetum\\wwwroot\\",
       "BasePath": "_content/RealDolmenInetum",
       "RelativePath": "favicon.png",
       "AssetKind": "All",
