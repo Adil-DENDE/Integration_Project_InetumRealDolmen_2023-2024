@@ -6,6 +6,9 @@
 # dotenv files
 .env
 
+bin/ 	# ignore bin directory 
+*.obj 	# ignore any files with .obj postfix 
+
 # User-specific files
 *.rsuser
 *.suo
