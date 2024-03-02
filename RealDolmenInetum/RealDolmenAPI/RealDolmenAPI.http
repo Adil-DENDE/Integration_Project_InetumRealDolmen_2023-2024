@@ -1,0 +1,6 @@
+@RealDolmenAPI_HostAddress = http://localhost:5167
+
+GET {{RealDolmenAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
