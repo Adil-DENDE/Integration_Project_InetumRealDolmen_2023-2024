@@ -21,7 +21,7 @@ app.UseHttpsRedirection();
 
 
 // ENDPOINT OM ALLE BENCHERS TE ZIEN //WE ZIEN NU NOG ALTIJD ALLE USERS (MANAGERS STAAN ER TUSSEN).
-app.MapGet("/Benchers", async (AppDbContext db) =>  await db.Users.ToListAsync());
+app.MapGet("/Benchers", async (AppDbContext db) =>  await db.User.ToListAsync());
     
 
 
