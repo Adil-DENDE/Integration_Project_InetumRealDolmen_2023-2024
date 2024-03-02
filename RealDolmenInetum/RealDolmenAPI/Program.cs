@@ -1,7 +1,13 @@
 // CREATIE VAN DE WEB APP ENVIRONMENT
+using Microsoft.EntityFrameworkCore;
+using RealDolmenAPI.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Om via de dbcontext data beheren
+builder.Services.AddDbContext<AppDbContext>();
 
 var app = builder.Build();
 
@@ -13,13 +19,10 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 
-// ENDPOINT OM TE TESTEN
-app.MapGet("/User", () => "THIS IS A TEST");
-app.MapPost("/User", () => "THIS IS A TEST");
-app.MapPut("/User", () => "THIS IS A TEST");
-app.MapDelete("/User", () => "THIS IS A TEST");
 
-
+// ENDPOINT OM ALLE BENCHERS TE ZIEN //WE ZIEN NU NOG ALTIJD ALLE USERS (MANAGERS STAAN ER TUSSEN).
+app.MapGet("/Benchers", async (AppDbContext db) =>  await db.Users.ToListAsync());
+    
 
 
 
