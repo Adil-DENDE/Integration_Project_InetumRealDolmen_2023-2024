@@ -15,6 +15,13 @@ app.UseHttpsRedirection();
 
 // ENDPOINT OM TE TESTEN
 app.MapGet("/User", () => "THIS IS A TEST");
+app.MapPost("/User", () => "THIS IS A TEST");
+app.MapPut("/User", () => "THIS IS A TEST");
+app.MapDelete("/User", () => "THIS IS A TEST");
+
+
+
+
 
 
 
