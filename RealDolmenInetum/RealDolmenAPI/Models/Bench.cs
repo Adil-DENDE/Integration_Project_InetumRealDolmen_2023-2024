@@ -1,4 +1,4 @@
-﻿namespace RealDolmenAPI
+﻿namespace RealDolmenAPI.Models
 {
     public class Bench
     {
@@ -6,6 +6,8 @@
         public int UserId { get; set; }
         public DateTime StartBench { get; set; }
         public DateTime EndBench { get; set; }
-        public string Occupation { get; set; }
+
+         // NOT SURE
+        public int Occupation { get; set; }
     }
 }
