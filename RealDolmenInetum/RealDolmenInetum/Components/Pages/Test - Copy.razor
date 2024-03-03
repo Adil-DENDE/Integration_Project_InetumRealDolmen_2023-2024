@@ -1,0 +1,40 @@
+﻿@page "/test"
+@using RealDolmenAPI.Models
+@inject HttpClient Http
+
+<h3>Benchers</h3>
+<button @onclick="FetchData"> get </button>
+
+
+
+@if (todo != null)
+{
+    <p><em>Loading...</em></p>
+    <p>Naam: @todo.userId</p>
+}
+
+@code {
+    public Todo todo;
+    public HttpClient httpClient = new HttpClient();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchData();
+    }
+
+    public async Task FetchData()
+    {
+        todo = await httpClient.GetFromJsonAsync<Todo>("https://jsonplaceholder.typicode.com/todos/1");
+    }
+
+    public class Todo
+    {
+        public int userId { get; set; }
+        public int id { get; set; }
+        public string title { get; set; }
+        public bool completed { get; set; }
+    }
+
+}
+
+

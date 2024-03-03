@@ -1,0 +1,33 @@
+﻿@page "/data"
+@using RealDolmenAPI.Models
+@inject HttpClient Http
+
+<h3>Benchers</h3>
+<button @onclick="FetchData"> get </button>
+
+
+
+@if (user != null)
+{
+    <p><em>Loading...</em></p>
+    <p>Naam: @user.Id</p>
+}
+
+@code {
+    public RealDolmenAPI.Models.User user;
+    public HttpClient httpClient = new HttpClient();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchData();
+    }
+
+    public async Task FetchData()
+    {
+        user = await httpClient.GetFromJsonAsync<User>("https://localhost:7256/benchers");
+        Console.WriteLine($"Data fetched: Naam: {user.First_Name}");
+    }
+
+}
+
+
