@@ -11,5 +11,8 @@
         public string Last_Name { get; set; }
         public DateTime Birthdate { get; set; }
         public DateTime Start_Date { get; set; }
-    }
+        public bool? deleted {  get; set; }
+        public DateTime? deleted_planned_date { get; set;}
+
+	}
 }
