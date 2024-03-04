@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Bencher dashboard")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad762960a87ca6f3c879aab65c25e45673d5ba81")]
 [assembly: System.Reflection.AssemblyProductAttribute("Bencher dashboard")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Bencher dashboard")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
