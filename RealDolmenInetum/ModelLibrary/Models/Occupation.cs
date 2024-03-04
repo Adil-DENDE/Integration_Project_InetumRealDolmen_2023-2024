@@ -1,4 +1,4 @@
-﻿namespace RealDolmenAPI.Models
+﻿namespace ModelLibrary.Models
 {
     public class Occupation
     {
