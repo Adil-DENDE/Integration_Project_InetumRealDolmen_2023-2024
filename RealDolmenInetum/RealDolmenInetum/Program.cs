@@ -1,10 +1,12 @@
 using RealDolmenInetum.Components;
-
+using MudBlazor.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Template: Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddHttpClient();
+builder.Services.AddMudServices();
 
 
 var app = builder.Build();

@@ -12,7 +12,7 @@ namespace ModelLibrary.Data
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
-			optionsBuilder.UseSqlServer("Server=tcp:sqlserverintegrationproject.database.windows.net,1433;Initial Catalog=IntegrationProject;Persist Security Info=False;User ID=Adil;Password=Integrationproject123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+			optionsBuilder.UseSqlServer("Server=tcp:sqlserverintegrationproject.database.windows.net,1433;Initial Catalog=IntegrationProject;Persist Security Info=False;User ID=Adil;Password=*********;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 		}
 
 		// OM TE INTERAGEREN MET DE TABLE USER 

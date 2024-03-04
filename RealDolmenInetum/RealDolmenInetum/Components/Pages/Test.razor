@@ -1,20 +1,20 @@
 ﻿@page "/data"
-@using RealDolmenAPI.Models
+@using ModelLibrary.Models
+@using Newtonsoft.Json
 @inject HttpClient Http
 
 <h3>Benchers</h3>
-<button @onclick="FetchData"> get </button>
 
-
-
-@if (user != null)
+@if (users != null)
 {
-    <p><em>Loading...</em></p>
-    <p>Naam: @user.Id</p>
+    @foreach (var user in users)
+    {
+        <p>@user.First_Name</p>
+    }
 }
 
 @code {
-    public RealDolmenAPI.Models.User user;
+    public List<ModelLibrary.Models.User> users;
     public HttpClient httpClient = new HttpClient();
 
     protected override async Task OnInitializedAsync()
@@ -24,10 +24,12 @@
 
     public async Task FetchData()
     {
-        user = await httpClient.GetFromJsonAsync<User>("https://localhost:7256/benchers");
-        Console.WriteLine($"Data fetched: Naam: {user.First_Name}");
+            var response = await httpClient.GetAsync("https://localhost:7256/benchers");
+            var content = await response.Content.ReadAsStringAsync();
+
+            // MAAK GEBRUIK VAN NEWTONSOFT.JSON VOOR DESERIALIZE(ERROR CAN NOT CONVERT)
+            List<User> fetchUsers = JsonConvert.DeserializeObject<List<User>>(content);
+            users = fetchUsers;
     }
 
 }
-
-
