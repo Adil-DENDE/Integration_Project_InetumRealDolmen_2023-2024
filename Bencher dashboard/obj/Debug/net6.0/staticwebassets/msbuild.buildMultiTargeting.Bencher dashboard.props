@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Bencher dashboard.props" />
+</Project>

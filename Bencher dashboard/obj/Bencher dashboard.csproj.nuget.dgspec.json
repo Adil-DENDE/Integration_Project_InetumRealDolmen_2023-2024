@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\souly\\Desktop\\designe integraiton\\Bencher dashboard\\Bencher dashboard.csproj": {}
+    "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\Bencher dashboard.csproj": {}
   },
   "projects": {
-    "C:\\Users\\souly\\Desktop\\designe integraiton\\Bencher dashboard\\Bencher dashboard.csproj": {
+    "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\Bencher dashboard.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\souly\\Desktop\\designe integraiton\\Bencher dashboard\\Bencher dashboard.csproj",
+        "projectUniqueName": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\Bencher dashboard.csproj",
         "projectName": "Bencher dashboard",
-        "projectPath": "C:\\Users\\souly\\Desktop\\designe integraiton\\Bencher dashboard\\Bencher dashboard.csproj",
-        "packagesPath": "C:\\Users\\souly\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\souly\\Desktop\\designe integraiton\\Bencher dashboard\\obj\\",
+        "projectPath": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\Bencher dashboard.csproj",
+        "packagesPath": "C:\\Users\\gamer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\souly\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\gamer\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -49,6 +49,24 @@
               "target": "Package",
               "version": "[6.0.9, )"
             },
+            "Microsoft.NET.ILLink.Analyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.100-1.23211.1, )",
+              "autoReferenced": true
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.100-1.23211.1, )",
+              "autoReferenced": true
+            },
+            "Microsoft.NET.Sdk.WebAssembly.Pack": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.1, )",
+              "autoReferenced": true
+            },
             "Radzen.Blazor": {
               "target": "Package",
               "version": "[4.25.9, )"
@@ -68,7 +86,7 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
-              "version": "[6.0.9, 6.0.9]"
+              "version": "[6.0.26, 6.0.26]"
             }
           ],
           "frameworkReferences": {
@@ -76,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {

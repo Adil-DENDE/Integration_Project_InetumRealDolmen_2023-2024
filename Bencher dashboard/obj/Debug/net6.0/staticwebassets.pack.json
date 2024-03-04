@@ -1,0 +1,97 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\bin\\Debug\\net6.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\obj\\Debug\\net6.0\\compressed\\c4fh8twxy1.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\obj\\Debug\\net6.0\\scopedcss\\bundle\\Bencher dashboard.styles.css",
+      "PackagePath": "staticwebassets\\Bencher dashboard.styles.css"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\open-iconic\\README.md",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\README.md"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\gamer\\OneDrive\\Bureau\\Integration_Project_InetumRealDolmen_2023-2024\\Bencher dashboard\\wwwroot\\sample-data\\weather.json",
+      "PackagePath": "staticwebassets\\sample-data\\weather.json"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.Bencher dashboard.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.Bencher dashboard.props",
+      "PackagePath": "build\\Bencher dashboard.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.Bencher dashboard.props",
+      "PackagePath": "buildMultiTargeting\\Bencher dashboard.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.Bencher dashboard.props",
+      "PackagePath": "buildTransitive\\Bencher dashboard.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
