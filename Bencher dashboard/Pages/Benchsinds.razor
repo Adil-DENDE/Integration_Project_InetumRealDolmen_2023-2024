@@ -1,0 +1,26 @@
+﻿@page "/bevestiging/{startDate}"
+@inject NavigationManager NavigationManager
+
+<a class="btn btn-secondary" @onclick="GoBack">
+    <span class="oi oi-arrow-thick-left"></span> Terug
+</a>
+
+<h3> John zit op de bench sinds: @startDate</h3>
+
+<button class="btn btn-primary" @onclick="Einde">Einde</button>
+
+@code {
+    [Parameter]
+    public string startDate { get; set; }
+
+    private void Einde()
+    {
+        
+    }
+    
+private void GoBack()
+    {
+        NavigationManager.NavigateTo("/projectformulier");
+    }
+
+}

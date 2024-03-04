@@ -1,0 +1,51 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = browser
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = true
+build_property.IncludeAllContentForSelfExtract = 
+build_property.RootNamespace = Bencher_dashboard
+build_property.RootNamespace = Bencher_dashboard
+build_property.ProjectDir = C:\Users\souly\Desktop\designe integraiton\Bencher dashboard\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\souly\Desktop\designe integraiton\Bencher dashboard
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/souly/Desktop/designe integraiton/Bencher dashboard/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/souly/Desktop/designe integraiton/Bencher dashboard/Pages/Benchsinds.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmVuY2hzaW5kcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/souly/Desktop/designe integraiton/Bencher dashboard/Pages/Forms.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9ybXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/souly/Desktop/designe integraiton/Bencher dashboard/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/souly/Desktop/designe integraiton/Bencher dashboard/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/souly/Desktop/designe integraiton/Bencher dashboard/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/souly/Desktop/designe integraiton/Bencher dashboard/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-8inixxq10b
+
+[C:/Users/souly/Desktop/designe integraiton/Bencher dashboard/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-p87qebimtm
