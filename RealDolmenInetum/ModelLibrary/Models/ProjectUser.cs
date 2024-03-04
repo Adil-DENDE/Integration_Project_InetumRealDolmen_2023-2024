@@ -3,10 +3,10 @@
     public class ProjectUser
 
     {
-        public int UserId { get; set; }
-        public int ProjectId { get; set; }
-        public DateTime StartDateForUser { get; set; }
-        public DateTime? EndDate { get; set; }
+        public int User_Id { get; set; }
+        public int Project_Id { get; set; }
+        public DateTime Start_date_for_user { get; set; }
+        public DateTime? End_date { get; set; }
 
     }
 }

@@ -6,8 +6,6 @@
         public int Id_user { get; set; }
         public DateTime Start_bench { get; set; }
         public DateTime? End_bench { get; set; }
-
-         // NOT SURE
-        public int Occupation_id { get; set; }
+        public int? Occupation_id { get; set; }
     }
 }
