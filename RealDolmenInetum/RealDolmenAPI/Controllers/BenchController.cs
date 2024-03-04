@@ -7,7 +7,8 @@ namespace RealDolmenAPI.Controllers
     {
         public static void Map(WebApplication app)
         {
-            
+            app.MapGet("/Benchers", async (AppDbContext db) =>
+            await db.Bench.ToListAsync());
         }
     }
 }

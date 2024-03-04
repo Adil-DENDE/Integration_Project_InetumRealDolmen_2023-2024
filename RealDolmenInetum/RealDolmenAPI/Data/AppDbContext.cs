@@ -19,5 +19,7 @@ namespace ModelLibrary.Data
 		public DbSet<User> User => Set<User>();
 		// OM TE INTERAGEREN MET DE TABLE PROJECT
 		public DbSet<Project> Project => Set<Project>();
+        // OM TE INTERAGEREN MET DE TABLE BENCH
+        public DbSet<Bench> Bench => Set<Bench>();
 	}
 }

@@ -13,6 +13,7 @@ builder.Services.AddDbContext<AppDbContext>();
 
 var app = builder.Build();
 UserController.Map(app);
+BenchController.Map(app);
 
 // SWAGGER ====== TOONT EEN SOORT PAGE MET DOCU VAN API
 if (app.Environment.IsDevelopment())
