@@ -12,7 +12,7 @@ namespace RealDolmenAPI.Controllers
             app.MapGet("/Users", async (AppDbContext db) => await db.User.ToListAsync());
 
             // ENDPOINT ALS WE DE DATA VAN EEN BENCHER ZOUDEN WILLEN ZIEN 
-            app.MapGet("/User/{id:int}", async (int id, AppDbContext db) => await db.User.FindAsync(id) is User user ? Results.Ok(user) : Results.NotFound());
+            app.MapGet("/User/{id:int}", async (int id, AppDbContext db) => await db.User.FirstOrDefaultAsync(u=>u.Id==id) is User user ? Results.Ok(user) : Results.NotFound());
 
         }
     }
