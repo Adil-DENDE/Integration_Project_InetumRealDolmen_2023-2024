@@ -4,10 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealDolmenInetum", "RealDolmenInetum\RealDolmenInetum.csproj", "{F1EE92F5-8552-4E52-8A86-82349AB7B389}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E06C864D-9497-4C1A-970C-E6AB35C6894E} = {E06C864D-9497-4C1A-970C-E6AB35C6894E}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealDolmenAPI", "RealDolmenAPI\RealDolmenAPI.csproj", "{C525C179-C2AF-4192-B155-22F1E711BB5E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E06C864D-9497-4C1A-970C-E6AB35C6894E} = {E06C864D-9497-4C1A-970C-E6AB35C6894E}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelLibrary", "ModelLibrary\ModelLibrary.csproj", "{E06C864D-9497-4C1A-970C-E6AB35C6894E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelLibrary", "ModelLibrary\ModelLibrary.csproj", "{E06C864D-9497-4C1A-970C-E6AB35C6894E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

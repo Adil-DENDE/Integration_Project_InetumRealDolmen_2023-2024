@@ -1,7 +1,7 @@
 // CREATIE VAN DE WEB APP ENVIRONMENT
 using Microsoft.EntityFrameworkCore;
-using RealDolmenAPI.Data;
-using RealDolmenAPI.Models;
+using ModelLibrary.Data;
+using ModelLibrary.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -27,9 +27,6 @@ app.MapGet("/Benchers", async (AppDbContext db) =>  await db.User.ToListAsync())
 
 // ENDPOINT ALS WE DE DATA VAN EEN BENCHER ZOUDEN WILLEN ZIEN 
 app.MapGet("/Benchers/{id:int}", async (int id, AppDbContext db) => await db.User.FindAsync(id) is User user ? Results.Ok(user) : Results.NotFound());
-
-
-
 
 
 
