@@ -15,17 +15,21 @@ namespace RealDolmenAPI.Controllers
                                             user => user.Id,
                                             bench => bench.user_id,
                                             (user, bench) => new { User = user, Bench = bench })
-               // CREATION D'une INSTANCE KIES ZELF DE DATA DIE GETOOND WORD
+                                        // CREATION D'une INSTANCE KIES ZELF DE DATA DIE GETOOND WORD
+                                        .Where(u => u.Bench.End_bench == null)
                                         .Select(u => new {
                                             UserId = u.User.Id,
                                             BenchId = u.Bench.Id,
                                             Username = u.User.First_Name + " " + u.User.Last_Name,
-                                            mail = u.User.Email,
-                                            NiveauId = u.User.Niveau_Id
+                                            Mail = u.User.Email,
+                                            NiveauId = u.User.Niveau_Id,
+                                            EndBench = u.Bench.End_bench,
+                                            StartBench = u.Bench.Start_bench,
                                         })
                                         .ToListAsync();
                 return usersOpBench;
             });
+
         }
     }
 }

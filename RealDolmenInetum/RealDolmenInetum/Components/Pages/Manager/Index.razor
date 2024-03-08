@@ -1,41 +1,61 @@
 ﻿@page "/"
+@using ModelLibrary.Models
 @inject NavigationManager NavigationManager
+@using Newtonsoft.Json
+@inject HttpClient Http
+
 <PageTitle>Index</PageTitle>
 
 
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Medewerker</th>
-            <th>In Datum</th>
-            <th>Uit Tijd</th>
-            <th>Specialiteit</th>
-         
-        </tr>
-        <tr>
-    <td>1</td>
- <td>Jan Jansen</td>
-    <td>2024-03-01</td>
-    <td>17:00</td>
-    <td>IT Specialist</td>
-</tr>
-<tr>
-    <td>2</td>
-    <td>Piet Pieters</td>
-    <td>2024-03-01</td>
-    <td>17:30</td>
-    <td>Project Manager</td>
-</tr>
-    </thead>
-   
-</table>
-
+@if (usersOpBench != null) {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Start Bench</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var userBench in usersOpBench)
+            {
+                <tr>
+                    <td>@userBench.Username</td>
+                    <td>@userBench.Mail</td>
+                    <td>@userBench.StartBench.Value.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+    
+else
+{
+    <p>No data available</p>
+}
 <button class="btn btn-success" @onclick="NavigateToProjectFormulier">Toevoegen</button>
 
 @code {
- 
+    public List<ModelLibrary.Models.UserBench> usersOpBench;
+    public HttpClient httpClient = new HttpClient();
+    string[] headings = { "Naam", "Email"};
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchData();
+    }
+
+    public async Task FetchData()
+    {
+        var response = await httpClient.GetAsync("https://localhost:7256/Users/Bench");
+        var content = await response.Content.ReadAsStringAsync();
+
+        // MAAK GEBRUIK VAN NEWTONSOFT.JSON VOOR DESERIALIZE(ERROR CAN NOT CONVERT)
+        List<UserBench> fetchUsers = JsonConvert.DeserializeObject<List<UserBench>>(content);
+        usersOpBench = fetchUsers;
+    }
+
+
 
     private void NavigateToProjectFormulier()
     {
