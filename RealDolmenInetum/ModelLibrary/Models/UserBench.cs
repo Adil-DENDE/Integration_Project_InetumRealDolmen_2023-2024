@@ -11,7 +11,7 @@ namespace ModelLibrary.Models
         public int UserId { get; set; }
         public int BenchId { get; set; }
         public string Username { get; set; }
-        public string Mail { get; set; }
+        public string Email { get; set; }
         public int NiveauId { get; set; }
         public DateTime? EndBench { get; set; }
         public DateTime? StartBench { get; set;}

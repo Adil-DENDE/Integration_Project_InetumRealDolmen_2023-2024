@@ -1,5 +1,6 @@
 ﻿using ModelLibrary.Data;
 using Microsoft.EntityFrameworkCore;
+using ModelLibrary.Models;
 
 namespace RealDolmenAPI.Controllers
 {
@@ -30,6 +31,24 @@ namespace RealDolmenAPI.Controllers
                 return usersOpBench;
             });
 
+            app.MapPost("/bench/add", async (AppDbContext db, UserBench userBench) =>
+            {
+                // Check if userBench exists!
+                if (userBench == null) return Results.BadRequest("Data is ongeldig!");
+
+                // Convert userBench to Bench
+                var bench = Bench.UserbenchToBench(userBench);
+
+                // Debug purposes
+                //return Results.BadRequest(bench.ToString());
+
+                // Impossible, database should use an auto-increment field for the id field.
+                // ID can not be determined from here!
+                db.Bench.Add(bench);
+                await db.SaveChangesAsync();
+
+                return Results.Ok("User added to the bench successfully");
+            });
         }
     }
 }
