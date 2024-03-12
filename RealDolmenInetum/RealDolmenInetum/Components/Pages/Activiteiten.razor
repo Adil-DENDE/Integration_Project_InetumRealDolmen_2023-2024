@@ -1,0 +1,90 @@
+﻿@page "/activiteit"
+@rendermode InteractiveServer
+
+<PageTitle>Activiteit selectie</PageTitle>
+
+ <div class="alles">
+    <div class="links">
+        <h1>Welke activiteit ga je starten?</h1>
+
+        <form action="#">
+            <label for="cars">Kies een activiteit:</label>
+            <select name="activiteiten" id="activiteiten">
+                <option value="Intern project">Intern project</option>
+                <option value="Cursus">Cursus</option>
+                <option value="Training voor certificaten">Training voor certificaten</option>
+                <option value="Examen certificaat">Examen certificaat</option>
+                <option value="Zoeken naar opportuniteiten">Zoeken naar opportuniteiten</option>
+                <option value="Sollicitatiegesprekken">Sollicitatiegesprekken</option>
+            </select>
+
+            <button type="submit" value="Opslaan">Opslaan</button>
+        </form>
+    </div>
+
+    <aside>
+        <div class="uitlegInternproject">
+            <h2>uitlegInternproject</h2>
+            <p>
+            uitlegInternproject
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
+            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
+            eligendi accusantium.
+        </p>
+        </div>
+        <div class="Cursus">
+            <h2>Cursus</h2>
+            <p>
+            uitlegInternproject
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
+            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
+            eligendi accusantium.
+        </p>
+        </div>
+        <div class="uitlegTraining voor certificaten">
+            <h2>Training voor certificaten</h2>
+            <p>
+            uitlegInternproject
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
+            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
+            eligendi accusantium.
+        </p>
+        </div>
+        <div class="uitlegExamen certificaat">
+            <h2>Examen certificaat</h2>
+            <p>
+            uitlegInternproject
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
+            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
+            eligendi accusantium.
+        </p>
+        </div>
+        <div class="uitlegZoeken naar opportuniteiten">
+            <h2>Zoeken naar opportuniteiten</h2>
+            <p>
+            uitlegInternproject
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
+            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
+            eligendi accusantium.
+        </p>
+        </div>
+        <div class="uitlegSollicitatiegesprekken">
+            <h2>Sollicitatiegesprekken</h2>
+            <p>
+            uitlegInternproject
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
+            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
+            eligendi accusantium.
+        </p>
+        </div>
+    </aside>
+    </div>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
