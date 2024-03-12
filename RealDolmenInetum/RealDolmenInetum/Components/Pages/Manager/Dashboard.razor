@@ -50,7 +50,7 @@ else
 
     public async Task FetchData()
     {
-        var response = await httpClient.GetAsync("https://localhost:7256/Users/Bench");
+        var response = await httpClient.GetAsync("https://localhost:7256/user/bench");
         if (!response.IsSuccessStatusCode)
         {
             //display error message in UI 
