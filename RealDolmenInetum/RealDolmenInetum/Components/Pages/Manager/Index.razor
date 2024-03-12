@@ -1,5 +1,7 @@
 ﻿@page "/"
 @using ModelLibrary.Models
+@using ModelLibrary.Dto
+@using ModelLibrary.ViewModels
 @inject NavigationManager NavigationManager
 @using Newtonsoft.Json
 @inject HttpClient Http
@@ -20,9 +22,10 @@
             @foreach (var userBench in usersOpBench)
             {
                 <tr>
-                    <td>@userBench.Username</td>
+                    <td>@userBench.First_Name</td>
+                    <td>@userBench.Last_Name</td>
                     <td>@userBench.Email</td>
-                    <td>@userBench.StartBench.Value.ToString("yyyy-MM-dd")</td>
+                    <td>@userBench.Start_Date.ToString("yyyy-MM-dd")</td>
                 </tr>
             }
         </tbody>
@@ -36,10 +39,10 @@ else
 <button class="btn btn-success" @onclick="NavigateToProjectFormulier">Toevoegen</button>
 
 @code {
-    public List<ModelLibrary.Models.UserBench> usersOpBench;
+    public List<UserViewModel> usersOpBench;
     public HttpClient httpClient = new HttpClient();
     string[] headings = { "Naam", "Email"};
-    
+
     protected override async Task OnInitializedAsync()
     {
         await FetchData();
@@ -48,14 +51,18 @@ else
     public async Task FetchData()
     {
         var response = await httpClient.GetAsync("https://localhost:7256/Users/Bench");
+        if (!response.IsSuccessStatusCode)
+        {
+            //display error message in UI 
+            return;
+        }
+        // 
         var content = await response.Content.ReadAsStringAsync();
 
         // MAAK GEBRUIK VAN NEWTONSOFT.JSON VOOR DESERIALIZE(ERROR CAN NOT CONVERT)
-        List<UserBench> fetchUsers = JsonConvert.DeserializeObject<List<UserBench>>(content);
+        List<UserViewModel> fetchUsers = JsonConvert.DeserializeObject<List<UserViewModel>>(content); // TO CHECK IF IT WORKS
         usersOpBench = fetchUsers;
     }
-
-
 
     private void NavigateToProjectFormulier()
     {

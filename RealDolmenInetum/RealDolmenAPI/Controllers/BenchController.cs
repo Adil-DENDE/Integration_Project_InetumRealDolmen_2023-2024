@@ -1,5 +1,7 @@
 ﻿using ModelLibrary.Data;
 using Microsoft.EntityFrameworkCore;
+using RealDolmenAPI.Services;
+using ModelLibrary.Dto;
 using ModelLibrary.Models;
 
 namespace RealDolmenAPI.Controllers
@@ -14,7 +16,7 @@ namespace RealDolmenAPI.Controllers
                 var usersOpBench = await db.User
                                         .Join(db.Bench,
                                             user => user.Id,
-                                            bench => bench.user_id,
+                                            bench => bench.User_id,
                                             (user, bench) => new { User = user, Bench = bench })
                                         // CREATION D'une INSTANCE KIES ZELF DE DATA DIE GETOOND WORD
                                         .Where(u => u.Bench.End_bench == null)
@@ -31,21 +33,22 @@ namespace RealDolmenAPI.Controllers
                 return usersOpBench;
             });
 
-            app.MapPost("/bench/add", async (AppDbContext db, UserBench userBench) =>
+            app.MapPost("/bench/add", async (UserBenchDto userBenchDto, IUserService userService, IBenchService benchService) =>
             {
                 // Check if userBench exists!
-                if (userBench == null) return Results.BadRequest("Data is ongeldig!");
+                if (userBenchDto == null) return Results.BadRequest("Data is ongeldig!");
 
-                // Convert userBench to Bench
-                var bench = Bench.UserbenchToBench(userBench);
-
+                // Get userId based on email
+               var userId = userService.GetIdByEmail(userBenchDto.Email);
                 // Debug purposes
                 //return Results.BadRequest(bench.ToString());
-
+                var bench = new Bench(userId, userBenchDto.StartBench);
                 // Impossible, database should use an auto-increment field for the id field.
                 // ID can not be determined from here!
-                db.Bench.Add(bench);
-                await db.SaveChangesAsync();
+                //db.Bench.Add(bench);
+                benchService.Add(bench);
+                //use bench service
+                //benchService.Add()
 
                 return Results.Ok("User added to the bench successfully");
             });

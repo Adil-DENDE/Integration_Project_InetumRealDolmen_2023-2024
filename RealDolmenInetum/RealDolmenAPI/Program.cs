@@ -3,13 +3,21 @@ using Microsoft.EntityFrameworkCore;
 using ModelLibrary.Data;
 using ModelLibrary.Models;
 using RealDolmenAPI.Controllers;
+using RealDolmenAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IBenchService, BenchService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Om via de dbcontext data beheren
 builder.Services.AddDbContext<AppDbContext>();
+
+
+
 
 var app = builder.Build();
 UserController.Map(app);
