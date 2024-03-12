@@ -10,7 +10,7 @@ namespace RealDolmenAPI.Controllers
     {
         public static void Map(WebApplication app)
         {
-            app.MapGet("/Users/Bench", async (AppDbContext db) =>
+            app.MapGet("/user/bench", async (AppDbContext db) =>
             {
                 // TABLE USER JOINEN MET TABLE BENCH
                 var usersOpBench = await db.User
