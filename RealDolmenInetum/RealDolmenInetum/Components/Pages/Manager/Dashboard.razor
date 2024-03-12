@@ -2,30 +2,29 @@
 @using ModelLibrary.Models
 @using ModelLibrary.Dto
 @using ModelLibrary.ViewModels
-@inject NavigationManager NavigationManager
 @using Newtonsoft.Json
 @inject HttpClient Http
 
 <PageTitle>Dashboard</PageTitle>
 
-
+<a href="/toevoegen"><button class="btn btn-success">Toevoegen</button></a>
 @if (usersOpBench != null) {
     <table class="table">
         <thead>
             <tr>
-                <th>Username</th>
+                <th>Naam</th>
                 <th>Email</th>
-                <th>Start Bench</th>
+                <th>Bench start</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var userBench in usersOpBench)
             {
                 <tr>
-                    <td>@userBench.First_Name</td>
-                    <td>@userBench.Last_Name</td>
-                    <td>@userBench.Email</td>
-                    <td>@userBench.Start_Date.ToString("yyyy-MM-dd")</td>
+
+                    <td><MudIcon Icon="@Icons.Material.Filled.Person" Title="Favorite" />@userBench.username</td>
+                    <td>@userBench.mail</td>
+                    <td>@userBench.startBench.ToString("dd-MM-yyyy")</td>
                 </tr>
             }
         </tbody>
@@ -36,12 +35,10 @@ else
 {
     <p>No data available</p>
 }
-<a href="/toevoegen"><button class="btn btn-success">Toevoegen</button></a>
 
 @code {
     public List<UserViewModel> usersOpBench;
     public HttpClient httpClient = new HttpClient();
-    string[] headings = { "Naam", "Email"};
 
     protected override async Task OnInitializedAsync()
     {
@@ -62,10 +59,5 @@ else
         // MAAK GEBRUIK VAN NEWTONSOFT.JSON VOOR DESERIALIZE(ERROR CAN NOT CONVERT)
         List<UserViewModel> fetchUsers = JsonConvert.DeserializeObject<List<UserViewModel>>(content); // TO CHECK IF IT WORKS
         usersOpBench = fetchUsers;
-    }
-
-    private void NavigateToProjectFormulier()
-    {
-        NavigationManager.NavigateTo("/toevoegen");
     }
 }
