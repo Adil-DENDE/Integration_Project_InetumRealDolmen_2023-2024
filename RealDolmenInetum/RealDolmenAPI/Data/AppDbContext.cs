@@ -12,7 +12,7 @@ namespace ModelLibrary.Data
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
-			optionsBuilder.UseSqlServer("Server=tcp:sqlserverintegrationproject.database.windows.net,1433;Initial Catalog=IntegrationProject;Persist Security Info=False;User ID=Adil;Password=*********;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+			optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=IntegrationProject;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
 		}
 
 		// OM TE INTERAGEREN MET DE TABLE USER 
@@ -21,5 +21,7 @@ namespace ModelLibrary.Data
 		public DbSet<Project> Project => Set<Project>();
         // OM TE INTERAGEREN MET DE TABLE BENCH
         public DbSet<Bench> Bench => Set<Bench>();
-	}
+        // OM TE INTERAGEREN MET DE TABLE OCCUPATION
+        public DbSet<Occupation> Occupation => Set<Occupation>();
+    }
 }

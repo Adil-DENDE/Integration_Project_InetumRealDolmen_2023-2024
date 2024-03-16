@@ -1,5 +1,8 @@
 ﻿@page "/activiteit"
 @rendermode InteractiveServer
+@using ModelLibrary.Models
+@using Newtonsoft.Json
+@inject HttpClient Http
 
 <PageTitle>Activiteit selectie</PageTitle>
 
@@ -8,15 +11,14 @@
         <h1>Welke activiteit ga je starten?</h1>
 
         <form action="#">
-            <label for="cars">Kies een activiteit:</label>
+            <label for="activiteiten">Kies een activiteit:</label>
             <select name="activiteiten" id="activiteiten">
-                <option value="Intern project">Intern project</option>
-                <option value="Cursus">Cursus</option>
-                <option value="Training voor certificaten">Training voor certificaten</option>
-                <option value="Examen certificaat">Examen certificaat</option>
-                <option value="Zoeken naar opportuniteiten">Zoeken naar opportuniteiten</option>
-                <option value="Sollicitatiegesprekken">Sollicitatiegesprekken</option>
+                @foreach (var occupation in occupations)
+                {
+                    <option value="@occupation.Type">@occupation.Type</option>
+                }
             </select>
+
 
             <button type="submit" value="Opslaan" class="btn btn-success">Opslaan</button>
         </form>
@@ -81,10 +83,33 @@
     </div>
 
 @code {
-    private int currentCount = 0;
+    public List<Occupation> occupations = new List<Occupation>();
 
-    private void IncrementCount()
+    protected override async Task OnInitializedAsync()
     {
-        currentCount++;
+        await FetchOccupations();
+    }
+
+    public async Task FetchOccupations()
+    {
+        try
+        {
+            var response = await Http.GetAsync("https://localhost:7256/occupation"); // Adjust the URL as needed
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                occupations = JsonConvert.DeserializeObject<List<Occupation>>(content);
+            }
+            else
+            {
+                // Handle the error, maybe set occupations to an empty list or show an error message
+                occupations = new List<Occupation>();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log or handle the exception as appropriate
+            occupations = new List<Occupation>(); // Ensure the UI has an initialized list to work with, even in error states
+        }
     }
 }
