@@ -6,13 +6,17 @@ namespace RealDolmenAPI.Controllers
 {
     public class UserController
     {
+    
         public static void Map(WebApplication app)
         {
+            // Gebruik MapGroup om een groep te definiëren
+            var userGroup = app.MapGroup("/user");
+
             // ENDPOINT OM ALLE BENCHERS TE ZIEN //WE ZIEN NU NOG ALTIJD ALLE USERS (MANAGERS STAAN ER TUSSEN).
-            app.MapGet("/user", async (AppDbContext db) => await db.User.ToListAsync());
+            userGroup.MapGet("/", async (AppDbContext db) => await db.User.ToListAsync());
 
             // ENDPOINT ALS WE DE DATA VAN EEN BENCHER ZOUDEN WILLEN ZIEN 
-            app.MapGet("/user/{id:int}", async (int id, AppDbContext db) => await db.User.FirstOrDefaultAsync(u=>u.Id==id) is User user ? Results.Ok(user) : Results.NotFound());
+            userGroup.MapGet("/{id:int}", async (int id, AppDbContext db) => await db.User.FirstOrDefaultAsync(u=>u.Id==id) is User user ? Results.Ok(user) : Results.NotFound());
         }
     }
 }
