@@ -23,19 +23,5 @@ public class BenchService : IBenchService//implementatie
         db.SaveChanges();
         return 0;
     }
-
-
-    public string GetEmailById(Bench bench, User user)
-    {
-
-        bench.User_id = user.Id;
-        return user.Email;
-    }
-    //public string GetEmailByIdC(int id)
-    //{
-    //    db.Bench.
-    //    return user.Email;
-    //}
-
 }
 

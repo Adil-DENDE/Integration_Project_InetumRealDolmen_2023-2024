@@ -8,7 +8,7 @@ namespace ModelLibrary.Dto
 {
     public class UserBenchDto
     {
-        public string Email { get; set; }
+        public  string Email { get; set; }
         public DateTime StartBench { get; set; }
     }
 }

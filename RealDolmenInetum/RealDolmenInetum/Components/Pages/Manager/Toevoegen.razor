@@ -1,42 +1,40 @@
 ﻿@page "/toevoegen"
+@using ModelLibrary.Dto
+@using System.Text.Json
+@using System.Text;
+@using Newtonsoft.Json
+@inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-<EditForm Model="@formModel" OnValidSubmit="HandleValidSubmit">
-
-  <div class="form-group">
-    <label for="Email">Email</label>
-    <input type="email" id="Email" @bind-value="formModel.Email" class="form-control" />
-</div>
-
-
-
+<EditForm Model=formModel OnSubmit="Submit" FormName="formModel">
     <div class="form-group">
-        <label for="startDate">Begindatum</label>
-        <InputDate id="startDate" @bind-Value="formModel.StartDate" />
-    </div>
-
+        <label for="Email">Email</label>
+        <InputText id="Email" @bind-Value=formModel.Email />
+    </div>.
     <div class="form-group">
-        <label for="remark">Opmerking</label>
-        <InputTextArea id="remark" @bind-Value="formModel.Remark" />
+        <label for="StartBench">Begindatum</label>
+        <InputDate id="StartBench" @bind-Value=formModel.StartBench />
     </div>
-
-    <button type="submit" class="btn btn-success">Start</button>
+    <input type="submit" class="btn btn-primary" value="Save" />
 </EditForm>
 
 @code {
-    private FormModel formModel = new FormModel();
+    [SupplyParameterFromForm]
+    public UserBenchDto formModel { get; set; }
 
-    private async Task HandleValidSubmit()
+    // NOUVELLE INSTANCE DU FORM
+    protected override void OnInitialized() => formModel ??= new();
+
+    private async Task Submit(EditContext editContext)
     {
+        Console.WriteLine("Email=" + formModel.Email + ", DateTime=" + formModel.StartBench.ToString());
+        var stringData = JsonConvert.SerializeObject(formModel);
+        var stringContent = new StringContent(stringData, Encoding.UTF8, "application/json");
+        Console.WriteLine(stringData);
 
+        var httpResponseMessage = await Http.PostAsync("https://localhost:7256/bench/add", stringContent);
 
-        NavigationManager.NavigateTo($"/");
-    }
-
-    public class FormModel
-    {
-        public DateTime? StartDate { get; set; }
-        public string Remark { get; set; }
-        public string Email { get; set; }
+        var responseBody = await httpResponseMessage.Content.ReadAsStringAsync();
+        Console.WriteLine(responseBody);
     }
 }
