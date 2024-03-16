@@ -19,7 +19,6 @@
                 }
             </select>
 
-
             <button type="submit" value="Opslaan" class="btn btn-success">Opslaan</button>
         </form>
     </div>
@@ -33,52 +32,8 @@
             ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
             eligendi accusantium.
         </p>
-        </div>
-        <div class="Cursus">
-            <h2>Cursus</h2>
-            <p>
-            uitlegInternproject
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
-            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
-            eligendi accusantium.
-        </p>
-        </div>
-        <div class="uitlegTraining voor certificaten">
-            <h2>Training voor certificaten</h2>
-            <p>
-            uitlegInternproject
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
-            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
-            eligendi accusantium.
-        </p>
-        </div>
-        <div class="uitlegExamen certificaat">
-            <h2>Examen certificaat</h2>
-            <p>
-            uitlegInternproject
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
-            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
-            eligendi accusantium.
-        </p>
-        </div>
-        <div class="uitlegZoeken naar opportuniteiten">
-            <h2>Zoeken naar opportuniteiten</h2>
-            <p>
-            uitlegInternproject
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
-            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
-            eligendi accusantium.
-        </p>
-        </div>
-        <div class="uitlegSollicitatiegesprekken">
-            <h2>Sollicitatiegesprekken</h2>
-            <p>
-            uitlegInternproject
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
-            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
-            eligendi accusantium.
-        </p>
-        </div>
+            </div>
+        }
     </aside>
     </div>
 
@@ -90,11 +45,13 @@
         await FetchOccupations();
     }
 
+    // Data ophalen uit de api en daar een lijst mee vullen maken
+    // Try catch met ChatGPT gemaakt. Moet nog getest worden.
     public async Task FetchOccupations()
     {
         try
         {
-            var response = await Http.GetAsync("https://localhost:7256/occupation"); // Adjust the URL as needed
+            var response = await Http.GetAsync("https://localhost:7256/occupation");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -102,14 +59,12 @@
             }
             else
             {
-                // Handle the error, maybe set occupations to an empty list or show an error message
                 occupations = new List<Occupation>();
             }
         }
         catch (Exception ex)
         {
-            // Log or handle the exception as appropriate
-            occupations = new List<Occupation>(); // Ensure the UI has an initialized list to work with, even in error states
+            occupations = new List<Occupation>();
         }
     }
 }
