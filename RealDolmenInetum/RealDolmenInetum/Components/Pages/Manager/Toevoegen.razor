@@ -7,11 +7,22 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
-<EditForm Model=formModel OnSubmit="Submit" FormName="formModel">
+<EditForm Model="@formModel" OnSubmit="@Submit" Context="EditContext">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
     <div class="form-group">
         <label for="Email">Zoek gebruiker op email:</label>
-        <InputText id="Email" @bind-Value="formModel.Email" />
-        <button type="button" @onclick="PerformSearch">Zoek</button>
+        <div class="input-group mb-3">
+            <InputText id="Email" class="form-control" placeholder="username" @bind-Value="@formModel.Email"  />
+        </div>
+        <button type="button" class="btn btn-success" @onclick="@PerformSearch">Zoek</button>
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @ErrorMessage
+            </div>
+        }
     </div>
     @if (suggestedUsers.Any())
     {
@@ -22,15 +33,15 @@
             }
         </ul>
     }
-    else if (searchPerformed && !string.IsNullOrWhiteSpace(formModel.Email))
+    else if (searchPerformed && !string.IsNullOrWhiteSpace(formModel.Email) && selectedUser == null)
     {
         <p>Geen gebruikers gevonden.</p>
     }
     <div class="form-group">
         <label for="StartBench">Begindatum</label>
-        <InputDate id="StartBench" @bind-Value="formModel.StartBench" />
+        <InputDate id="StartBench" @bind-Value="@formModel.StartBench" />
     </div>
-    <input type="submit" class="btn btn-primary" value="Save" />
+    <input type="submit" class="btn btn-success" value="Save" />
 </EditForm>
 
 
@@ -46,11 +57,24 @@
 
 
     // NOUVELLE INSTANCE DU FORM
-    protected override void OnInitialized() => formModel ??= new();
+    protected override void OnInitialized() => formModel ??= new UserBenchDto() { StartBench = DateTime.Today };
 
 
     private async Task Submit(EditContext editContext)
     {
+        if (!IsValidEmail(formModel.Email)) // e-mail validatie
+        {
+            ErrorMessage = "Ongeldig e-mailadres.";
+            return;
+        }
+
+        var validUser = await SearchUsersByEmail(formModel.Email);
+        if (!validUser.Any())
+        {
+            ErrorMessage = "Er bestaat geen werknemer met dit e-mail adres.";
+            return;
+        }
+
         try
         {
             Console.WriteLine("Email=" + formModel.Email + ", DateTime=" + formModel.StartBench.ToString());
@@ -66,7 +90,7 @@
             }
             else
             {
-                ErrorMessage = "Het opslaan van de gegevens is mislukt. Probeer het opnieuw.";
+                ErrorMessage = "Er bestaat geen werknemer met dit e-mail adres.";
                 Console.WriteLine($"Serverfout: {await httpResponseMessage.Content.ReadAsStringAsync()}");
             }
         }
@@ -151,6 +175,19 @@
             Console.WriteLine($"Zoekfout: {ex.Message}");
             suggestedUsers.Clear();
             searchPerformed = false;
+        }
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
+        }
+        catch
+        {
+            return false;
         }
     }
 }
