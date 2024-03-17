@@ -10,32 +10,35 @@ namespace RealDolmenAPI.Controllers
     {
         public static void Map(WebApplication app)
         {
-            var userGroup = app.MapGroup("/user");
-            userGroup.MapGet("/bench", async (AppDbContext db) =>
+            // MAPGROUP OM NIET ELKE KEER /user/bench te schrijven //
+            var userBenchGroup = app.MapGroup("/user/bench");
+
+            userBenchGroup.MapGet("/", async (AppDbContext db) =>
             {
 
                 // TABLE USER JOINEN MET TABLE BENCH
                 var usersOpBench = await db.User
-                                        .Join(db.Bench,
-                                            user => user.Id,
-                                            bench => bench.User_id,
-                                            (user, bench) => new { User = user, Bench = bench })
-                                        // CREATION D'une INSTANCE KIES ZELF DE DATA DIE GETOOND WORD
-                                        .Where(u => u.Bench.End_bench == null)
-                                        .Select(u => new {
-                                            UserId = u.User.Id,
-                                            BenchId = u.Bench.Id,
-                                            Username = u.User.First_Name + " " + u.User.Last_Name,
-                                            Mail = u.User.Email,
-                                            NiveauId = u.User.Niveau_Id,
-                                            EndBench = u.Bench.End_bench,
-                                            StartBench = u.Bench.Start_bench,
-                                        })
-                                        .ToListAsync();
+                .Join(db.Bench,
+                user => user.Id,
+                bench => bench.User_id,
+                (user, bench) => new { User = user, Bench = bench })
+                // CREATION D'une INSTANCE KIES ZELF DE DATA DIE GETOOND WORD
+                .Where(u => u.Bench.End_bench == null)
+                .Select(u => new 
+                {
+                    UserId = u.User.Id,
+                    BenchId = u.Bench.Id,
+                    Username = u.User.First_Name + " " + u.User.Last_Name,
+                    Mail = u.User.Email,
+                    NiveauId = u.User.Niveau_Id,
+                    EndBench = u.Bench.End_bench,
+                    StartBench = u.Bench.Start_bench,
+                })
+                .ToListAsync();
                 return usersOpBench;
             });
-
-            app.MapPost("/bench/add", async (UserBenchDto userBenchDto, IUserService userService, IBenchService benchService) =>
+            
+            userBenchGroup.MapPost("/add", async (UserBenchDto userBenchDto, IUserService userService, IBenchService benchService) =>
             {
                 // Check if userBench exists!
                 if (userBenchDto == null) return Results.BadRequest("Data is ongeldig!");
@@ -54,6 +57,22 @@ namespace RealDolmenAPI.Controllers
 
                 return Results.Ok("User added to the bench successfully");
             });
+
+            // ENDPOINT OM EEN BEPAALD USER OP DE BENCH OP TE ZOEKEN
+            userBenchGroup.MapGet("/search", async (AppDbContext db, string email) => await db.User
+            .Join(db.Bench, user => user.Id, bench => bench.User_id, (user, bench) => new { User = user, Bench = bench })
+            .Where(u => EF.Functions.Like(u.User.Email, $"%{email}%"))
+            .Select(u => new
+            {
+                UserId = u.User.Id,
+                BenchId = u.Bench.Id,
+                Username = u.User.First_Name + " " + u.User.Last_Name,
+                Mail = u.User.Email,
+                NiveauId = u.User.Niveau_Id,
+                EndBench = u.Bench.End_bench,
+                StartBench = u.Bench.Start_bench,
+            })
+            .ToListAsync());
         }
     }
 }
