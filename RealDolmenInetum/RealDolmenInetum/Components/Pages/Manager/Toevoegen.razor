@@ -6,6 +6,7 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
+@inject ISnackbar Snackbar
 
 <EditForm Model="@formModel" OnSubmit="@Submit" Context="EditContext">
     <DataAnnotationsValidator />
@@ -54,7 +55,7 @@
     private UserDto? selectedUser = null;
     private bool searchPerformed = false;
     public string ErrorMessage = "";
-
+    public bool userSuccesToegevoegd = false;
 
     // NOUVELLE INSTANCE DU FORM
     protected override void OnInitialized() => formModel ??= new UserBenchDto() { StartBench = DateTime.Today };
@@ -87,6 +88,8 @@
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 NavigationManager.NavigateTo("/");
+                userSuccesToegevoegd = true;
+                snackBarShow();
             }
             else
             {
@@ -188,6 +191,14 @@
         catch
         {
             return false;
+        }
+    }
+
+    private void snackBarShow()
+    {
+        if(userSuccesToegevoegd)
+        {
+            Snackbar.Add("De gebruiker werd succesvol toegevoegd!", Severity.Success);
         }
     }
 }
