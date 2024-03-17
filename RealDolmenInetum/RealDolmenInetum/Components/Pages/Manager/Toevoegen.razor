@@ -5,22 +5,44 @@
 @using Newtonsoft.Json
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@rendermode InteractiveServer
 
 <EditForm Model=formModel OnSubmit="Submit" FormName="formModel">
     <div class="form-group">
-        <label for="Email">Email</label>
-        <InputText id="Email" @bind-Value=formModel.Email />
-    </div>.
+        <label for="Email">Zoek gebruiker op email:</label>
+        <InputText id="Email" @bind-Value="formModel.Email" />
+        <button @onclick="PerformSearch">Zoek</button>
+    </div>
+    @if (suggestedUsers.Any())
+    {
+        <ul class="suggestions-list">
+            @foreach (var user in suggestedUsers)
+            {
+                <li @onclick="() => SelectUser(user)">@user.Email</li>
+            }
+        </ul>
+    }
+    else if (searchPerformed && !string.IsNullOrWhiteSpace(formModel.Email))
+    {
+        <p>Geen gebruikers gevonden.</p>
+    }
     <div class="form-group">
         <label for="StartBench">Begindatum</label>
-        <InputDate id="StartBench" @bind-Value=formModel.StartBench />
+        <InputDate id="StartBench" @bind-Value="formModel.StartBench" />
     </div>
     <input type="submit" class="btn btn-primary" value="Save" />
 </EditForm>
 
+
+
 @code {
     [SupplyParameterFromForm]
     public UserBenchDto formModel { get; set; }
+    private string searchTerm = string.Empty;
+    private List<UserDto> suggestedUsers = new List<UserDto>();
+    private UserDto? selectedUser = null;
+    private bool searchPerformed = false;
+
 
     // NOUVELLE INSTANCE DU FORM
     protected override void OnInitialized() => formModel ??= new();
@@ -34,7 +56,72 @@
 
         var httpResponseMessage = await Http.PostAsync("https://localhost:7256/bench/add", stringContent);
 
-        var responseBody = await httpResponseMessage.Content.ReadAsStringAsync();
-        Console.WriteLine(responseBody);
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            // Handel succesvolle post af
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            // Handel fout af
+            var responseBody = await httpResponseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(responseBody);
+        }
+    }
+
+    // Methode die wordt aangeroepen bij elke wijziging van het zoekveld
+    private async Task OnSearchTermChanged(ChangeEventArgs e)
+    {
+        formModel.Email = e.Value?.ToString() ?? string.Empty;
+        // Voer de zoekopdracht uit als de input minstens 3 tekens lang is (werkt nog niet)
+        if (!string.IsNullOrWhiteSpace(formModel.Email) && formModel.Email.Length >= 3)
+        {
+            suggestedUsers = await SearchUsersByEmail(formModel.Email);
+            StateHasChanged();
+        }
+        else
+        {
+            suggestedUsers.Clear();
+            StateHasChanged();
+        }
+    }
+
+    // Methode om gebruikers op te zoeken met API met de e-mail
+    private async Task<List<UserDto>> SearchUsersByEmail(string email)
+    {
+        Console.WriteLine($"Zoeken naar: {email}");
+        var response = await Http.GetAsync($"https://localhost:7256/user/search?email={email}");
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Response: {content}");
+            var users = JsonConvert.DeserializeObject<List<UserDto>>(content);
+            return users ?? new List<UserDto>();
+        }
+        return new List<UserDto>();
+    }
+
+    // Wanneer een gebruiker wordt geselecteerd uit de suggesties
+    private void SelectUser(UserDto user)
+    {
+        selectedUser = user;
+        formModel.Email = user.Email;
+        suggestedUsers.Clear();
+    }
+
+    // Methode om geforceerd een zoekopdracht uit te voeren wanneer op de button wordt geklikt.
+    private async Task PerformSearch()
+    {
+        Console.WriteLine("Zoeken...");
+        if (!string.IsNullOrWhiteSpace(formModel.Email))
+        {
+            suggestedUsers = await SearchUsersByEmail(formModel.Email);
+            searchPerformed = true;
+        }
+        else
+        {
+            suggestedUsers.Clear();
+            searchPerformed = false;
+        }
     }
 }
