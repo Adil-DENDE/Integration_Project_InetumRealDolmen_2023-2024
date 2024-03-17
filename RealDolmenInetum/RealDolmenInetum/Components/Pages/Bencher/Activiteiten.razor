@@ -24,14 +24,11 @@
     </div>
 
     <aside>
-        <div class="uitlegInternproject">
-            <h2>uitlegInternproject</h2>
-            <p>
-            uitlegInternproject
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit molestias possimus ipsa aliquid debitis
-            ullam aspernatur, veritatis facere? Velit recusandae id nesciunt iure maxime voluptatibus est sint eius
-            eligendi accusantium.
-        </p>
+        @foreach (var occupation in occupations)
+        {
+            <div class="@($"uitleg{occupation.Type.Replace(" ", string.Empty)}")">
+                <h2>@occupation.Type</h2>
+                <p>@occupation.Remark</p>
             </div>
         }
     </aside>
