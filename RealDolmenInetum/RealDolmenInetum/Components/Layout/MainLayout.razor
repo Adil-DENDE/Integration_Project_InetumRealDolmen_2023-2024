@@ -1,9 +1,9 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <MudThemeProvider />
-    <MudDialogProvider />
-    <MudSnackbarProvider />
+    <MudThemeProvider @rendermode="InteractiveServer" />
+    <MudDialogProvider @rendermode="InteractiveServer" />
+    <MudSnackbarProvider @rendermode="InteractiveServer" />
     <div class="sidebar">
         <NavMenu />
     </div>

@@ -1,4 +1,5 @@
-﻿using ModelLibrary.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ModelLibrary.Data;
 using ModelLibrary.Models;
 
 namespace RealDolmenAPI.Services;
