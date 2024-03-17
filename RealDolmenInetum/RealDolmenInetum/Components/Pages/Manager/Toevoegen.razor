@@ -11,7 +11,7 @@
     <div class="form-group">
         <label for="Email">Zoek gebruiker op email:</label>
         <InputText id="Email" @bind-Value="formModel.Email" />
-        <button @onclick="PerformSearch">Zoek</button>
+        <button type="button" @onclick="PerformSearch">Zoek</button>
     </div>
     @if (suggestedUsers.Any())
     {
@@ -54,7 +54,7 @@
         var stringContent = new StringContent(stringData, Encoding.UTF8, "application/json");
         Console.WriteLine(stringData);
 
-        var httpResponseMessage = await Http.PostAsync("https://localhost:7256/bench/add", stringContent);
+        var httpResponseMessage = await Http.PostAsync("https://localhost:7256/user/bench/add", stringContent);
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
