@@ -6,36 +6,48 @@
 
 <PageTitle>Activiteit selectie</PageTitle>
 
- <div class="alles">
-    <div class="links">
-        <h1>Welke activiteit ga je starten?</h1>
+@if (occupations.Any())
+{
+    <div class="alles">
+        <div class="links">
+            <h1>Welke activiteit ga je starten?</h1>
 
-        <form action="#">
-            <label for="activiteiten">Kies een activiteit:</label>
-            <select name="activiteiten" id="activiteiten">
-                @foreach (var occupation in occupations)
-                {
-                    <option value="@occupation.Type">@occupation.Type</option>
-                }
-            </select>
+            <form action="#">
+                <label for="activiteiten">Kies een activiteit:</label>
+                <select name="activiteiten" id="activiteiten">
+                    @foreach (var occupation in occupations)
+                    {
+                        <option value="@occupation.Type">@occupation.Type</option>
+                    }
+                </select>
 
-            <button type="submit" value="Opslaan" class="btn btn-success">Opslaan</button>
-        </form>
+                <button type="submit" value="Opslaan" class="btn btn-success">Opslaan</button>
+            </form>
+        </div>
+
+        <aside>
+            @foreach (var occupation in occupations)
+            {
+                <div class="@($"uitleg{occupation.Type.Replace(" ", string.Empty)}")">
+                    <h2>@occupation.Type</h2>
+                    <p>@occupation.Remark</p>
+                </div>
+            }
+        </aside>
     </div>
-
-    <aside>
-        @foreach (var occupation in occupations)
-        {
-            <div class="@($"uitleg{occupation.Type.Replace(" ", string.Empty)}")">
-                <h2>@occupation.Type</h2>
-                <p>@occupation.Remark</p>
-            </div>
-        }
-    </aside>
-    </div>
+}
+else if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <h1>@ErrorMessage</h1>
+}
+else
+{
+    <h1>Geen activiteiten, probeer later opnieuw.</h1>
+}
 
 @code {
     public List<Occupation> occupations = new List<Occupation>();
+    public string ErrorMessage = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -43,7 +55,6 @@
     }
 
     // Data ophalen uit de api en daar een lijst mee vullen maken
-    // Exception handeling met ChatGPT gemaakt. Moet nog getest worden.
     public async Task FetchOccupations()
     {
         try
@@ -56,11 +67,14 @@
             }
             else
             {
+                ErrorMessage = "Kon de activiteiten niet ophalen uit de database.";
                 occupations = new List<Occupation>();
             }
         }
         catch (Exception ex)
         {
+            Console.WriteLine($"Een fout is opgetreden: {ex.Message}");
+            ErrorMessage = "Er is een probleem opgetreden bij  het ophalen van de activiteiten. Probeer het later opnieuw.";
             occupations = new List<Occupation>();
         }
     }

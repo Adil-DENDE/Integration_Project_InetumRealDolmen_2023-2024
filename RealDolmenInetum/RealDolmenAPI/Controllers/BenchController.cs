@@ -13,6 +13,8 @@ namespace RealDolmenAPI.Controllers
             // MAPGROUP OM NIET ELKE KEER /user/bench te schrijven //
             var userBenchGroup = app.MapGroup("/user/bench");
 
+
+            // GET: Haal gebruikers op de bench op
             userBenchGroup.MapGet("/", async (AppDbContext db) =>
             {
 
@@ -24,7 +26,7 @@ namespace RealDolmenAPI.Controllers
                 (user, bench) => new { User = user, Bench = bench })
                 // CREATION D'une INSTANCE KIES ZELF DE DATA DIE GETOOND WORD
                 .Where(u => u.Bench.End_bench == null)
-                .Select(u => new 
+                .Select(u => new
                 {
                     UserId = u.User.Id,
                     BenchId = u.Bench.Id,
@@ -37,28 +39,29 @@ namespace RealDolmenAPI.Controllers
                 .ToListAsync();
                 return usersOpBench;
             });
-            
+
+
+            // POST: Voeg een gebruiker toe aan de bench
             userBenchGroup.MapPost("/add", async (UserBenchDto userBenchDto, IUserService userService, IBenchService benchService) =>
             {
-                // Check if userBench exists!
-                if (userBenchDto == null) return Results.BadRequest("Data is ongeldig!");
+                try
+                {
+                    if (userBenchDto == null) return Results.BadRequest("Data is ongeldig!");
 
-                // Get userId based on email
-               var userId = userService.GetIdByEmail(userBenchDto.Email);
-                // Debug purposes
-                //return Results.BadRequest(bench.ToString());
-                var bench = new Bench(userId, userBenchDto.StartBench);
-                // Impossible, database should use an auto-increment field for the id field.
-                // ID can not be determined from here!
-                //db.Bench.Add(bench);
-                benchService.Add(bench);
-                //use bench service
-                //benchService.Add()
+                    var userId = userService.GetIdByEmail(userBenchDto.Email);
+                    var bench = new Bench(userId, userBenchDto.StartBench);
+                    benchService.Add(bench);
 
-                return Results.Ok("User added to the bench successfully");
+                    return Results.Ok("User added to the bench successfully");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Een fout opgetreden: {ex.Message}");
+                    return Results.Problem("Er bestaat geen user met deze e-mail adres.");
+                }
             });
 
-            // ENDPOINT OM EEN BEPAALD USER OP DE BENCH OP TE ZOEKEN
+            // GET: Zoek een specifieke gebruiker op de bench op basis van e-mail
             userBenchGroup.MapGet("/search", async (AppDbContext db, string email) => await db.User
             .Join(db.Bench, user => user.Id, bench => bench.User_id, (user, bench) => new { User = user, Bench = bench })
             .Where(u => EF.Functions.Like(u.User.Email, $"%{email}%"))

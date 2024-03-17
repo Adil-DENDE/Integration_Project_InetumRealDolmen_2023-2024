@@ -42,32 +42,42 @@
     private List<UserDto> suggestedUsers = new List<UserDto>();
     private UserDto? selectedUser = null;
     private bool searchPerformed = false;
+    public string ErrorMessage = "";
 
 
     // NOUVELLE INSTANCE DU FORM
     protected override void OnInitialized() => formModel ??= new();
 
+
     private async Task Submit(EditContext editContext)
     {
-        Console.WriteLine("Email=" + formModel.Email + ", DateTime=" + formModel.StartBench.ToString());
-        var stringData = JsonConvert.SerializeObject(formModel);
-        var stringContent = new StringContent(stringData, Encoding.UTF8, "application/json");
-        Console.WriteLine(stringData);
-
-        var httpResponseMessage = await Http.PostAsync("https://localhost:7256/user/bench/add", stringContent);
-
-        if (httpResponseMessage.IsSuccessStatusCode)
+        try
         {
-            // Handel succesvolle post af
-            NavigationManager.NavigateTo("/");
+            Console.WriteLine("Email=" + formModel.Email + ", DateTime=" + formModel.StartBench.ToString());
+            var stringData = JsonConvert.SerializeObject(formModel);
+            var stringContent = new StringContent(stringData, Encoding.UTF8, "application/json");
+            Console.WriteLine(stringData);
+
+            var httpResponseMessage = await Http.PostAsync("https://localhost:7256/user/bench/add", stringContent);
+
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                ErrorMessage = "Het opslaan van de gegevens is mislukt. Probeer het opnieuw.";
+                Console.WriteLine($"Serverfout: {await httpResponseMessage.Content.ReadAsStringAsync()}");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // Handel fout af
-            var responseBody = await httpResponseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(responseBody);
+            ErrorMessage = "Er is een error opgetreden. Probeer het later opnieuw.";
+            Console.WriteLine($"Uitzondering: {ex.Message}");
         }
     }
+
+
 
     // Methode die wordt aangeroepen bij elke wijziging van het zoekveld
     private async Task OnSearchTermChanged(ChangeEventArgs e)
@@ -89,16 +99,25 @@
     // Methode om gebruikers op te zoeken met API met de e-mail
     private async Task<List<UserDto>> SearchUsersByEmail(string email)
     {
-        Console.WriteLine($"Zoeken naar: {email}");
-        var response = await Http.GetAsync($"https://localhost:7256/user/search?email={email}");
-        if (response.IsSuccessStatusCode)
+        try
         {
-            var content = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Response: {content}");
-            var users = JsonConvert.DeserializeObject<List<UserDto>>(content);
-            return users ?? new List<UserDto>();
+            var response = await Http.GetAsync($"https://localhost:7256/user/search?email={email}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<List<UserDto>>(content) ?? new List<UserDto>(); // Als "sonConvert.DeserializeObject<List<UserDto>>(content)" NULL is dan wordt er een nieuwe lijst gemaakt
+            }
+            else
+            {
+                Console.WriteLine($"Serverfout bij zoeken: {await response.Content.ReadAsStringAsync()}");
+                return new List<UserDto>(); // Retourneer lege lijst bij serverfouten
+            }
         }
-        return new List<UserDto>();
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error bij zoeken: {ex.Message}");
+            return new List<UserDto>();
+        }
     }
 
     // Wanneer een gebruiker wordt geselecteerd uit de suggesties
@@ -112,14 +131,24 @@
     // Methode om geforceerd een zoekopdracht uit te voeren wanneer op de button wordt geklikt.
     private async Task PerformSearch()
     {
-        Console.WriteLine("Zoeken...");
-        if (!string.IsNullOrWhiteSpace(formModel.Email))
+        try
         {
-            suggestedUsers = await SearchUsersByEmail(formModel.Email);
-            searchPerformed = true;
+            if (!string.IsNullOrWhiteSpace(formModel.Email))
+            {
+                suggestedUsers = await SearchUsersByEmail(formModel.Email);
+                searchPerformed = true;
+                ErrorMessage = ""; // Reset foutmelding na succesvolle actie
+            }
+            else
+            {
+                suggestedUsers.Clear();
+                searchPerformed = false;
+            }
         }
-        else
+        catch (Exception ex)
         {
+            ErrorMessage = "Zoeken mislukt. Controleer de verbinding en probeer het opnieuw."; // Log de uitzondering en toon een foutbericht
+            Console.WriteLine($"Zoekfout: {ex.Message}");
             suggestedUsers.Clear();
             searchPerformed = false;
         }

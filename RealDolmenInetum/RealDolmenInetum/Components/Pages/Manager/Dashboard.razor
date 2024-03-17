@@ -4,11 +4,14 @@
 @using ModelLibrary.ViewModels
 @using Newtonsoft.Json
 @inject HttpClient Http
+@rendermode InteractiveServer
 
 <PageTitle>Dashboard</PageTitle>
 
 <a href="/toevoegen"><button class="btn btn-success">Toevoegen</button></a>
-@if (usersOpBench != null) {
+
+@if (usersOpBench != null && usersOpBench.Count > 0)
+{
     <table class="table">
         <thead>
             <tr>
@@ -30,7 +33,10 @@
         </tbody>
     </table>
     }
-    
+else if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <p>@ErrorMessage</p>
+}
 else
 {
     <p>No data available</p>
@@ -39,6 +45,7 @@ else
 @code {
     public List<UserViewModel> usersOpBench;
     public HttpClient httpClient = new HttpClient();
+    public string ErrorMessage = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -47,17 +54,24 @@ else
 
     public async Task FetchData()
     {
-        var response = await httpClient.GetAsync("https://localhost:7256/user/bench");
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            //display error message in UI 
-            return;
+            var response = await Http.GetAsync("https://localhost:7256/user/bench");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                usersOpBench = JsonConvert.DeserializeObject<List<UserViewModel>>(content);
+            }
+            else
+            {
+                ErrorMessage = "Fout bij het ophalen van gegevens uit de database.";
+                usersOpBench = new List<UserViewModel>();
+            }
         }
-        // 
-        var content = await response.Content.ReadAsStringAsync();
-
-        // MAAK GEBRUIK VAN NEWTONSOFT.JSON VOOR DESERIALIZE(ERROR CAN NOT CONVERT)
-        List<UserViewModel> fetchUsers = JsonConvert.DeserializeObject<List<UserViewModel>>(content); // TO CHECK IF IT WORKS
-        usersOpBench = fetchUsers;
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
+            usersOpBench = new List<UserViewModel>();
+        }
     }
 }
