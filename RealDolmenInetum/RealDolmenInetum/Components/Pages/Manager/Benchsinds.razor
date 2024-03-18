@@ -1,17 +1,20 @@
-﻿@page "/user"
+﻿@page "/user/{Id}"
+
 @inject NavigationManager NavigationManager
+@rendermode InteractiveServer
 
 <a class="btn btn-secondary" @onclick="GoBack">
     <span class="oi oi-arrow-thick-left"></span> Terug
 </a>
 
-<h3> John zit op de bench sinds: @startDate</h3>
+<h1> @Id</h1>
+<h3> John zit op de bench sinds:</h3>
 
 <button class="btn btn-primary" @onclick="Einde">Einde</button>
 
 @code {
     [Parameter]
-    public string startDate { get; set; }
+    public string Id { get; set; }
 
     private void Einde()
     {
@@ -20,7 +23,7 @@
     
 private void GoBack()
     {
-        NavigationManager.NavigateTo("/projectformulier");
+        NavigationManager.NavigateTo("/");
     }
 
 }

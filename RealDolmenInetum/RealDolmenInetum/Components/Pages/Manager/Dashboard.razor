@@ -5,6 +5,7 @@
 @using Newtonsoft.Json
 @inject HttpClient Http
 @rendermode InteractiveServer
+@inject NavigationManager NavigationManager
 
 <PageTitle>Dashboard</PageTitle>
 
@@ -25,7 +26,7 @@
             {
                 <tr>
 
-                    <td><MudIcon Icon="@Icons.Material.Filled.Person" Title="Favorite" />@userBench.username</td>
+                    <td class="userName" @onclick="test" ><MudIcon Icon="@Icons.Material.Filled.Person" Title="Favorite" />@userBench.username</td>
                     <td>@userBench.mail</td>
                     <td>@userBench.startBench.ToString("dd-MM-yyyy")</td>
                 </tr>
@@ -73,5 +74,9 @@ else
             ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
             usersOpBench = new List<UserViewModel>();
         }
+    }
+    public void test()
+    {
+        NavigationManager.NavigateTo("/user");
     }
 }
