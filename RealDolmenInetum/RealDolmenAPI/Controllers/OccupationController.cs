@@ -11,10 +11,10 @@ namespace RealDolmenAPI.Controllers
             // Gebruik MapGroup om een groep te definiëren
             var occupationGroup = app.MapGroup("/occupation");
 
-            // Endpoint om alle ocupations te zien
+            // GET: Haal alle occupations op
             occupationGroup.MapGet("/", async (AppDbContext db) => await db.Occupation.ToListAsync());
 
-            // If you need to retrieve a single occupation by ID in the future, you can add a similar endpoint as shown for users
+            // GET: Haal een specifieke occupation op op basis van ID
             occupationGroup.MapGet("/{id:int}", async (int id, AppDbContext db) => await db.Occupation.FirstOrDefaultAsync(o => o.Id == id) is Occupation occupation ? Results.Ok(occupation) : Results.NotFound());
 
         }
