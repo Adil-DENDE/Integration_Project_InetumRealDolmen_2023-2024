@@ -18,10 +18,17 @@
 
     private void Einde()
     {
-        
+
     }
-    
-private void GoBack()
+
+    public async Task FetchUserData()
+    {
+        var response = "https://localhost:7256/user/id";
+    }
+
+
+
+    private void GoBack()
     {
         NavigationManager.NavigateTo("/");
     }

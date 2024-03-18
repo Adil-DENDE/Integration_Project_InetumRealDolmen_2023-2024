@@ -8,6 +8,7 @@ namespace ModelLibrary.ViewModels
 {
     public class UserViewModel
     {
+        public int UserId { get; set; }
         public int? niveauId { get; set; }// naam
         //public int? Manager_Id { get; set; }// naam
         public string mail { get; set; }

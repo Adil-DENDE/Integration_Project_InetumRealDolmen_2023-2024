@@ -25,8 +25,7 @@
             @foreach (var userBench in usersOpBench)
             {
                 <tr>
-
-                    <td class="userName" @onclick="test" ><MudIcon Icon="@Icons.Material.Filled.Person" Title="Favorite" />@userBench.username</td>
+                    <td class="userName" @onclick="() => NavigateUserPage(userBench.UserId)"><MudIcon Icon="@Icons.Material.Filled.Person" Title="Favorite" />@userBench.username</td>
                     <td>@userBench.mail</td>
                     <td>@userBench.startBench.ToString("dd-MM-yyyy")</td>
                 </tr>
@@ -75,8 +74,9 @@ else
             usersOpBench = new List<UserViewModel>();
         }
     }
-    public void test()
+    public void NavigateUserPage(int id)
     {
-        NavigationManager.NavigateTo("/user");
+        NavigationManager.NavigateTo("/user/" + id);
+
     }
 }
