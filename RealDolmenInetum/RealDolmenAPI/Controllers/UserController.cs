@@ -15,7 +15,7 @@ namespace RealDolmenAPI.Controllers
             // GET: Haal alle gebruikers op
             userGroup.MapGet("/", async (AppDbContext db) => await db.User.ToListAsync());
 
-            // GET: Haal een specifieke gebruiker op op basis van ID // AANPASSEN // TODO //
+            // GET: Haal een specifieke gebruiker op op basis van ID // AANPASSEN // TODO // Nog joinen met project table
             userGroup.MapGet("/{id:int}", async (int id, AppDbContext db) =>
             {
                 var userData = await db.User
@@ -31,8 +31,10 @@ namespace RealDolmenAPI.Controllers
                             UserEmail = user.Email,
                             BenchId = bench.Id,
                             StartBench = bench.Start_bench,
+                            EndBench = bench.End_bench,
                             OccupationId = bench.Occupation_id,
                         })
+                    .Where(ub => ub.EndBench == null)
                     .FirstOrDefaultAsync();
 
                 if (userData != null)
