@@ -25,9 +25,9 @@
             @foreach (var userBench in usersOpBench)
             {
                 <tr>
-                    <td class="userName" @onclick="() => NavigateUserPage(userBench.UserId)"><MudIcon Icon="@Icons.Material.Filled.Person" Title="Favorite" />@userBench.username</td>
-                    <td>@userBench.mail</td>
-                    <td>@userBench.startBench.ToString("dd-MM-yyyy")</td>
+                    <td class="userName" @onclick="() => NavigateUserPage(userBench.UserId)"><MudIcon Icon="@Icons.Material.Filled.Person" Title="Favorite" />@userBench.Username</td>
+                    <td>@userBench.Mail</td>
+                    <td>@userBench.StartBench.ToString("dd-MM-yyyy")</td>
                 </tr>
             }
         </tbody>
