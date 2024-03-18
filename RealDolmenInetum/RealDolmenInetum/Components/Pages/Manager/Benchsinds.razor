@@ -13,9 +13,9 @@
 
 <h1> @Id</h1>
 
-@if (usersDetails != null && !string.IsNullOrWhiteSpace(usersDetails.username))
+@if (usersDetails != null)
 {
-    <h3>@usersDetails.username zit op de bench sinds:</h3>
+    <h3>@usersDetails.UserName zit op de bench sinds: @usersDetails.StartBench.ToString("dd-MM-yyyy")</h3>
 }
 else
 {
@@ -28,7 +28,7 @@ else
 @code {
     [Parameter]
     public string Id { get; set; }
-    public UserViewModel usersDetails = new UserViewModel();
+    public UserDetailsViewModel usersDetails;
     public HttpClient httpClient = new HttpClient();
     private int benchId;
     public string ErrorMessage = "";
@@ -46,18 +46,18 @@ else
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                usersDetails = JsonConvert.DeserializeObject<UserViewModel>(content);
+                usersDetails = JsonConvert.DeserializeObject<UserDetailsViewModel>(content);
             }
             else
             {
                 ErrorMessage = "Fout bij het ophalen van gegevens uit de database.";
-                usersDetails = new UserViewModel();
+                usersDetails = new UserDetailsViewModel();
             }
         }
         catch (Exception ex)
         {
             ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
-            usersDetails = new UserViewModel();
+            usersDetails = new UserDetailsViewModel();
         }
     }
 
