@@ -1,29 +1,67 @@
 ﻿@page "/user/{Id}"
-
+@using ModelLibrary.ViewModels
+@using Newtonsoft.Json
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
+@inject HttpClient Http
+
 
 <a class="btn btn-secondary" @onclick="GoBack">
     <span class="oi oi-arrow-thick-left"></span> Terug
 </a>
 
 <h1> @Id</h1>
-<h3> John zit op de bench sinds:</h3>
+
+@if (usersDetails != null && !string.IsNullOrWhiteSpace(usersDetails.username))
+{
+    <h3>@usersDetails.username zit op de bench sinds:</h3>
+}
+else
+{
+    <p>Gegevens worden geladen of zijn niet beschikbaar.</p>
+}
+
+
 
 <button class="btn btn-primary" @onclick="Einde">Einde</button>
 
 @code {
     [Parameter]
     public string Id { get; set; }
+    public UserViewModel usersDetails = new UserViewModel();
+    public HttpClient httpClient = new HttpClient();
+    public string ErrorMessage = "";
 
     private void Einde()
     {
 
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchUserData();
+    }
     public async Task FetchUserData()
     {
-        var response = "https://localhost:7256/user/id";
+        try
+        {
+            var response = await Http.GetAsync("https://localhost:7256/user/" + @Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                usersDetails = JsonConvert.DeserializeObject<UserViewModel>(content);
+            }
+            else
+            {
+                ErrorMessage = "Fout bij het ophalen van gegevens uit de database.";
+                usersDetails = new UserViewModel();
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
+            usersDetails = new UserViewModel();
+        }
     }
 
 
