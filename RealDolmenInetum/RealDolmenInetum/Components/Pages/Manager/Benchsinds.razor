@@ -1,12 +1,13 @@
 ﻿@page "/user/{Id}"
 @using ModelLibrary.ViewModels
+@using ModelLibrary.Dto
 @using Newtonsoft.Json
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @inject HttpClient Http
 
 
-<a class="btn btn-secondary" @onclick="GoBack">
+<a class="btn btn-success" @onclick="GoBack">
     <span class="oi oi-arrow-thick-left"></span> Terug
 </a>
 
@@ -21,25 +22,21 @@ else
     <p>Gegevens worden geladen of zijn niet beschikbaar.</p>
 }
 
-
-
-<button class="btn btn-primary" @onclick="Einde">Einde</button>
+<input type="number" @bind="benchId" class="form-control mb-2" placeholder="Bench ID" readonly />
+<button class="btn btn-success" @onclick="Einde">Einde</button>
 
 @code {
     [Parameter]
     public string Id { get; set; }
     public UserViewModel usersDetails = new UserViewModel();
     public HttpClient httpClient = new HttpClient();
+    private int benchId;
     public string ErrorMessage = "";
-
-    private void Einde()
-    {
-
-    }
 
     protected override async Task OnInitializedAsync()
     {
         await FetchUserData();
+        await FetchUserBenchId();
     }
     public async Task FetchUserData()
     {
@@ -71,4 +68,51 @@ else
         NavigationManager.NavigateTo("/");
     }
 
+
+
+    private async Task Einde()
+    {
+        // tijdelijk via variable
+        var url = $"https://localhost:7256/user/bench/end/{benchId}";
+
+        var requestBody = new UpdateEndBenchDto
+            {
+                EndBench = DateTime.UtcNow
+            };
+
+        var content = JsonContent.Create(requestBody);
+
+        var response = await Http.PutAsync(url, content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            // Foutafhandeling
+        }
+    }
+
+    private async Task FetchUserBenchId()
+    {
+        try
+        {
+            var response = await Http.GetAsync($"https://localhost:7256/user/bench/user-bench/{Id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var benchInfo = JsonConvert.DeserializeObject<BenchViewModel>(content); // Aan te maken ViewModel
+                benchId = benchInfo.BenchId;
+            }
+            else
+            {
+                ErrorMessage = "Fout bij het ophalen van bench ID uit de database.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Er is een onverwachte fout opgetreden bij het ophalen van bench ID: {ex.Message}";
+        }
+    }
 }
