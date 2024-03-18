@@ -7,6 +7,7 @@ namespace RealDolmenAPI.Services;
 public interface IBenchService //interface => blauwdruk 
 {
     public int Add(Bench bench);
+    Task UpdateEndBenchAsync(int benchId, DateTime endBench);
 }
 
 public class BenchService : IBenchService//implementatie
@@ -23,6 +24,16 @@ public class BenchService : IBenchService//implementatie
         db.Bench.Add(bench);
         db.SaveChanges();
         return 0;
+    }
+
+    public async Task UpdateEndBenchAsync(int benchId, DateTime endBench)
+    {
+        var bench = await db.Bench.FirstOrDefaultAsync(b => b.Id == benchId);
+        if (bench != null)
+        {
+            bench.End_bench = endBench;
+            await db.SaveChangesAsync();
+        }
     }
 }
 

@@ -10,7 +10,7 @@ namespace RealDolmenAPI.Controllers
     {
         public static void Map(WebApplication app)
         {
-            // MAPGROUP OM NIET ELKE KEER /user/bench te schrijven //
+            // MAPGROUP OM NIET ELKE KEER /user/bench te schrijven // aanpassen
             var userBenchGroup = app.MapGroup("/user/bench");
 
 
@@ -48,6 +48,39 @@ namespace RealDolmenAPI.Controllers
                     return Results.Problem("Er is een fout opgetreden bij het ophalen van de gebruikers op de bench. Probeer het later opnieuw.");
                 }
             });
+
+            //Get: Vindt bench met user id waar End_bench gelijk is aan null
+            userBenchGroup.MapGet("/user-bench/{userId:int}", async (int userId, AppDbContext db) =>
+            {
+                try
+                {
+                    var userBench = await db.Bench
+                        .Where(bench => bench.User_id == userId && bench.End_bench == null)
+                        .Select(bench => new
+                        {
+                            BenchId = bench.Id,
+                            StartBench = bench.Start_bench,
+                            EndBench = bench.End_bench, // Dit zal null zijn, omdat je zoekt naar actieve benches
+                            UserId = bench.User_id
+                        })
+                        .FirstOrDefaultAsync();
+
+                    if (userBench != null)
+                    {
+                        return Results.Ok(userBench);
+                    }
+                    else
+                    {
+                        return Results.NotFound($"Geen actieve bench gevonden voor gebruiker met ID: {userId}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Een fout opgetreden: {ex.Message}");
+                    return Results.Problem("Er is een fout opgetreden bij het ophalen van de bench voor de gebruiker. Probeer het later opnieuw.");
+                }
+            });
+
 
 
 
@@ -97,6 +130,21 @@ namespace RealDolmenAPI.Controllers
                 {
                     Console.WriteLine($"Een fout opgetreden tijdens het zoeken: {ex.Message}");
                     return Results.Problem("Er is een fout opgetreden bij het zoeken naar de gebruiker.");
+                }
+            });
+
+            // PUT: Update de end_bench waarde van een bestaande Bench record
+            userBenchGroup.MapPut("/end/{benchId:int}", async (int benchId, UpdateEndBenchDto dto, IBenchService benchService) =>
+            {
+                try
+                {
+                    await benchService.UpdateEndBenchAsync(benchId, dto.EndBench);
+                    return Results.Ok("End bench date updated successfully.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Een fout opgetreden: {ex.Message}");
+                    return Results.Problem("Er is een fout opgetreden bij het bijwerken van de end bench.");
                 }
             });
         }
