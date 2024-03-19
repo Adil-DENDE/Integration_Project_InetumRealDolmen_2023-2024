@@ -93,8 +93,16 @@
             }
             else
             {
-                ErrorMessage = "Er bestaat geen werknemer met dit e-mail adres.";
-                Console.WriteLine($"Serverfout: {await httpResponseMessage.Content.ReadAsStringAsync()}");
+                var errorMessage = await httpResponseMessage.Content.ReadAsStringAsync();
+                if (errorMessage.Contains("zit al op de bank en heeft een lopende sessie"))
+                {
+                    Snackbar.Add("De gebruiker zit al op de bench.", Severity.Error);
+                }
+                else
+                {
+                    errorMessage = "Er bestaat geen werknemer met dit e-mail adres.";
+                    Console.WriteLine($"Serverfout: {errorMessage}");
+                }
             }
         }
         catch (Exception ex)

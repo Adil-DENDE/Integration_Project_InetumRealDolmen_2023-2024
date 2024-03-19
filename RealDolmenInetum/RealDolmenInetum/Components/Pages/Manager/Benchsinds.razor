@@ -5,13 +5,11 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @inject HttpClient Http
-
+@inject ISnackbar Snackbar
 
 <a class="btn btn-success" @onclick="GoBack">
     <span class="oi oi-arrow-thick-left"></span> Terug
 </a>
-
-<h1> @Id</h1>
 
 @if (usersDetails != null)
 {
@@ -69,7 +67,7 @@ else
     }
 
 
-
+    // TODO // DIALOG GEBRUIKEN OM DELETE TE BEVESTIGEN // TODO //
     private async Task Einde()
     {
         // tijdelijk via variable
@@ -86,7 +84,9 @@ else
 
         if (response.IsSuccessStatusCode)
         {
+            Snackbar.Add("Gebruiker zit niet meer op de bench!" , Severity.Success);
             NavigationManager.NavigateTo("/");
+
         }
         else
         {
@@ -115,4 +115,5 @@ else
             ErrorMessage = $"Er is een onverwachte fout opgetreden bij het ophalen van bench ID: {ex.Message}";
         }
     }
+
 }
