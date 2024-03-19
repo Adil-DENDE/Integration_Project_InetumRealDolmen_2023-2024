@@ -8,6 +8,7 @@ public interface IBenchService //interface => blauwdruk
 {
     public int Add(Bench bench);
     Task UpdateEndBenchAsync(int benchId, DateTime endBench);
+    Bench GetActiveBenchForUser(int userId);
 }
 
 public class BenchService : IBenchService//implementatie
@@ -35,5 +36,7 @@ public class BenchService : IBenchService//implementatie
             await db.SaveChangesAsync();
         }
     }
+
+    public Bench GetActiveBenchForUser(int userId) => db.Bench.FirstOrDefault(b => b.User_id == userId && b.End_bench == null);
 }
 

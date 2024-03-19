@@ -89,18 +89,27 @@ namespace RealDolmenAPI.Controllers
             {
                 try
                 {
-                    if (userBenchDto == null) return Results.BadRequest("Data is ongeldig!");
+                    if (userBenchDto == null)
+                        return Results.BadRequest("Data is ongeldig!");
 
                     var userId = userService.GetIdByEmail(userBenchDto.Email);
+
+                    // Controleer of de gebruiker al op de bench zit met een NULL End_bench
+                    // Als de user al op de bench is met NULL = foutmelding
+                    var existingBench = benchService.GetActiveBenchForUser(userId);
+                    if (existingBench != null && existingBench.End_bench == null)
+                        return Results.BadRequest("Gebruiker zit al op de bank en heeft een lopende sessie.");
+
+                    // Voeg de gebruiker toe aan de bank
                     var bench = new Bench(userId, userBenchDto.StartBench);
                     benchService.Add(bench);
 
-                    return Results.Ok("User added to the bench successfully");
+                    return Results.Ok("Gebruiker succesvol toegevoegd aan de bank.");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Een fout opgetreden: {ex.Message}");
-                    return Results.Problem("Er bestaat geen user met deze e-mail adres.");
+                    Console.WriteLine($"Er is een fout opgetreden: {ex.Message}");
+                    return Results.Problem("Er is een fout opgetreden bij het toevoegen van de gebruiker aan de bank.");
                 }
             });
 

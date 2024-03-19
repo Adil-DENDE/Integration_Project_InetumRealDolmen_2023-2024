@@ -18,35 +18,49 @@ namespace RealDolmenAPI.Controllers
             // GET: Haal een specifieke gebruiker op op basis van ID // AANPASSEN // TODO // Nog joinen met project table
             userGroup.MapGet("/{id:int}", async (int id, AppDbContext db) =>
             {
-                var userData = await db.User
+                // de verschillende groupjoins wouden niet werken dus ik heb het zo gedaan:
+                // 1. Simpeler maken van de query
+                // 2. Vermijden van het probleem waarbij EF Core niet in staat is om rare GroupJoins naar SQL te vertale
+                var userAndBench = await db.User
                     .Where(u => u.Id == id)
-                    .Join(db.Bench,
-                        u => u.Id,
-                        b => b.User_id,
-                        (user, bench) => new
-                        {
-                            UserId = user.Id,
-                            UserName = user.First_Name + " " + user.Last_Name,
-                            ManagerId = user.Manager_Id,
-                            UserEmail = user.Email,
-                            BenchId = bench.Id,
-                            StartBench = bench.Start_bench,
-                            EndBench = bench.End_bench,
-                            OccupationId = bench.Occupation_id,
-                        })
-                    .Where(ub => ub.EndBench == null)
+                    .Select(u => new
+                    {
+                        u.Id,
+                        UserName = u.First_Name + " " + u.Last_Name,
+                        ManagerId = u.Manager_Id,
+                        UserEmail = u.Email,
+                        Bench = db.Bench.FirstOrDefault(b => b.User_id == u.Id && b.End_bench == null)
+                    })
                     .FirstOrDefaultAsync();
 
-                if (userData != null)
-                {
-                    return Results.Ok(userData);
-                }
-                else
+                if (userAndBench == null)
                 {
                     return Results.NotFound();
                 }
-            });
 
+                // Probeer nu de projectdetails op te halen indien aanwezig // Aparte stap omdat niet elke gebruiker een project heeft // Maakt query ook simpeler
+
+                var projectDetails = await db.Project_User
+                    .Where(pu => pu.User_Id == id)
+                    .SelectMany(pu => db.Project.Where(p => p.Id == pu.Project_Id).Select(p => p.Details))
+                    .ToListAsync(); //selcteer alle projects en maakt er een enum van
+
+                // De uiteindelijke response
+                var response = new
+                {
+                    userAndBench.Id,
+                    userAndBench.UserName,
+                    userAndBench.ManagerId,
+                    userAndBench.UserEmail,
+                    BenchId = userAndBench.Bench?.Id,
+                    StartBench = userAndBench.Bench?.Start_bench,
+                    EndBench = userAndBench.Bench?.End_bench,
+                    OccupationId = userAndBench.Bench?.Occupation_id,
+                    ProjectDetails = projectDetails
+                };
+
+                return Results.Ok(response);
+            });
 
             // GET: Zoek gebruikers op basis van email
             userGroup.MapGet("/search", async (AppDbContext db, string email) => await db.User.Where(u => EF.Functions.Like(u.Email, $"%{email}%")).ToListAsync());

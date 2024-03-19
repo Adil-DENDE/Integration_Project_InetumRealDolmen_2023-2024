@@ -1,6 +1,6 @@
 ﻿namespace ModelLibrary.Models
 {
-    public class ProjectUser
+    public class Project_User
 
     {
         public int User_Id { get; set; }
