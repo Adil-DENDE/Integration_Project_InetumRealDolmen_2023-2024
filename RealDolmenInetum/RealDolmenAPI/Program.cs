@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ModelLibrary.Data;
 using ModelLibrary.Models;
 using RealDolmenAPI.Controllers;
+using RealDolmenAPI.Error;
 using RealDolmenAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +43,9 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("AllowAnyOrigin");
 app.UseHttpsRedirection();
+
+//Globale foutafhandeling
+ErrorHandlingConfig.UseGlobalErrorHandling(app);
 
 app.Run();
 
