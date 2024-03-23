@@ -1,0 +1,29 @@
+﻿
+#btnToevoegenComputer {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+}
+
+
+
+.btnToevoegenMobile {
+    display: none;
+
+}
+
+#userContainer {
+    margin:10px;
+    cursor: pointer;
+}
+
+@media only screen and (min-width: 640px) {
+    #btnToevoegenComputer {
+    display: none;
+}
+    .btnToevoegenMobile {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

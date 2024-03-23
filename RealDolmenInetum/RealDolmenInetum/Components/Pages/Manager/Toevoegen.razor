@@ -8,6 +8,7 @@
 @rendermode InteractiveServer
 @inject ISnackbar Snackbar
 
+<button class="btn btn-success" @onclick="GoBack">Terug</button>
 <EditForm Model="@formModel" OnSubmit="@Submit" Context="EditContext">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -44,6 +45,7 @@
     </div>
     <input type="submit" class="btn btn-success" value="Save" />
 </EditForm>
+
 
 
 
@@ -208,5 +210,10 @@
         {
             Snackbar.Add("De gebruiker werd succesvol toegevoegd!", Severity.Success);
         }
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/");
     }
 }

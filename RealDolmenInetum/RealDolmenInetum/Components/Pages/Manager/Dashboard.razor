@@ -9,30 +9,39 @@
 
 <PageTitle>Dashboard</PageTitle>
 
+<div class="btnToevoegenMobile">
 <a href="/toevoegen"><button class="btn btn-success">Toevoegen</button></a>
+</div>
 
+<div id="btnToevoegenComputer">
+    <MudFab Href="/toevoegen" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Add" />
+</div>
 @if (usersOpBench != null && usersOpBench.Count > 0)
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Naam</th>
-                <th>Email</th>
-                <th>Bench start</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var userBench in usersOpBench)
-            {
-                <tr>
-                    <td class="userName" @onclick="() => NavigateUserPage(userBench.UserId)"><MudIcon Icon="@Icons.Material.Filled.Person" Title="Favorite" />@userBench.Username</td>
-                    <td>@userBench.Mail</td>
-                    <td>@userBench.StartBench.ToString("dd-MM-yyyy")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    }
+    @foreach (var userBench in usersOpBench)
+    {
+        <div class="col-md-12" id="userContainer">
+            <div @onclick="() => NavigateUserPage(userBench.UserId)" id="userContainer" class="card border-1 shadow-hover mb-20">
+                <div class="card-body d-flex align-items-center">
+                    <div class="pr-3">
+                        <MudIcon Icon="@Icons.Material.Filled.Person" Title="Person" Size="Size.Large" />
+                    </div>
+                    <div>
+                        
+                        <h5 class="mb-1">@userBench.Username</h5>
+                        <p class="mb-0 text-muted"><MudIcon Color="Color.Info" Size="Size.Small" Icon="@Icons.Material.Filled.Email" Title="Email" />@userBench.Mail</p>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <div>
+                        <strong>Bench started:</strong>
+                        <span>@userBench.StartBench.ToString("dd-MM-yyyy")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+}
+}
 else if (!string.IsNullOrEmpty(ErrorMessage))
 {
     <p>@ErrorMessage</p>
@@ -41,6 +50,7 @@ else
 {
     <p>No data available</p>
 }
+
 
 @code {
     public List<UserViewModel> usersOpBench;
