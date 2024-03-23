@@ -8,24 +8,26 @@
 @rendermode InteractiveServer
 @inject ISnackbar Snackbar
 
-<button class="btn btn-success" @onclick="GoBack">Terug</button>
+<MudButton Href="/" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary">Terug</MudButton>
+
+<div class="card-body border-1 shadow-hover mb-20 rounded border border-primary mt-3">
 <EditForm Model="@formModel" OnSubmit="@Submit" Context="EditContext">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
-    <div class="form-group">
-        <label for="Email">Zoek gebruiker op email:</label>
+		<label for="Email">Zoek gebruiker op email:</label>
+    <div class="form-group d-flex">
         <div class="input-group mb-3">
-            <InputText id="Email" class="form-control" placeholder="username" @bind-Value="@formModel.Email"  />
+            <InputText id="Email" class="form-control" placeholder="email.." @bind-Value="@formModel.Email"  />
         </div>
-        <button type="button" class="btn btn-success" @onclick="@PerformSearch">Zoek</button>
-        @if (!string.IsNullOrEmpty(ErrorMessage))
-        {
-            <div class="alert alert-danger" role="alert">
-                @ErrorMessage
-            </div>
-        }
+            <MudButton id="zoekBtn" class="mb-3" @onclick="@PerformSearch" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Search" Color="Color.Primary"></MudButton>
+        
     </div>
+		@if (!string.IsNullOrEmpty(ErrorMessage))
+		{
+			<div class="alert alert-danger" role="alert">
+				@ErrorMessage
+			</div>
+		}
     @if (suggestedUsers.Any())
     {
         <ul class="suggestions-list">
@@ -41,13 +43,11 @@
     }
     <div class="form-group">
         <label for="StartBench">Begindatum</label>
-        <InputDate id="StartBench" @bind-Value="@formModel.StartBench" />
-    </div>
-    <input type="submit" class="btn btn-success" value="Save" />
+            <InputDate id="StartBench" class="d-block p-2 w-100 border-1 border-bottom-1 rounded border" @bind-Value="@formModel.StartBench" />
+    </div> 
+        <MudButton Class="mt-3" ButtonType="ButtonType.Submit" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Primary">Save</MudButton>
 </EditForm>
-
-
-
+</div>
 
 @code {
     [SupplyParameterFromForm]
@@ -212,8 +212,4 @@
         }
     }
 
-    private void GoBack()
-    {
-        NavigationManager.NavigateTo("/");
-    }
 }

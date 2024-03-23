@@ -6,34 +6,48 @@
 
 <PageTitle>Activiteit selectie</PageTitle>
 
+
 @if (occupations.Any())
 {
-    <div class="alles">
-        <div class="links">
-            <h1>Welke activiteit ga je starten?</h1>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h1>Welke activiteit ga je starten?</h1>
 
-            <form action="#">
-                <label for="activiteiten">Kies een activiteit:</label>
-                <select name="activiteiten" id="activiteiten">
+                        <form action="#">
+                            <div class="mb-3">
+                                <label for="activiteiten" class="form-label">Kies een activiteit:</label>
+                                <select class="form-select" name="activiteiten" id="activiteiten">
+                                    @foreach (var occupation in occupations)
+                                    {
+                                        <option value="@occupation.Type">@occupation.Type</option>
+                                    }
+                                </select>
+                            </div>
+
+
+                            <MudButton Href="/" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Primary">Opslaan</MudButton>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+            <aside id="cardContainer">
                     @foreach (var occupation in occupations)
                     {
-                        <option value="@occupation.Type">@occupation.Type</option>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h2>@occupation.Type</h2>
+                                <p>@occupation.Remark</p>
+                            </div>
+                        </div>
                     }
-                </select>
-
-                <button type="submit" value="Opslaan" class="btn btn-success">Opslaan</button>
-            </form>
+				</aside>
+			</div>
         </div>
-
-        <aside>
-            @foreach (var occupation in occupations)
-            {
-                <div class="@($"uitleg{occupation.Type.Replace(" ", string.Empty)}")">
-                    <h2>@occupation.Type</h2>
-                    <p>@occupation.Remark</p>
-                </div>
-            }
-        </aside>
     </div>
 }
 else if (!string.IsNullOrWhiteSpace(ErrorMessage))

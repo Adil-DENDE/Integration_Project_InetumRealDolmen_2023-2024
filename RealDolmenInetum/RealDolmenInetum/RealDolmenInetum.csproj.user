@@ -2,6 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ActiveDebugProfile>https</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>C:\Users\adild\OneDrive\Documents\Github-Repos\Integration_Project_InetumRealDolmen_2023-2024\RealDolmenInetum\RealDolmenInetum\Properties\PublishProfiles\RealDolmenInetum20240311160926 - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>RealDolmenInetum20240311160926 - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
