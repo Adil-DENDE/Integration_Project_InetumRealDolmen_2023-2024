@@ -7,13 +7,13 @@
 @inject HttpClient Http
 @inject ISnackbar Snackbar
 
-<a class="btn btn-success" @onclick="GoBack">
-    <span class="oi oi-arrow-thick-left"></span> Terug
-</a>
 
+<MudButton Href="/" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary">Terug</MudButton>
+<div class="card-body"> 
 @if (usersDetails != null)
 {
-    <h3>@usersDetails.UserName zit op de bench sinds: @usersDetails.StartBench.ToString("dd-MM-yyyy")</h3>
+    
+    <h3 class="text-center">@usersDetails.UserName op de bench sinds: @usersDetails.StartBench.ToString("dd-MM-yyyy")</h3>
     @if (usersDetails.ProjectDetails != null && usersDetails.ProjectDetails.Any())
     {
         <p>Projectgeschiedenis:</p>
@@ -22,6 +22,7 @@
             <div>@detail</div>
         }
     }
+    
     else
     {
         <p>Nog geen projecten.</p>
@@ -31,9 +32,9 @@ else
 {
     <p>Gegevens worden geladen of zijn niet beschikbaar.</p>
 }
-
+</div>
 <input type="number" @bind="benchId" class="form-control mb-2" placeholder="Bench ID" readonly />
-<button class="btn btn-success" @onclick="Einde">Einde</button>
+<MudButton Href="/" FullWidth="true" @onclick="Einde" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Primary">Einde</MudButton>
 
 
 @code {
@@ -71,13 +72,6 @@ else
             ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
             usersDetails = new UserDetailsViewModel();
         }
-    }
-
-
-
-    private void GoBack()
-    {
-        NavigationManager.NavigateTo("/");
     }
 
 
