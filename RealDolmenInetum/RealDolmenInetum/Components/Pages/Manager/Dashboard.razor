@@ -3,6 +3,7 @@
 @using ModelLibrary.Dto
 @using ModelLibrary.ViewModels
 @using Newtonsoft.Json
+@using Helper
 @inject HttpClient Http
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
@@ -36,6 +37,9 @@
                     <div>
                         <strong>Bench started:</strong>
                         <span>@userBench.StartBench.ToString("dd-MM-yyyy")</span>
+                        <div>
+                            <strong>Dagen op de bench:</strong> @DateHelper.CalculateDaysSince(userBench.StartBench)
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,6 +60,7 @@ else
     public List<UserViewModel> usersOpBench;
     public HttpClient httpClient = new HttpClient();
     public string ErrorMessage = "";
+    private int daysOnBench;
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,6 +92,5 @@ else
     public void NavigateUserPage(int id)
     {
         NavigationManager.NavigateTo("/user/" + id);
-
     }
 }

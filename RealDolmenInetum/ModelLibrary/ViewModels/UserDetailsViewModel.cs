@@ -19,5 +19,6 @@ public class UserDetailsViewModel
     public DateTime? EndBench { get; set; }
     public int? OccupationId { get; set; }
     public List<string>? ProjectDetails { get; set; }
+    public string OccupationDetails { get; set; }
     }
 }

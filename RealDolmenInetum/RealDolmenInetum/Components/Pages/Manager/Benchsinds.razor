@@ -1,31 +1,39 @@
 @page "/user/{Id}"
 @using ModelLibrary.ViewModels
+@using ModelLibrary.Models
 @using ModelLibrary.Dto
 @using Newtonsoft.Json
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @inject HttpClient Http
 @inject ISnackbar Snackbar
-
+@using System
 
 <MudButton Href="/" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary">Terug</MudButton>
 <div class="card-body"> 
 @if (usersDetails != null)
 {
-    
-    <h3 class="text-center">@usersDetails.UserName op de bench sinds: @usersDetails.StartBench.ToString("dd-MM-yyyy")</h3>
+    <h3 class="text-center">@usersDetails.UserName op de bench sinds: @usersDetails.StartBench.ToString("dd-MM-yyyy") (@daysOnBench dagen)</h3>
     @if (usersDetails.ProjectDetails != null && usersDetails.ProjectDetails.Any())
     {
-        <p>Projectgeschiedenis:</p>
-        @foreach (var detail in usersDetails.ProjectDetails)
-        {
-            <div>@detail</div>
-        }
+            <p>Projectgeschiedenis:</p>
+            <ul class="list-group">
+                @foreach (var detail in usersDetails.ProjectDetails)
+                {
+                    <li class="list-group-item">@detail</li>
+                }
+            </ul>
     }
-    
     else
     {
         <p>Nog geen projecten.</p>
+    }
+        <br>
+    @if (usersDetails.OccupationDetails != null)
+    {
+            <p>Ocupatie:</p>
+
+            <li class="list-group-item">@usersDetails.OccupationDetails</li>
     }
 }
 else
@@ -37,6 +45,8 @@ else
 <MudButton Href="/" FullWidth="true" @onclick="Einde" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Primary">Einde</MudButton>
 
 
+
+
 @code {
     [Parameter]
     public string Id { get; set; }
@@ -45,6 +55,7 @@ else
     public HttpClient httpClient = new HttpClient();
     private int benchId;
     public string ErrorMessage = "";
+    private int daysOnBench;
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,6 +71,25 @@ else
             {
                 var content = await response.Content.ReadAsStringAsync();
                 usersDetails = JsonConvert.DeserializeObject<UserDetailsViewModel>(content);
+
+                // gebruik date helper om de aantal dagen since de startdate te berekenen
+                if (usersDetails != null)
+                {
+                    daysOnBench = RealDolmenInetum.Helper.DateHelper.CalculateDaysSince(usersDetails.StartBench);
+                }
+
+                if (usersDetails.OccupationId.HasValue)
+                {
+                    var occupationResponse = await Http.GetAsync($"https://localhost:7256/occupation/{usersDetails.OccupationId.Value}");
+
+                    //ophalen van occupation met een andere endpoint
+                    if (occupationResponse.IsSuccessStatusCode)
+                    {
+                        var occupationContent = await occupationResponse.Content.ReadAsStringAsync();
+                        var occupation = JsonConvert.DeserializeObject<Occupation>(occupationContent);
+                        usersDetails.OccupationDetails = occupation.Type;
+                    }
+                }
             }
             else
             {
@@ -123,5 +153,4 @@ else
             ErrorMessage = $"Er is een onverwachte fout opgetreden bij het ophalen van bench ID: {ex.Message}";
         }
     }
-
 }
