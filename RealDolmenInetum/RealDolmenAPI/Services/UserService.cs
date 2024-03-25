@@ -3,13 +3,15 @@ using ModelLibrary.Models;
 
 namespace RealDolmenAPI.Services;
 
-public interface IUserService //interface => blauwdruk 
+//interface => blauwdruk
+public interface IUserService  
 {
     public int GetIdByEmail(string email);
 
 }
 
-public class UserService : IUserService//implementatie
+//implementatie
+public class UserService : IUserService
 {
     private readonly AppDbContext db;
 

@@ -3,15 +3,16 @@ using ModelLibrary.Data;
 using ModelLibrary.Models;
 
 namespace RealDolmenAPI.Services;
-
-public interface IBenchService //interface => blauwdruk 
+//interface => blauwdruk 
+//
+public interface IBenchService  
 {
     public int Add(Bench bench);
     Task UpdateEndBenchAsync(int benchId, DateTime endBench);
     Bench GetActiveBenchForUser(int userId);
 }
-
-public class BenchService : IBenchService//implementatie
+//implementatie
+public class BenchService : IBenchService
 {
     private readonly AppDbContext db;
 

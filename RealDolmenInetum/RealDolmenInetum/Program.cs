@@ -21,16 +21,6 @@ builder.Services.AddMudServices(config =>
 }
 );
 
-// AUTHENTIFICATION "https://learn.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/standalone-with-microsoft-accounts?view=aspnetcore-8.0#walkthrough"
-builder.Services.AddMsalAuthentication(options =>
-{
-    builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-    options.ProviderOptions.LoginMode = "redirect";
-});
-
-
-
-
 
 var app = builder.Build();
 
