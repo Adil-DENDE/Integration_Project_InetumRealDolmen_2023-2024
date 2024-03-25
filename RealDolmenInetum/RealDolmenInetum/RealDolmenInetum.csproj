@@ -17,4 +17,8 @@
     <ProjectReference Include="..\RealDolmenAPI\RealDolmenAPI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Pages\Login\" />
+  </ItemGroup>
+
 </Project>
