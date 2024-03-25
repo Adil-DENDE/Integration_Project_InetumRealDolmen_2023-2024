@@ -3,6 +3,7 @@
 @using ModelLibrary.Models
 @using Newtonsoft.Json
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
 
 <PageTitle>Activiteit selectie</PageTitle>
 
@@ -18,8 +19,11 @@
 
                         <form action="#">
                             <div class="mb-3">
+                                <label for="benchId" class="form-label">Bench ID:</label>
+                                <input type="number" class="form-control" id="benchId" @bind="benchId">
+
                                 <label for="activiteiten" class="form-label">Kies een activiteit:</label>
-                                <select class="form-select" name="activiteiten" id="activiteiten">
+                                <select class="form-select" id="activiteiten" @bind="selectedOccupationType">
                                     @foreach (var occupation in occupations)
                                     {
                                         <option value="@occupation.Type">@occupation.Type</option>
@@ -28,7 +32,7 @@
                             </div>
 
 
-                            <MudButton Href="/" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Primary">Opslaan</MudButton>
+                            <MudButton OnClick="UpdateOccupation" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Primary">Opslaan</MudButton>
                         </form>
                     </div>
                 </div>
@@ -59,9 +63,12 @@ else
     <h1>Geen activiteiten, probeer later opnieuw.</h1>
 }
 
+
 @code {
     public List<Occupation> occupations = new List<Occupation>();
     public string ErrorMessage = "";
+    private int benchId;
+    private string selectedOccupationType;
 
     protected override async Task OnInitializedAsync()
     {
@@ -90,6 +97,21 @@ else
             Console.WriteLine($"Een fout is opgetreden: {ex.Message}");
             ErrorMessage = "Er is een probleem opgetreden bij  het ophalen van de activiteiten. Probeer het later opnieuw.";
             occupations = new List<Occupation>();
+        }
+    }
+
+    private async Task UpdateOccupation()
+    {
+        var updateUrl = $"https://localhost:7256/user/bench/occupation/{benchId}";
+
+        var response = await Http.PutAsJsonAsync(updateUrl, new { type = selectedOccupationType });
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo($"/activiteit/einde?benchId={benchId}");
+        }
+        else
+        {
+            ErrorMessage = "Fout bij het updaten van de activiteit.";
         }
     }
 }

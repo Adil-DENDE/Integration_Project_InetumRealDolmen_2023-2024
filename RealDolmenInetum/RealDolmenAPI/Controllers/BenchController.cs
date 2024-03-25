@@ -156,6 +156,28 @@ namespace RealDolmenAPI.Controllers
                     return Results.Problem("Er is een fout opgetreden bij het bijwerken van de end bench.");
                 }
             });
+
+            // PUT: Update de occupation_id waarde van een bestaande Bench record met behulp van de type
+            userBenchGroup.MapPut("/occupation/{benchId}", async (int benchId, UpdateOccupationDto dto, AppDbContext db) =>
+            {
+                var occupation = await db.Occupation.FirstOrDefaultAsync(o => o.Type == dto.Type);
+                if (occupation == null)
+                {
+                    return Results.NotFound("Occupation type niet gevonden.");
+                }
+
+                var bench = await db.Bench.FindAsync(benchId);
+                if (bench == null)
+                {
+                    return Results.NotFound("Bench niet gevonden.");
+                }
+
+                bench.Occupation_id = occupation.Id;
+                await db.SaveChangesAsync();
+
+                return Results.Ok("Bench occupation is geupdate.");
+            });
+
         }
     }
 }
