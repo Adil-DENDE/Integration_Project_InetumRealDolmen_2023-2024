@@ -16,13 +16,16 @@
     <h3 class="text-center">@usersDetails.UserName op de bench sinds: @usersDetails.StartBench.ToString("dd-MM-yyyy") (@daysOnBench dagen)</h3>
     @if (usersDetails.ProjectDetails != null && usersDetails.ProjectDetails.Any())
     {
-            <p>Projectgeschiedenis:</p>
-            <ul class="list-group">
-                @foreach (var detail in usersDetails.ProjectDetails)
-                {
-                    <li class="list-group-item">@detail</li>
-                }
-            </ul>
+                <MudExpansionPanels MultiExpansion="true">
+                        <MudExpansionPanel Text="Projectgeschiedenis">
+                            <ul class="list-group">
+                        @foreach (var detail in usersDetails.ProjectDetails)
+                        {
+                                <li class="list-group-item">@detail</li>
+                        }
+                    </ul>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
     }
     else
     {
@@ -31,15 +34,19 @@
         <br>
     @if (usersDetails.OccupationDetails != null)
     {
-            <p>Ocupatie:</p>
 
-            <li class="list-group-item">@usersDetails.OccupationDetails</li>
+                <MudExpansionPanels MultiExpansion="true">
+                                        <MudExpansionPanel Text="Ocupatie">
+                                            <li class="list-group-item">@usersDetails.OccupationDetails</li>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
     }
 }
 else
 {
     <p>Gegevens worden geladen of zijn niet beschikbaar.</p>
 }
+
 </div>
 <input type="number" @bind="benchId" class="form-control mb-2" placeholder="Bench ID" readonly />
 <MudButton Href="/" FullWidth="true" @onclick="Einde" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Primary">Einde</MudButton>
