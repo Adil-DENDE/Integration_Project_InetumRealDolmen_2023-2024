@@ -1,6 +1,7 @@
 ﻿@page "/activiteit"
 @rendermode InteractiveServer
 @using ModelLibrary.Models
+@using ModelLibrary.Dto
 @using Newtonsoft.Json
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
@@ -100,18 +101,61 @@ else
         }
     }
 
+    // Methode om de occupation te updaten
     private async Task UpdateOccupation()
     {
-        var updateUrl = $"https://localhost:7256/user/bench/occupation/{benchId}";
-
-        var response = await Http.PutAsJsonAsync(updateUrl, new { type = selectedOccupationType });
-        if (response.IsSuccessStatusCode)
+        var selectedOccupation = GetSelectedOccupation();
+        if (selectedOccupation != null)
         {
-            NavigationManager.NavigateTo($"/activiteit/einde?benchId={benchId}");
+            if (await UpdateOccupationInBench(selectedOccupation))
+            {
+                await AddOccupationHistory(selectedOccupation);
+            }
         }
         else
         {
-            ErrorMessage = "Fout bij het updaten van de activiteit.";
+            ErrorMessage = "Geselecteerde occupation niet gevonden.";
         }
     }
+
+    // Methode om de geselecteerde occupation te vinden op basis van het type.
+    private Occupation GetSelectedOccupation()
+    {
+        return occupations.FirstOrDefault(o => o.Type == selectedOccupationType);
+    }
+
+    // Methode om de occupation_id van een Bench record te updaten.
+    private async Task<bool> UpdateOccupationInBench(Occupation selectedOccupation)
+    {
+        var updateResponse = await Http.PutAsJsonAsync($"https://localhost:7256/user/bench/occupation/{benchId}", new { type = selectedOccupationType });
+        if (!updateResponse.IsSuccessStatusCode)
+        {
+            ErrorMessage = "Fout bij het updaten van de occupation.";
+            return false;
+        }
+        return true;
+    }
+
+    // Methode om een nieuwe occupation history record toe te voegen.
+    private async Task AddOccupationHistory(Occupation selectedOccupation)
+    {
+        var historyDto = new OccupationHistoryDto
+            {
+                BenchId = benchId,
+                OccupationId = selectedOccupation.Id,
+                StartDate = DateTime.Now,
+                EndDate = null
+            };
+
+        var addHistoryResponse = await Http.PostAsJsonAsync("https://localhost:7256/occupationHistory/add", historyDto);
+        if (addHistoryResponse.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo($"/activiteit/einde?benchId={benchId}&occupationType={Uri.EscapeDataString(selectedOccupationType)}");
+        }
+        else
+        {
+            ErrorMessage = "Fout bij het toevoegen van occupation history.";
+        }
+    }
+
 }
