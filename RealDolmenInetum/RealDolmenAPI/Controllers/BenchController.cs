@@ -83,7 +83,6 @@ namespace RealDolmenAPI.Controllers
 
 
 
-
             // POST: Voeg een gebruiker toe aan de bench
             userBenchGroup.MapPost("/add", async (UserBenchDto userBenchDto, IUserService userService, IBenchService benchService) =>
             {
@@ -176,6 +175,21 @@ namespace RealDolmenAPI.Controllers
                 await db.SaveChangesAsync();
 
                 return Results.Ok("Bench occupation is geupdate.");
+            });
+
+            // PUT: Zet de occupation_id van een bench op NULL met behulp van bench_id
+            userBenchGroup.MapPut("/clearOccupation/{benchId}", async (int benchId, AppDbContext db) =>
+            {
+                var bench = await db.Bench.FindAsync(benchId);
+                if (bench == null)
+                {
+                    return Results.NotFound("Bench niet gevonden.");
+                }
+
+                bench.Occupation_id = null;
+                await db.SaveChangesAsync();
+
+                return Results.Ok("Activiteit beëindigd en bench occupation is null.");
             });
 
         }

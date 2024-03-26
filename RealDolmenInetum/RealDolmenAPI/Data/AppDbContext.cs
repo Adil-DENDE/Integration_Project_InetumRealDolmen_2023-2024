@@ -38,5 +38,7 @@ namespace ModelLibrary.Data
         public DbSet<Occupation> Occupation => Set<Occupation>();
         // OM TE INTERAGEREN MET DE TABLE USERPROJECT
         public DbSet<Project_User> Project_User => Set<Project_User>();
+        // OM TE INTERAGEREN MET DE TABLE OccupationHistory
+        public DbSet<OccupationHistory> OccupationHistory => Set<OccupationHistory>();
     }
 }
