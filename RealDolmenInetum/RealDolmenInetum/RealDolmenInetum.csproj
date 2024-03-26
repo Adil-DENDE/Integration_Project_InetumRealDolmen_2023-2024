@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Components\Pages\Login\**" />
-    <Content Remove="Components\Pages\Login\**" />
-    <EmbeddedResource Remove="Components\Pages\Login\**" />
-    <None Remove="Components\Pages\Login\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="8.0.3" />
     <PackageReference Include="MudBlazor" Version="6.16.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
