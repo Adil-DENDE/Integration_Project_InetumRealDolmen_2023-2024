@@ -192,6 +192,29 @@ namespace RealDolmenAPI.Controllers
                 return Results.Ok("Activiteit beëindigd en bench occupation is null.");
             });
 
+            // PUT: Update de currentbenchmanager_id van een bestaande Bench record
+            userBenchGroup.MapPut("/updateManager/{benchId:int}/{newManagerId:int}", async (int benchId, int newManagerId, AppDbContext db) =>
+            {
+                try
+                {
+                    var bench = await db.Bench.FindAsync(benchId);
+                    if (bench == null)
+                    {
+                        return Results.NotFound($"Bench met ID {benchId} niet gevonden.");
+                    }
+
+                    bench.Currentbenchmanager_id = newManagerId;
+                    await db.SaveChangesAsync();
+
+                    return Results.Ok($"Bench manager geüpdatet naar nieuwe manager met ID {newManagerId}.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Een fout opgetreden: {ex.Message}");
+                    return Results.Problem("Er is een fout opgetreden bij het bijwerken van de bench manager. Probeer het later opnieuw.");
+                }
+            });
+
         }
     }
 }

@@ -29,7 +29,18 @@ namespace RealDolmenAPI.Controllers
                         UserName = u.First_Name + " " + u.Last_Name,
                         ManagerId = u.Manager_Id,
                         UserEmail = u.Email,
-                        Bench = db.Bench.FirstOrDefault(b => b.User_id == u.Id && b.End_bench == null)
+                        Bench = db.Bench
+                        .Where(b => b.User_id == u.Id && b.End_bench == null)
+                        .Select(b => new
+                        {
+                            b.Id,
+                            b.Start_bench,
+                            b.End_bench,
+                            b.Occupation_id,
+                            CurrentBenchManagerId = b.Currentbenchmanager_id
+                        })
+                        .FirstOrDefault()
+
                     })
                     .FirstOrDefaultAsync();
 
@@ -56,6 +67,7 @@ namespace RealDolmenAPI.Controllers
                     StartBench = userAndBench.Bench?.Start_bench,
                     EndBench = userAndBench.Bench?.End_bench,
                     OccupationId = userAndBench.Bench?.Occupation_id,
+                    CurrentBenchManagerId = userAndBench.Bench?.CurrentBenchManagerId,
                     ProjectDetails = projectDetails
                 };
 
@@ -64,6 +76,28 @@ namespace RealDolmenAPI.Controllers
 
             // GET: Zoek gebruikers op basis van email
             userGroup.MapGet("/search", async (AppDbContext db, string email) => await db.User.Where(u => EF.Functions.Like(u.Email, $"%{email}%")).ToListAsync());
+
+            // GET: Gebruikersinformatie (voornaam, achternaam, email) op basis van ID
+            userGroup.MapGet("/userInfo/{id:int}", async (int id, AppDbContext db) =>
+            {
+                var userInfo = await db.User
+                    .Where(u => u.Id == id)
+                    .Select(u => new
+                    {
+                        u.Id,
+                        u.First_Name,
+                        u.Last_Name,
+                        u.Email
+                    })
+                    .FirstOrDefaultAsync();
+
+                if (userInfo == null)
+                {
+                    return Results.NotFound($"Gebruiker met ID {id} niet gevonden.");
+                }
+
+                return Results.Ok(userInfo);
+            });
         }
     }
 }

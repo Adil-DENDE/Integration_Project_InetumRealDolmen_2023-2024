@@ -8,9 +8,11 @@ namespace ModelLibrary.Dto
 {
     public class OccupationHistoryDto
     {
+        public int Id { get; set; }
         public int BenchId { get; set; }
         public int OccupationId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public string OccupationType { get; set; }
     }
 }

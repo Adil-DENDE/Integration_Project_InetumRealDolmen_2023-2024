@@ -2,45 +2,69 @@
 @using ModelLibrary.ViewModels
 @using ModelLibrary.Models
 @using ModelLibrary.Dto
+@using RealDolmenInetum.Components.Pages.Manager
 @using Newtonsoft.Json
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @inject HttpClient Http
 @inject ISnackbar Snackbar
 @using System
+@inject IDialogService DialogService
 
 <MudButton Href="/" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary">Terug</MudButton>
 <div class="card-body"> 
 @if (usersDetails != null)
 {
     <h3 class="text-center">@usersDetails.UserName op de bench sinds: @usersDetails.StartBench.ToString("dd-MM-yyyy") (@daysOnBench dagen)</h3>
-    @if (usersDetails.ProjectDetails != null && usersDetails.ProjectDetails.Any())
-    {
-                <MudExpansionPanels MultiExpansion="true">
-                        <MudExpansionPanel Text="Projectgeschiedenis">
-                            <ul class="list-group">
-                        @foreach (var detail in usersDetails.ProjectDetails)
-                        {
+        <MudExpansionPanels MultiExpansion="true">
+            <MudExpansionPanel Text="Gebruikersdetails">
+                <div>
+                    <h5>Projectgeschiedenis:</h5>
+                    @if (usersDetails.ProjectDetails != null && usersDetails.ProjectDetails.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var detail in usersDetails.ProjectDetails)
+                            {
                                 <li class="list-group-item">@detail</li>
-                        }
-                    </ul>
-                </MudExpansionPanel>
-            </MudExpansionPanels>
-    }
-    else
-    {
-        <p>Nog geen projecten.</p>
-    }
-        <br>
-    @if (usersDetails.OccupationDetails != null)
-    {
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                    <li class="list-group-item">Nog geen projecten.</li>
+                    }
 
-                <MudExpansionPanels MultiExpansion="true">
-                                        <MudExpansionPanel Text="Ocupatie">
-                                            <li class="list-group-item">@usersDetails.OccupationDetails</li>
-                        </MudExpansionPanel>
-                    </MudExpansionPanels>
-    }
+                    <br />
+					<h5>Ocupatie:</h5>
+                    @if (usersDetails.OccupationDetails != null)
+                    {
+                        <ul class="list-group">
+                            <li class="list-group-item">@usersDetails.OccupationDetails</li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="list-group">
+                            <li class="list-group-item">Momenteel geen activiteit.</li>
+                        </ul>
+                    }
+                    <br />
+                    
+                <MudGrid>
+                    <MudItem xs="12" sm="6" md="4">
+                        <MudTextField Label="Bench Manager" Variant="Variant.Filled" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountCircle" Value="@($"{usersDetails.BenchManagerFirstName} {usersDetails.BenchManagerLastName}")" ReadOnly="true"></MudTextField>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" Class="d-flex align-items-center">
+                        <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
+                            Wijzigen
+                        </MudButton>
+                    </MudItem>
+                </MudGrid>
+
+                </div>
+            </MudExpansionPanel>
+        </MudExpansionPanels>
+
 }
 else
 {
@@ -67,6 +91,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         await FetchUserData();
+        await FetchBenchManagerDetails();
         await FetchUserBenchId();
     }
     public async Task FetchUserData()
@@ -135,7 +160,6 @@ else
         }
         else
         {
-            // Foutafhandeling
         }
     }
 
@@ -147,7 +171,7 @@ else
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var benchInfo = JsonConvert.DeserializeObject<BenchViewModel>(content); // Aan te maken ViewModel
+                var benchInfo = JsonConvert.DeserializeObject<BenchViewModel>(content);
                 benchId = benchInfo.BenchId;
             }
             else
@@ -160,4 +184,52 @@ else
             ErrorMessage = $"Er is een onverwachte fout opgetreden bij het ophalen van bench ID: {ex.Message}";
         }
     }
+
+    public async Task FetchBenchManagerDetails()
+    {
+        if (usersDetails.CurrentBenchManagerId.HasValue)
+        {
+            var managerResponse = await Http.GetAsync($"https://localhost:7256/user/userInfo/{usersDetails.CurrentBenchManagerId.Value}");
+
+            if (managerResponse.IsSuccessStatusCode)
+            {
+                var managerContent = await managerResponse.Content.ReadAsStringAsync();
+                var managerInfo = JsonConvert.DeserializeObject<BenchManagerViewModel>(managerContent);
+                usersDetails.BenchManagerFirstName = managerInfo.First_Name;
+                usersDetails.BenchManagerLastName = managerInfo.Last_Name;
+
+                //StateHasChanged(); // Forceer de UI om te updaten
+            }
+            else
+            {
+                Snackbar.Add("Fout bij het ophalen van Bench Manager gegevens.", Severity.Error);
+            }
+        }
+    }
+
+    private void OpenDialog()
+    {
+        DialogOptions options = new DialogOptions() { CloseOnEscapeKey = true };
+
+        // Maak een nieuwe instance van DialogParameters
+        var parameters = new DialogParameters();
+
+        // Voeg de volledige naam en benchId toe als parameters
+        string fullName = $"{usersDetails.BenchManagerFirstName} {usersDetails.BenchManagerLastName}";
+        parameters.Add("Name", fullName);
+        parameters.Add("BenchId", benchId);
+        if (usersDetails.CurrentBenchManagerId.HasValue)
+        {
+            parameters.Add("CurrentBenchManagerId", usersDetails.CurrentBenchManagerId.Value);
+        }
+        else
+        {
+            parameters.Add("CurrentBenchManagerId", null);
+        }
+        parameters.Add("Id", Id);
+
+        // Geef de parameters mee wanneer je de dialoog opent
+        DialogService.Show<ManagerUpdateDialog>("Manager bijwerken", parameters, options);
+    }
+
 }

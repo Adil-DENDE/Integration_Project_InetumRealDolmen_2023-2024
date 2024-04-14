@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\RealDolmenInetum",
+    "\\RealDolmenInetum\\RealDolmenInetum",
+    "\\RealDolmenInetum\\RealDolmenInetum\\Components",
+    "\\RealDolmenInetum\\RealDolmenInetum\\Components\\Pages",
+    "\\RealDolmenInetum\\RealDolmenInetum\\Components\\Pages\\Manager"
+  ],
+  "SelectedNode": "\\RealDolmenInetum\\RealDolmenInetum\\Components\\Pages\\Manager\\Toevoegen.razor",
+  "PreviewInSolutionExplorer": false
+}

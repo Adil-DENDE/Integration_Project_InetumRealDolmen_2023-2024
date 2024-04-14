@@ -58,6 +58,28 @@ namespace RealDolmenAPI.Controllers
                 return Results.Ok(activeOccupationHistories);
             });
 
+            // GET: Haal alle occupation histories op voor een specifieke benchId
+            occupationHistoryGroup.MapGet("/{benchId:int}", async (int benchId, AppDbContext db) =>
+            {
+                var occupationHistories = await db.OccupationHistory
+                    .Where(oh => oh.Bench_id == benchId)
+                    .Select(oh => new
+                    {
+                        Id = oh.Id,
+                        OccupationId = oh.Occupation_id,
+                        StartDate = oh.Start_occupationdate,
+                        EndDate = oh.End_occupationdate
+                    })
+                    .ToListAsync();
+
+                if (!occupationHistories.Any())
+                {
+                    return Results.NotFound($"Geen occupation histories gevonden voor benchId: {benchId}.");
+                }
+
+                return Results.Ok(occupationHistories);
+            });
+
             // PUT: Update de end date van de laatste OccupationHistory record voor een gegeven benchId
             occupationHistoryGroup.MapPut("/end/{benchId:int}", async (int benchId, OccupationHistoryDto dto, AppDbContext db) =>
             {
@@ -99,6 +121,29 @@ namespace RealDolmenAPI.Controllers
                 return Results.Ok($"Alle actieve occupation histories voor benchId: {benchId} zijn succesvol geëindigd.");
             });
 
+            // PUT: Update een bestaande OccupationHistory record
+            occupationHistoryGroup.MapPut("/update/{occupationHistoryId:int}", async (int occupationHistoryId, OccupationHistoryDto dto, AppDbContext db) =>
+            {
+                var occupationHistory = await db.OccupationHistory.FindAsync(occupationHistoryId);
+                if (occupationHistory == null)
+                {
+                    return Results.NotFound($"OccupationHistory record met ID {occupationHistoryId} niet gevonden.");
+                }
+
+                var occupationExists = await db.Occupation.AnyAsync(o => o.Id == dto.OccupationId);
+                if (!occupationExists)
+                {
+                    return Results.NotFound($"Occupation met ID {dto.OccupationId} niet gevonden.");
+                }
+
+                occupationHistory.Occupation_id = dto.OccupationId;
+                occupationHistory.Start_occupationdate = dto.StartDate;
+                occupationHistory.End_occupationdate = dto.EndDate;
+
+                await db.SaveChangesAsync();
+
+                return Results.Ok("OccupationHistory record succesvol bijgewerkt.");
+            });
 
         }
     }
