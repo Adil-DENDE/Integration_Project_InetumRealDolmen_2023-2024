@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using RealDolmenAPI.Services;
 using ModelLibrary.Dto;
 using ModelLibrary.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RealDolmenAPI.Controllers
 {
@@ -15,8 +17,10 @@ namespace RealDolmenAPI.Controllers
 
 
             // GET: Haal gebruikers op de bench op
-            userBenchGroup.MapGet("/", async (AppDbContext db) =>
-            {
+            
+
+            userBenchGroup.MapGet("/", [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "AdminUserPolicy")]
+            async (AppDbContext db) => {
                 try
                 {
                     // TABLE USER JOINEN MET TABLE BENCH

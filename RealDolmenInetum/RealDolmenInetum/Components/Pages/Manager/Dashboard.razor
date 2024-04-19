@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/home"
 @using ModelLibrary.Models
 @using ModelLibrary.Dto
 @using ModelLibrary.ViewModels
@@ -6,10 +6,13 @@
 @using Helper
 @inject HttpClient Http
 @rendermode InteractiveServer
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject NavigationManager NavigationManager
+@inject AuthService auth
 
 <PageTitle>Dashboard</PageTitle>
 
+<p>Nom de l'utilisateur: @username</p>
 <div class="btnToevoegenMobile">
     <MudButton Href="/toevoegen" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Rounded.PersonAdd" Color="Color.Primary">Toevoegen</MudButton>
 </div>
@@ -61,16 +64,29 @@ else
     public HttpClient httpClient = new HttpClient();
     public string ErrorMessage = "";
     private int daysOnBench;
+    public string username;
 
     protected override async Task OnInitializedAsync()
     {
+        username = auth.GetUsername();
         await FetchData();
+
+
     }
+
 
     public async Task FetchData()
     {
         try
         {
+            var token = auth.GetToken();
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                token = token.Trim('"');
+                Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            }
+
             var response = await Http.GetAsync("https://localhost:7256/user/bench");
             if (response.IsSuccessStatusCode)
             {
@@ -79,7 +95,7 @@ else
             }
             else
             {
-                ErrorMessage = "Fout bij het ophalen van gegevens uit de database.";
+                ErrorMessage = "Alleen Admin kan dit zien!";
                 usersOpBench = new List<UserViewModel>();
             }
         }
@@ -88,7 +104,9 @@ else
             ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
             usersOpBench = new List<UserViewModel>();
         }
+
     }
+
     public void NavigateUserPage(int id)
     {
         NavigationManager.NavigateTo("/user/" + id);

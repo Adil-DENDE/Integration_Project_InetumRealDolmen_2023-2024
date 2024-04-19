@@ -1,0 +1,14 @@
+﻿@inject NavigationManager Navigation
+@inject AuthService auth
+<h3>RedirectToLogin</h3>
+
+@code {
+    // om te redirect //
+    protected override async Task OnInitializedAsync()
+    {
+        if (auth.GetToken() == null)
+        {
+            Navigation.NavigateTo("/", true);
+        }
+    }
+}

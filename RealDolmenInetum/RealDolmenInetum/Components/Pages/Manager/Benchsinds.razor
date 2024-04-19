@@ -11,7 +11,7 @@
 @using System
 @inject IDialogService DialogService
 
-<MudButton Href="/" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary">Terug</MudButton>
+<MudButton Href="/home" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary">Terug</MudButton>
 <div class="card-body"> 
 @if (usersDetails != null)
 {
@@ -73,7 +73,7 @@ else
 
 </div>
 <input type="number" @bind="benchId" class="form-control mb-2" placeholder="Bench ID" readonly />
-<MudButton Href="/" FullWidth="true" @onclick="Einde" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Primary">Einde</MudButton>
+<MudButton Href="/home" FullWidth="true" @onclick="Einde" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Primary">Einde</MudButton>
 
 
 

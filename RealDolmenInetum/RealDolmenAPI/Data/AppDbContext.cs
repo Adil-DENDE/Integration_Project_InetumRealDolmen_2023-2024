@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ModelLibrary.Models;
 
 namespace ModelLibrary.Data
 {
-	public class AppDbContext : DbContext
+	public class AppDbContext : IdentityDbContext<User, IdentityRole<int>,int>
 	{
 		public AppDbContext(DbContextOptions<AppDbContext> options)
 		: base(options) 
@@ -11,17 +13,22 @@ namespace ModelLibrary.Data
 
         }
 
-
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			base.OnConfiguring(optionsBuilder);
-            // ConnectionString
-			optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=IntegrationProject;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
-		}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }  
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            // ROLLEN
+           // var manager = new IdentityRole("manager");
+           //  manager.NormalizedName = "manager";
+
+           //  var normalUser = new IdentityRole("admin");
+           //  normalUser.NormalizedName = "normalUser";
+
+           //  modelBuilder.Entity<IdentityRole>().HasData(manager, normalUser);
 
             // gecombineerde Primary key voor Project_User
             modelBuilder.Entity<Project_User>()
@@ -40,5 +47,6 @@ namespace ModelLibrary.Data
         public DbSet<Project_User> Project_User => Set<Project_User>();
         // OM TE INTERAGEREN MET DE TABLE OccupationHistory
         public DbSet<OccupationHistory> OccupationHistory => Set<OccupationHistory>();
+        public DbSet<Niveau> niveaus => Set<Niveau>();
     }
 }

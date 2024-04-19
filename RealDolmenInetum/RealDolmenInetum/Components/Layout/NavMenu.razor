@@ -1,4 +1,10 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject NavigationManager Navigation
+@inject AuthService auth
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">RealDolmenInetum</a>
     </div>
@@ -9,7 +15,7 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="home" Match="NavLinkMatch.All">
                 <MudIcon Icon="@Icons.Material.Filled.Groups2" Title="Favorite" />
                 <span aria-hidden="true"></span> Dashboard
             </NavLink>
@@ -24,9 +30,25 @@
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="occupationHistory">
                 <MudIcon Icon="@Icons.Material.Filled.ManageHistory" Title="Favorite" />
-                <span aria-hidden="true"></span> Activiteit
+                <span aria-hidden="true"></span> Activiteitengeschiedenis
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link">
+                <MudIcon Icon="@Icons.Material.Filled.Logout" Title="Favorite" />
+             <button @onclick="Logout">Uitloggen</button>
             </NavLink>
         </div>
     </nav>
 </div>
+
+@code {
+    private async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("authToken");
+        auth.ClearToken();
+        Navigation.NavigateTo("/", forceLoad: true);
+    }
+}
 

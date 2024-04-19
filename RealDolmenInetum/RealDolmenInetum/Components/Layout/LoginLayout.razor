@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject AuthService auth
+@inject NavigationManager NavigationManager
 
 <div class="loginLayout">
 	<MudThemeProvider @rendermode="InteractiveServer" />
@@ -6,3 +8,16 @@
 	<MudSnackbarProvider @rendermode="InteractiveServer" />
 	@Body
 </div>
+
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+
+        if (auth.GetToken() == null)
+        {
+            NavigationManager.NavigateTo("/home", true);
+        }
+    }
+}

@@ -1,6 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ModelLibrary.Data;
+using ModelLibrary.Dto;
 using ModelLibrary.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace RealDolmenAPI.Controllers
 {
@@ -12,8 +21,101 @@ namespace RealDolmenAPI.Controllers
             // Gebruik MapGroup om een groep te definiëren
             var userGroup = app.MapGroup("/user");
 
+            // Gewoon om te testen
+            userGroup.MapPost("/register", async (UserRegistrationDto model, UserManager<User> userManager) =>
+            {
+                var user = new User { UserName = model.Email, Email = model.Email, First_Name = model.First_Name, Last_Name = model.Last_Name };
+                var result = await userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    return Results.Ok("User account is gecreerd!");
+                }
+                else
+                {
+                    return Results.BadRequest(result.Errors);
+                }
+            });
+
+            userGroup.MapPost("/account/create", async (string email, string password, string role, string first_name, string last_name, UserManager<User> userManager) =>
+            {
+                User User = await userManager.FindByEmailAsync(email);
+                if (User != null) return Results.BadRequest(false);
+
+                User user = new()
+                {
+                    First_Name = first_name,
+                    Last_Name = last_name,
+                    UserName = email,
+                    PasswordHash = password,
+                    Email = email, 
+                };
+                IdentityResult result = await userManager.CreateAsync(user, password);
+                
+                if (!result.Succeeded) return Results.BadRequest(false);
+                Claim[] userClaims =
+                [
+                    new Claim(ClaimTypes.Email, email),
+                    new Claim(ClaimTypes.Role, role),
+                ];
+                
+                await userManager.AddClaimsAsync(user!, userClaims);
+                return Results.Ok(true);
+            });
+
+
+            userGroup.MapPost("/login", async (UserLoginDto model, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration) =>
+            {
+                User user = await userManager.FindByEmailAsync(model.Email);
+                if (user == null) return Results.NotFound("User bestaat niet");
+
+                SignInResult result = await signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                if (!result.Succeeded) return Results.BadRequest("Invalid credentials");
+
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.First_Name + " " + user.Last_Name)
+                    // ANDERE CLAIMS ?
+            };
+
+                var userClaims = await userManager.GetClaimsAsync(user);
+                claims.AddRange(userClaims);
+
+                var token = new JwtSecurityToken(
+                    issuer: configuration["Jwt:Issuer"],
+                    audience: configuration["Jwt:Audience"],
+                    claims: claims,
+                    expires: DateTime.Now.AddDays(1),
+                    signingCredentials: credentials
+                );
+
+                return Results.Ok(new JwtSecurityTokenHandler().WriteToken(token));
+            });
+
+
+
+
+
+            userGroup.MapPost("/logout", async (HttpContext httpContext) =>
+            {
+                // JWT token wordt via de front end gedeleted
+                return Results.Ok("Uitgelogd!");
+            });
+
+
+
+
             // GET: Haal alle gebruikers op
             userGroup.MapGet("/", async (AppDbContext db) => await db.User.ToListAsync());
+
+            // DIT IS HOE WE EEN ENDPOINT SECURE VOOR BEPAALDE ROLLEN. (test)
+            userGroup.MapGet("test",
+                [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "AdminUserPolicy")] 
+            async (AppDbContext db) => await db.User.ToListAsync());
 
             // GET: Haal een specifieke gebruiker op op basis van ID // AANPASSEN // TODO // Nog joinen met project table
             userGroup.MapGet("/{id:int}", async (int id, AppDbContext db) =>
@@ -22,7 +124,7 @@ namespace RealDolmenAPI.Controllers
                 // 1. Simpeler maken van de query
                 // 2. Vermijden van het probleem waarbij EF Core niet in staat is om rare GroupJoins naar SQL te vertale
                 var userAndBench = await db.User
-                    .Where(u => u.Id == id)
+                    .Where(u => Convert.ToInt32(u.Id) == id)
                     .Select(u => new
                     {
                         u.Id,

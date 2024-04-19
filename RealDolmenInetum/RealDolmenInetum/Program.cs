@@ -1,6 +1,10 @@
 using RealDolmenInetum.Components;
 using MudBlazor.Services;
 using MudBlazor;
+using RealDolmenAPI.Services;
+using Microsoft.EntityFrameworkCore;
+using ModelLibrary.Data;
+using Blazored.LocalStorage;
 var builder = WebApplication.CreateBuilder(args);
 
 // Template: Add services to the container.
@@ -20,6 +24,20 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 }
 );
+
+builder.Services.AddBlazoredLocalStorage();
+
+
+// ZODAT DE INJECT WERKT IN HET PROJECT
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    // Configurez la chaîne de connexion ou les options ici
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=IntegrationProject;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"));
+});
+
+builder.Services.AddScoped<IUserService, UserService>();
+// ZODAT DE GESAVED TOKEN OVERAL KAN GEBRUIK WORDEN RESOLVED:
+builder.Services.AddSingleton<AuthService>();
 
 
 var app = builder.Build();

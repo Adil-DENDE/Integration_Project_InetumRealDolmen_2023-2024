@@ -1,4 +1,11 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+@inject AuthService auth
+@inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 <div class="page">
     <MudThemeProvider @rendermode="InteractiveServer" />
@@ -10,11 +17,18 @@
 
     <main>
         <div class="top-row px-4">
-            <MudButton Variant="Variant.Text" Color="Color.Primary">Uitloggen</MudButton>
         </div>
 
         <article class="content px-4">
-            @Body
+            @if (auth.GetToken() != null)
+            {
+                @Body
+            }
+            else
+            {
+                // REDIRECT NAAR DE LOGIN PAGINA ALS ER GEEN USER CONNECTED IS.
+               <RealDolmenInetum.Components.Pages.Login.RedirectToLogin></RealDolmenInetum.Components.Pages.Login.RedirectToLogin>
+            }
         </article>
     </main>
 </div>
@@ -24,3 +38,6 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+}
