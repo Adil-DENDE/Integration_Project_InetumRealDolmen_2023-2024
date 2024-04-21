@@ -17,6 +17,9 @@
 
     <main>
         <div class="top-row px-4">
+            <p class="mb-0">@username</p>
+            <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Default" Title="Person" Size="Size.Large" Class="ms-lg-1" />
+            <p>id : @userId</p>
         </div>
 
         <article class="content px-4">
@@ -40,4 +43,19 @@
 </div>
 
 @code {
+    public string username;
+    private string userId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (auth.GetToken() != null)
+        {
+            username = auth.GetUsername();
+            userId = auth.GetIdFromLoggedUser();
+        }
+        
+
+
+    }
+
 }

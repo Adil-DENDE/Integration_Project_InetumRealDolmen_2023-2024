@@ -13,11 +13,5 @@
 @code {
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-
-
-        if (auth.GetToken() == null)
-        {
-            NavigationManager.NavigateTo("/home", true);
-        }
     }
 }

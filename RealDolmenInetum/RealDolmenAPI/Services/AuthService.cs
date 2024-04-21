@@ -22,18 +22,34 @@ namespace RealDolmenAPI.Services
     {
         _token = null;
     }
+        // DE NAAM VAN DE USER OPHALEN //
         public string GetUsername()
         {
             var token = GetToken().Trim('\"');
             if (string.IsNullOrEmpty(token))
             {
-                return "Geen naam";
+                return "Error";
             }
 
             var handler = new JwtSecurityTokenHandler();
 
             var jwtToken = handler.ReadJwtToken(token);
             var usernameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            return usernameClaim?.Value;
+        }
+
+        // DE ID VAN DE USER OPHALEN //
+        public string GetIdFromLoggedUser()
+        {
+            var token = GetToken().Trim('\"');
+            if (string.IsNullOrEmpty(token))
+            {
+                
+            }
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var usernameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             return usernameClaim?.Value;
         }
     }

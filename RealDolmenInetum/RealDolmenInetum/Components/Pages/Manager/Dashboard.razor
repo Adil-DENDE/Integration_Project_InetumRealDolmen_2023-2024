@@ -12,7 +12,7 @@
 
 <PageTitle>Dashboard</PageTitle>
 
-<p>Nom de l'utilisateur: @username</p>
+
 <div class="btnToevoegenMobile">
     <MudButton Href="/toevoegen" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Rounded.PersonAdd" Color="Color.Primary">Toevoegen</MudButton>
 </div>
@@ -64,14 +64,10 @@ else
     public HttpClient httpClient = new HttpClient();
     public string ErrorMessage = "";
     private int daysOnBench;
-    public string username;
 
     protected override async Task OnInitializedAsync()
     {
-        username = auth.GetUsername();
         await FetchData();
-
-
     }
 
 
