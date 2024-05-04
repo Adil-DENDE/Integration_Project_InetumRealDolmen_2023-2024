@@ -5,6 +5,7 @@
 @using Newtonsoft.Json
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@inject AuthService auth
 
 <PageTitle>Activiteit selectie</PageTitle>
 
@@ -70,9 +71,11 @@ else
     public string ErrorMessage = "";
     private int benchId;
     private string selectedOccupationType;
+    private int userBenchId;
 
     protected override async Task OnInitializedAsync()
     {
+        await getUserBenchId();
         await FetchOccupations();
     }
 
@@ -124,7 +127,37 @@ else
         return occupations.FirstOrDefault(o => o.Type == selectedOccupationType);
     }
 
-    // Methode om de occupation_id van een Bench record te updaten.
+    // Methode om de benchid van de current user te vinden // HIER MARWAN =============
+    private async Task<string> getUserBenchId()
+    {
+        try
+        {
+            var userId = auth.GetIdFromLoggedUser();
+            var response = await Http.GetAsync("https://localhost:7256/user/" + userId);
+            if (response.IsSuccessStatusCode)
+            {
+                var userJson = await response.Content.ReadAsStringAsync();
+                var user = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(userJson);
+                userBenchId = user.benchId;
+                return user.benchId ; 
+            }
+            else
+            {
+                return $"Error: Status code {response.StatusCode} received.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
+            return $"Error: '{ex.Message}'";
+        }
+    }
+
+
+
+
+
+    // Methode om de occupation_id van een Bench record te updaten. // MOET AANGEPAST WORDEN
     private async Task<bool> UpdateOccupationInBench(Occupation selectedOccupation)
     {
         var updateResponse = await Http.PutAsJsonAsync($"https://localhost:7256/user/bench/occupation/{benchId}", new { type = selectedOccupationType });
