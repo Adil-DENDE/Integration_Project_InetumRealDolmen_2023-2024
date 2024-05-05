@@ -45,7 +45,7 @@
     private List<BencherDto> suggestedUsers = new List<BencherDto>();
     private bool searchPerformed = false;
     private int? selectedBenchId;
-    [Parameter] public int BenchId { get; set; }
+    [Parameter] public int? BenchId { get; set; }
     [Parameter] public EventCallback OnDialogClose { get; set; }
 
     [CascadingParameter] MudDialogInstance DialogService { get; set; }
@@ -96,24 +96,53 @@
     {
         if (selectedBenchId.HasValue)
         {
-            UpdateBenchManagers(BenchId, selectedBenchId.Value).ContinueWith(async task =>
+            // Check if BenchId is null, and call a different function if it is
+            if (BenchId == 0)
             {
-                if (task.Result)
+                // Call another function to handle when there is no old manager
+                UpdateNewManagerStatus(selectedBenchId.Value, true).ContinueWith(async task =>
                 {
-                    Snackbar.Add("Bench managers updated successfully.", Severity.Success);
-                    await OnDialogClose.InvokeAsync();
-                    DialogService.Close(DialogResult.Ok(true));
-                }
-                else
+                    if (task.Result)
+                    {
+                        Snackbar.Add("New bench manager set successfully.", Severity.Success);
+                        await OnDialogClose.InvokeAsync();
+                        DialogService.Close(DialogResult.Ok(true));
+                    }
+                    else
+                    {
+                        Snackbar.Add("Error setting new bench manager.", Severity.Error);
+                    }
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+            else
+            {
+                // Proceed with updating both managers as previously handled
+                UpdateBenchManagers(BenchId.Value, selectedBenchId.Value).ContinueWith(async task =>
                 {
-                    Snackbar.Add("Error updating bench managers.", Severity.Error);
-                }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+                    if (task.Result)
+                    {
+                        Snackbar.Add("Bench managers updated successfully.", Severity.Success);
+                        await OnDialogClose.InvokeAsync();
+                        DialogService.Close(DialogResult.Ok(true));
+                    }
+                    else
+                    {
+                        Snackbar.Add("Error updating bench managers.", Severity.Error);
+                    }
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
         }
         else
         {
             Snackbar.Add("No bencher selected.", Severity.Warning);
         }
+    }
+
+    private async Task<bool> UpdateNewManagerStatus(int benchId, bool newStatus)
+    {
+        var url = $"https://localhost:7256/user/bench/updateManager/{benchId}/{newStatus}";
+        var response = await Http.PutAsync(url, null);
+        return response.IsSuccessStatusCode;
     }
 
     private async Task<bool> UpdateBenchManagers(int oldManagerId, int newManagerId)
