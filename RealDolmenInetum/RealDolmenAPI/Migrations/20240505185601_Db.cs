@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace RealDolmenAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class UserDbIntID : Migration
+    public partial class Db : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,25 +69,11 @@ namespace RealDolmenAPI.Migrations
                     Start_bench = table.Column<DateTime>(type: "datetime2", nullable: false),
                     End_bench = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Occupation_id = table.Column<int>(type: "int", nullable: true),
-                    Currentbenchmanager_id = table.Column<int>(type: "int", nullable: true)
+                    IsCurrentBenchManager = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bench", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "IdentityRole",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IdentityRole", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -270,15 +254,6 @@ namespace RealDolmenAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "IdentityRole",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[,]
-                {
-                    { "32452d4f-a2e0-4ede-9ebd-ac4a3f1ee131", null, "normalUser", "normalUser" },
-                    { "c2679cc4-0a88-41c3-a53a-9adb9de97fd2", null, "manager", "manager" }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -339,9 +314,6 @@ namespace RealDolmenAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Bench");
-
-            migrationBuilder.DropTable(
-                name: "IdentityRole");
 
             migrationBuilder.DropTable(
                 name: "niveaus");

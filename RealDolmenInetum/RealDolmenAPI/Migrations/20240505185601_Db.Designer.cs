@@ -12,8 +12,8 @@ using ModelLibrary.Data;
 namespace RealDolmenAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240403005132_UserDbIntID")]
-    partial class UserDbIntID
+    [Migration("20240505185601_Db")]
+    partial class Db
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,39 +24,6 @@ namespace RealDolmenAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IdentityRole");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "c2679cc4-0a88-41c3-a53a-9adb9de97fd2",
-                            Name = "manager",
-                            NormalizedName = "manager"
-                        },
-                        new
-                        {
-                            Id = "32452d4f-a2e0-4ede-9ebd-ac4a3f1ee131",
-                            Name = "normalUser",
-                            NormalizedName = "normalUser"
-                        });
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
@@ -199,11 +166,11 @@ namespace RealDolmenAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("IsCurrentBenchManager")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("End_bench")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsCurrentBenchManager")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("Occupation_id")
                         .HasColumnType("int");
