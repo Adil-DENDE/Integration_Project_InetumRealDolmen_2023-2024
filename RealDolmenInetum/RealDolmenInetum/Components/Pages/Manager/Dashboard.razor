@@ -9,6 +9,7 @@
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject NavigationManager NavigationManager
 @inject AuthService auth
+@inject IDialogService DialogService
 
 <PageTitle>Dashboard</PageTitle>
 
@@ -20,6 +21,28 @@
 <div id="btnToevoegenComputer">
     <MudFab Href="/toevoegen" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" />
 </div>
+
+<MudGrid>
+    <MudItem xs="12">
+        <div class="card border-1 shadow-hover mb-20">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div class="pr-3">
+                        <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Default" Size="Size.Large" />
+                    </div>
+                    <div>
+                        <h5 class="mb-1">@managerName</h5>
+                        <p class="mb-0 text-muted">Bench manager</p>
+                    </div>
+                </div>
+                <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit">
+                    Wijzigen
+                </MudButton>
+            </div>
+        </div>
+    </MudItem>
+</MudGrid>
+
 @if (usersOpBench != null && usersOpBench.Count > 0)
 {
     @foreach (var userBench in usersOpBench)
@@ -64,10 +87,13 @@ else
     public HttpClient httpClient = new HttpClient();
     public string ErrorMessage = "";
     private int daysOnBench;
+    private string managerName = "Laden...";
+    private int managerBenchId;
 
     protected override async Task OnInitializedAsync()
     {
         await FetchData();
+        await FetchCurrentBenchManager();
     }
 
 
@@ -106,5 +132,38 @@ else
     public void NavigateUserPage(int id)
     {
         NavigationManager.NavigateTo("/user/" + id);
+    }
+
+    private async Task FetchCurrentBenchManager()
+    {
+        try
+        {
+            var response = await Http.GetAsync("https://localhost:7256/user/bench/CurrentBenchManager");
+            if (response.IsSuccessStatusCode)
+            {
+                var manager = await response.Content.ReadFromJsonAsync<BenchManagerDto>();
+                managerName = $"{manager.FirstName} {manager.LastName}";
+                managerBenchId = manager.BenchId;
+            }
+            else
+            {
+                managerName = "Geen manager gevonden";
+            }
+        }
+        catch (Exception ex)
+        {
+            managerName = "Fout bij het laden van gegevens";
+            Console.WriteLine($"Error bij het ophalen van de huidige bench manager: {ex.Message}");
+        }
+    }
+
+    private void OpenDialog()
+    {
+        var parameters = new DialogParameters
+            {
+                ["BenchId"] = managerBenchId,
+                ["OnDialogClose"] = EventCallback.Factory.Create(this, FetchCurrentBenchManager)
+            };
+        DialogService.Show<ManagerUpdateDialog>("Bench Manager wijzigen", parameters);
     }
 }

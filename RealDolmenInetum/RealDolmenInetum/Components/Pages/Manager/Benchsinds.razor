@@ -35,7 +35,7 @@
                     }
 
                     <br />
-					<h5>Ocupatie:</h5>
+					<h5>Activiteit:</h5>
                     @if (usersDetails.OccupationDetails != null)
                     {
                         <ul class="list-group">
@@ -50,7 +50,7 @@
                     }
                     <br />
                     
-                <MudGrid>
+                @*<MudGrid>
                     <MudItem xs="12" sm="6" md="4">
                         <MudTextField Label="Bench Manager" Variant="Variant.Filled" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountCircle" Value="@($"{usersDetails.BenchManagerFirstName} {usersDetails.BenchManagerLastName}")" ReadOnly="true"></MudTextField>
                     </MudItem>
@@ -59,9 +59,13 @@
                             Wijzigen
                         </MudButton>
                     </MudItem>
-                </MudGrid>
-
+                </MudGrid>*@
+                <div class="form-check form-switch">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Is Bench Manager</label>
+                    <input class="form-check-input" type="checkbox" @onclick="ToggleManagerStatus" checked="@isManager" />
                 </div>
+    </div>
+                @*@bind-Value="usersDetails.IsCurrentBenchManager"*@
             </MudExpansionPanel>
         </MudExpansionPanels>
 
@@ -81,12 +85,16 @@ else
 @code {
     [Parameter]
     public string Id { get; set; }
+    [Parameter]
+    public int BenchId { get; set; }
+
     public UserDetailsViewModel usersDetails;
     public BenchViewModel benchView;
     public HttpClient httpClient = new HttpClient();
-    private int benchId;
+    public int benchId;
     public string ErrorMessage = "";
     private int daysOnBench;
+    bool isManager;
 
     protected override async Task OnInitializedAsync()
     {
@@ -187,9 +195,9 @@ else
 
     public async Task FetchBenchManagerDetails()
     {
-        if (usersDetails.CurrentBenchManagerId.HasValue)
+        if (usersDetails.IsCurrentBenchManager.HasValue)
         {
-            var managerResponse = await Http.GetAsync($"https://localhost:7256/user/userInfo/{usersDetails.CurrentBenchManagerId.Value}");
+            var managerResponse = await Http.GetAsync($"https://localhost:7256/user/userInfo/{usersDetails.IsCurrentBenchManager.Value}");
 
             if (managerResponse.IsSuccessStatusCode)
             {
@@ -207,6 +215,44 @@ else
         }
     }
 
+    private async Task UpdateBenchManagerStatus()
+    {
+        if (usersDetails.IsCurrentBenchManager.HasValue)
+        {
+            var response = await Http.PutAsync($"https://localhost:7256/user/bench/updateManager/{benchId}/{usersDetails.IsCurrentBenchManager}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Manager status succesvol bijgewerkt!");
+            }
+            else
+            {
+                Console.WriteLine("Fout bij het bijwerken van de manager status.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Manager status kan niet worden bijgewerkt omdat de waarde onbepaald is.");
+        }
+    }
+
+    private async Task ToggleManagerStatus()
+    {
+        isManager = !isManager;
+
+        if (usersDetails.IsCurrentBenchManager.HasValue)
+        {
+            usersDetails.IsCurrentBenchManager = !usersDetails.IsCurrentBenchManager.Value;
+        }
+        else
+        {
+            usersDetails.IsCurrentBenchManager = true;
+        }
+        await UpdateBenchManagerStatus();
+    }
+
+
+    // Deze mag weg, heet te maken met currentbench manager update
     private void OpenDialog()
     {
         DialogOptions options = new DialogOptions() { CloseOnEscapeKey = true };
@@ -218,9 +264,9 @@ else
         string fullName = $"{usersDetails.BenchManagerFirstName} {usersDetails.BenchManagerLastName}";
         parameters.Add("Name", fullName);
         parameters.Add("BenchId", benchId);
-        if (usersDetails.CurrentBenchManagerId.HasValue)
+        if (usersDetails.IsCurrentBenchManager.HasValue)
         {
-            parameters.Add("CurrentBenchManagerId", usersDetails.CurrentBenchManagerId.Value);
+            parameters.Add("CurrentBenchManagerId", usersDetails.IsCurrentBenchManager.Value);
         }
         else
         {
@@ -228,7 +274,6 @@ else
         }
         parameters.Add("Id", Id);
 
-        // Geef de parameters mee wanneer je de dialoog opent
         DialogService.Show<ManagerUpdateDialog>("Manager bijwerken", parameters, options);
     }
 

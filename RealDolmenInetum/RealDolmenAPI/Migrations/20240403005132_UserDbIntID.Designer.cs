@@ -199,7 +199,7 @@ namespace RealDolmenAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Currentbenchmanager_id")
+                    b.Property<int?>("IsCurrentBenchManager")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("End_bench")

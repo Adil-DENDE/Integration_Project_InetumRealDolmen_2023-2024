@@ -139,7 +139,7 @@ namespace RealDolmenAPI.Controllers
                             b.Start_bench,
                             b.End_bench,
                             b.Occupation_id,
-                            CurrentBenchManagerId = b.Currentbenchmanager_id
+                            CurrentBenchManagerId = b.IsCurrentBenchManager
                         })
                         .FirstOrDefault()
 

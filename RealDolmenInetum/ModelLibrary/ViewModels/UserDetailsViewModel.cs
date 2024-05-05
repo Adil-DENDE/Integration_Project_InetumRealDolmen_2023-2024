@@ -19,7 +19,7 @@ public class UserDetailsViewModel
     public DateTime? EndBench { get; set; }
     public int? OccupationId { get; set; }
     public List<string>? ProjectDetails { get; set; }
-    public int? CurrentBenchManagerId { get; set; }
+    public bool? IsCurrentBenchManager { get; set; }
     public string OccupationDetails { get; set; }
     public string BenchManagerFirstName { get; set; }
     public string BenchManagerLastName { get; set; }

@@ -6,213 +6,122 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @inject ISnackbar Snackbar
+@inject HttpClient Http
+
 <MudDialog>
     <DialogContent>
-        @*<p>Bench Manager E-mail: @Name</p>
-        <p>Id: @CurrentBenchManagerId</p>*@
-        <div style="display: flex; align-items: center; gap: 8px;"> @* CSS moet hier nog weg*@
-            <MudTextField T="string" Label="@Email" @bind-Value="searchTerm" Style="flex-grow: 1;"></MudTextField>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <MudTextField T="string" Label="Zoek bencher" @bind-Value="searchTerm" Style="flex-grow: 1;"></MudTextField>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="PerformSearch">Zoek</MudButton>
         </div>
 
         @if (searchPerformed)
         {
-            @if (suggestedUsers.Any())
+        @if (suggestedUsers.Any())
+        {
+            <MudPaper Width="300px">
+                <MudList Clickable="true">
+                    @foreach (var user in suggestedUsers)
+                    {
+                        <MudListItem @onclick="() => SelectUser(user)" Text="@($"{user.Username} ({user.Mail})")" />
+                    }
+                </MudList>
+            </MudPaper>
+        }
+            else if (searchPerformed && !selectedBenchId.HasValue)
             {
-                <MudPaper Width="300px" Square="true">
-                    <MudList Clickable="true">
-                        @foreach (var user in suggestedUsers)
-                        {
-                            <MudListItem @onclick="() => SelectUser(user)">@user.Email</MudListItem>
-                            <MudDivider />
-                        }
-                    </MudList>
-                </MudPaper>
-            }
-            else
-            {
-                <p>Geen gebruikers gevonden.</p>
+                <p>Geen actieve bencher gevonden.</p>
             }
         }
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Annuleren</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Confirm</MudButton>
     </DialogActions>
 </MudDialog>
 
-
 @code {
-    [Parameter] public string Name { get; set; }
-    [Parameter] public int BenchId { get; set; }
-    [Parameter] public int CurrentBenchManagerId { get; set; }
-    [Parameter] public string Id { get; set; }
-    private string Email { get; set; }
-
-    private string searchTerm = string.Empty;
-    private List<UserDto> suggestedUsers = new List<UserDto>();
+    private string searchTerm;
+    private List<BencherDto> suggestedUsers = new List<BencherDto>();
     private bool searchPerformed = false;
+    private int? selectedBenchId;
+    [Parameter] public int BenchId { get; set; }
+    [Parameter] public EventCallback OnDialogClose { get; set; }
 
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-
-    void MudSubmit() => MudDialog.Close(DialogResult.Ok(true));
-    void Cancel() => MudDialog.Cancel();
-
-    protected override async Task OnInitializedAsync()
-    {
-        await FetchBenchManagerEmail();
-    }
-
+    [CascadingParameter] MudDialogInstance DialogService { get; set; }
 
     private async Task PerformSearch()
     {
-        if (!string.IsNullOrWhiteSpace(searchTerm))
-        {
-            suggestedUsers = await SearchUsersByEmail(searchTerm);
-            searchPerformed = true;
-        }
-        else
-        {
-            suggestedUsers.Clear();
-            searchPerformed = false;
-        }
+        searchPerformed = true;
+        suggestedUsers = await SearchUsersByEmail(searchTerm);
         StateHasChanged();
     }
 
-    private async Task<List<UserDto>> SearchUsersByEmail(string email)
+    private async Task<List<BencherDto>> SearchUsersByEmail(string email)
     {
         try
         {
-            var response = await Http.GetAsync($"https://localhost:7256/user/search?email={email}");
+            var response = await Http.GetAsync($"https://localhost:7256/user/bench/search?email={email}");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<List<UserDto>>(content) ?? new List<UserDto>(); // Als "sonConvert.DeserializeObject<List<UserDto>>(content)" NULL is dan wordt er een nieuwe lijst gemaakt
+                var users = JsonConvert.DeserializeObject<List<BencherDto>>(content);
+                return users ?? new List<BencherDto>();
             }
             else
             {
-                Console.WriteLine($"Serverfout bij zoeken: {await response.Content.ReadAsStringAsync()}");
-                return new List<UserDto>();
+                Console.WriteLine($"Server error during search: {await response.Content.ReadAsStringAsync()}");
+                return new List<BencherDto>();
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error bij zoeken: {ex.Message}");
-            return new List<UserDto>();
+            Console.WriteLine($"Error in search: {ex.Message}");
+            return new List<BencherDto>();
         }
     }
 
-    private void SelectUser(UserDto user)
+    private void SelectUser(BencherDto user)
     {
-        Email = user.Email;
-        searchTerm = Email;
+        selectedBenchId = user.BenchId;
+        Console.WriteLine($"Selected User: {user.Username}");
+        searchTerm = $"{user.Username} ({user.Mail})";
+        suggestedUsers.Clear();
         StateHasChanged();
     }
 
-
-    private async Task FetchBenchManagerEmail()
-    {
-        if (CurrentBenchManagerId > 0)
-        {
-            try
-            {
-                var response = await Http.GetAsync($"https://localhost:7256/user/userInfo/{CurrentBenchManagerId}");
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var userInfo = JsonConvert.DeserializeObject<UserDto>(content);
-                    if (userInfo != null)
-                    {
-                        Email = userInfo.Email;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"Gebruiker met ID {CurrentBenchManagerId} niet gevonden.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error bij het ophalen van gebruikersinformatie: {ex.Message}");
-            }
-        }
-    }
-
-    private async Task<int?> FindManagerIdByEmail(string email)
-    {
-        try
-        {
-            var response = await Http.GetAsync($"https://localhost:7256/user/search?email={email}");
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var users = JsonConvert.DeserializeObject<List<UserDto>>(content);
-                var manager = users?.FirstOrDefault(); // Neem aan dat de eerste match de manager is die we zoeken
-                return manager?.Id;
-            }
-            else
-            {
-                Console.WriteLine($"Geen gebruikers gevonden met e-mail: {email}");
-                return null;
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error bij het zoeken naar gebruiker: {ex.Message}");
-            return null;
-        }
-    }
-
-    private async Task<bool> UpdateBenchManager(int benchId, int newManagerId)
-    {
-        try
-        {
-            var response = await Http.PutAsync($"https://localhost:7256/user/bench/updateManager/{benchId}/{newManagerId}", null);
-            return response.IsSuccessStatusCode;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error bij het bijwerken van de bench manager: {ex.Message}");
-            return false;
-        }
-    }
+    void Cancel() => DialogService.Close(DialogResult.Cancel());
 
     void Submit()
     {
-        // Aanname: Je hebt al een methode om de ID van een gebruiker te zoeken op basis van e-mail
-        var managerIdTask = FindManagerIdByEmail(Email);
-
-        managerIdTask.ContinueWith(async task =>
+        if (selectedBenchId.HasValue)
         {
-            var managerId = await task;
-            if (managerId.HasValue)
+            UpdateBenchManagers(BenchId, selectedBenchId.Value).ContinueWith(async task =>
             {
-                // Voer de update uit met de gevonden managerId en de gegeven BenchId
-                bool success = await UpdateBenchManager(BenchId, managerId.Value);
-                if (success)
+                if (task.Result)
                 {
-                    // Informeer de gebruiker over het succes
-                    Console.WriteLine($"Bench manager geüpdatet naar nieuwe manager met ID {managerId}.");
-                    Snackbar.Add("Bench manager succesvol bijgewerkt.", Severity.Success);
+                    Snackbar.Add("Bench managers updated successfully.", Severity.Success);
+                    await OnDialogClose.InvokeAsync();
+                    DialogService.Close(DialogResult.Ok(true));
                 }
                 else
                 {
-                    // Meld een fout bij het bijwerken
-                    Snackbar.Add("Er is een fout opgetreden bij het bijwerken van de bench manager.", Severity.Error);
+                    Snackbar.Add("Error updating bench managers.", Severity.Error);
                 }
-            }
-            else
-            {
-                // Manager niet gevonden of fout bij het zoeken
-                Snackbar.Add("Manager niet gevonden of fout bij het zoeken.", Severity.Error);
-            }
-        }, TaskScheduler.FromCurrentSynchronizationContext()); // Zorg ervoor dat UI-updates op de juiste thread worden uitgevoerd
-
-        NavigationManager.NavigateTo($"/user/{Id}", forceLoad: true);
-
-        MudDialog.Close(DialogResult.Ok(true)); // Sluit het dialoogvenster
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+        else
+        {
+            Snackbar.Add("No bencher selected.", Severity.Warning);
+        }
     }
 
+    private async Task<bool> UpdateBenchManagers(int oldManagerId, int newManagerId)
+    {
+        var url = $"https://localhost:7256/user/bench/updateManagers?oldManagerId={oldManagerId}&newManagerId={newManagerId}";
+        var response = await Http.PutAsync(url, null);
+        return response.IsSuccessStatusCode;
+    }
 }
 
 

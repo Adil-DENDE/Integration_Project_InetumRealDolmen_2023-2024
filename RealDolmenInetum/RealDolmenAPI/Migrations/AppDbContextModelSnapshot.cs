@@ -22,39 +22,6 @@ namespace RealDolmenAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IdentityRole", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "c2679cc4-0a88-41c3-a53a-9adb9de97fd2",
-                            Name = "manager",
-                            NormalizedName = "manager"
-                        },
-                        new
-                        {
-                            Id = "32452d4f-a2e0-4ede-9ebd-ac4a3f1ee131",
-                            Name = "normalUser",
-                            NormalizedName = "normalUser"
-                        });
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -196,8 +163,8 @@ namespace RealDolmenAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Currentbenchmanager_id")
-                        .HasColumnType("int");
+                    b.Property<bool?>("IsCurrentBenchManager")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("End_bench")
                         .HasColumnType("datetime2");
@@ -213,7 +180,7 @@ namespace RealDolmenAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Bench", (string)null);
+                    b.ToTable("Bench");
                 });
 
             modelBuilder.Entity("ModelLibrary.Models.Niveau", b =>
@@ -230,7 +197,7 @@ namespace RealDolmenAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("niveaus", (string)null);
+                    b.ToTable("niveaus");
                 });
 
             modelBuilder.Entity("ModelLibrary.Models.Occupation", b =>
@@ -253,7 +220,7 @@ namespace RealDolmenAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Occupation", (string)null);
+                    b.ToTable("Occupation");
                 });
 
             modelBuilder.Entity("ModelLibrary.Models.OccupationHistory", b =>
@@ -278,7 +245,7 @@ namespace RealDolmenAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OccupationHistory", (string)null);
+                    b.ToTable("OccupationHistory");
                 });
 
             modelBuilder.Entity("ModelLibrary.Models.Project", b =>
@@ -297,7 +264,7 @@ namespace RealDolmenAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Project", (string)null);
+                    b.ToTable("Project");
                 });
 
             modelBuilder.Entity("ModelLibrary.Models.Project_User", b =>
@@ -316,7 +283,7 @@ namespace RealDolmenAPI.Migrations
 
                     b.HasKey("User_Id", "Project_Id");
 
-                    b.ToTable("Project_User", (string)null);
+                    b.ToTable("Project_User");
                 });
 
             modelBuilder.Entity("ModelLibrary.Models.User", b =>
