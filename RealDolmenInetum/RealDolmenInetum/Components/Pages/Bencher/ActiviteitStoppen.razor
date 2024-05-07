@@ -1,44 +1,53 @@
-﻿@rendermode InteractiveServer
-@using ModelLibrary.Models
+﻿@using ModelLibrary.Models
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.WebUtilities;
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@inject AuthService auth
+@inject ISnackbar Snackbar
+@rendermode InteractiveServer
 
-<h3>ActiviteitStoppen</h3>
-
-
-@if (!string.IsNullOrEmpty(currentOccupationType))
-{
-    <div class="container mt-5">
-        <h2>Huidige Activiteit: @currentOccupationType</h2>
-        <p>Ben je zeker dat je deze activiteit wilt beëindigen?</p>
-        <button class="btn btn-danger" @onclick="EndActivity">Eindig Activiteit</button>
-    </div>
-}
-else
-{
-    <div class="container mt-5">
-        <h2>Geen activiteit geselecteerd of fout bij het laden van de activiteit.</h2>
-    </div>
-}
+<MudContainer Class="mt-5">
+    <MudPaper Elevation="3" Class="p-4">
+        <MudText Typo="Typo.h6" GutterBottom>Weet je zeker dat je jouw activiteit wilt beëindigen?</MudText>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@EndActivity">Eindig Activiteit</MudButton>
+    </MudPaper>
+</MudContainer>
 
 
 @code {
     private int benchId;
     private string currentOccupationType;
+    private string ErrorMessage;
+    private bool userSuccesToegevoegd;
 
     protected override async Task OnInitializedAsync()
     {
-        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("benchId", out var benchIdValue)) // Parse a query string into its component key and value parts. https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.webutilities.queryhelpers?view=aspnetcore-8.0
-        {
-            benchId = Convert.ToInt32(benchIdValue);
-        }
+        await getUserBenchId();
+    }
 
-        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("occupationType", out var occupationType))
+    private async Task<string> getUserBenchId()
+    {
+        try
         {
-            currentOccupationType = Uri.UnescapeDataString(occupationType);
+            var userId = auth.GetIdFromLoggedUser();
+            var response = await Http.GetAsync("https://localhost:7256/user/" + userId);
+            if (response.IsSuccessStatusCode)
+            {
+                var userJson = await response.Content.ReadAsStringAsync();
+                var user = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(userJson);
+                benchId = user.benchId;
+                return user.benchId;
+            }
+            else
+            {
+                return $"Error: Status code {response.StatusCode} received.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
+            return $"Error: '{ex.Message}'";
         }
     }
 
@@ -56,11 +65,14 @@ else
         var response = await Http.PutAsync(updateEndDateUrl, null);
         if (response.IsSuccessStatusCode)
         {
-            NavigationManager.NavigateTo("/activiteit", true);
+            Snackbar.Add("De activiteit is succesvol beëindigd.", Severity.Success);
+            NavigationManager.NavigateTo("/activiteiten");
+
         }
         else
         {
             Console.Error.WriteLine("Fout bij het beëindigen van alle actieve occupation histories.");
+            Snackbar.Add("Probleem opgetreden!", Severity.Error);
         }
     }
 }
