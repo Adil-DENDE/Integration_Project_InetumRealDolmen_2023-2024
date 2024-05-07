@@ -1,0 +1,72 @@
+﻿@page "/activiteiten"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject AuthService auth
+
+@if (userBenchId == 0)
+{
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-warning" role="alert">
+                    <h4 class="alert-heading">Jij staat niet op de Bench!</h4>
+                    <p>Je staat momenteel niet op de bench, dus je kunt geen activiteit kiezen. Neem contact op met je manager als je denkt dat dit een fout is.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (occupation == 0)
+{
+    <ActiviteitKiezen></ActiviteitKiezen>
+}else
+{
+    <ActiviteitStoppen></ActiviteitStoppen>
+}
+
+
+
+@code {
+    private string ErrorMessage;
+    private int userBenchId;
+    private int occupation;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await getUserBenchId();
+    }
+
+
+    // METHODE DIE EEN USER CHECKT OF HIJ WEL EEN BENCH ID HEEFT EN ALS HIJ WEL EEN OCCUPATION HEEFT 
+    // DE NAAM MOET VERANDEREN VAN DE METHODE 
+    private async Task<string> getUserBenchId()
+    {
+        try
+        {
+            var userId = auth.GetIdFromLoggedUser();
+            var response = await Http.GetAsync("https://localhost:7256/user/" + userId);
+            if (response.IsSuccessStatusCode)
+            {
+                var userJson = await response.Content.ReadAsStringAsync();
+                var user = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(userJson);
+                userBenchId = user.benchId;
+                occupation = user.occupationId;
+                return user.benchId;
+            }
+            else
+            {
+                return $"Error: Status code {response.StatusCode} received.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
+            return $"Error: '{ex.Message}'";
+        }
+    }
+
+
+
+}
