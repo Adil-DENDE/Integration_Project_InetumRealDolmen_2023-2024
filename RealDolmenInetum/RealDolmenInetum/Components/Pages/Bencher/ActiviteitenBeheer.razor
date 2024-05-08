@@ -5,16 +5,10 @@
 
 @if (userBenchId == 0)
 {
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-12">
-                <div class="alert alert-warning" role="alert">
-                    <h4 class="alert-heading">Jij staat niet op de Bench!</h4>
-                    <p>Je staat momenteel niet op de bench, dus je kunt geen activiteit kiezen. Neem contact op met je manager als je denkt dat dit een fout is.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <MudAlert Class="mt-3" Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">
+        <h4 class="alert-heading">Jij staat niet op de Bench!</h4>
+        <p>Je staat momenteel niet op de bench, dus je kunt geen activiteit kiezen. Neem contact op met je manager als je denkt dat dit een fout is.</p>
+    </MudAlert>
 }
 else if (occupation == 0)
 {

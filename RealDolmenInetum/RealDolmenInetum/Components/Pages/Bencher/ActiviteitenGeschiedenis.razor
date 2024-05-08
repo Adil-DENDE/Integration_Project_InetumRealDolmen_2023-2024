@@ -1,4 +1,4 @@
-﻿@page "/occupationHistory"
+﻿@page "/activiteit/geschiedenis"
 @using ModelLibrary.Models
 @using ModelLibrary.Dto
 @using Newtonsoft.Json
@@ -7,80 +7,102 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @inject IDialogService DialogService
+@inject AuthService auth
 
-<PageTitle>Occupation History</PageTitle>
+<PageTitle>Activiteiten geschiedenis</PageTitle>
 
-<MudText Typo="Typo.h6">Enter Bench ID:</MudText>
-<MudTextField @bind-Value="@BenchIdString" Label="Bench ID" Variant="Variant.Outlined" />
-<MudButton OnClick="@LoadData" Color="Color.Primary">Load Data</MudButton>
+@*<MudText Typo="Typo.h6">Enter Bench ID:</MudText>*@
+@*<MudNumericField @bind-Value="@BenchId" Label="Bench ID" Variant="Variant.Outlined" HideSpinButtons />*@
+@*<MudButton OnClick="@LoadData" Color="Color.Primary">Load Data</MudButton>*@
 
-@if (!int.TryParse(BenchIdString, out _))
+@if (occupationHistories.Any())
 {
-    <div class="alert alert-warning" role="alert">
-        Voer een geldige Bench ID in.
-    </div>
+    <MudTable Items="@occupationHistories" Dense="true" Hover="true" Striped="true">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Occupation Histories</MudText>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Activiteit</MudTh>
+            <MudTh>Start Date</MudTh>
+            <MudTh>End Date</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Occupation Type">@context.OccupationType</MudTd>
+                <MudTd DataLabel="Start Date">@context.StartDate.ToString("dd-MM-yyyy")</MudTd>
+                <MudTd DataLabel="End Date">@context.EndDate?.ToString("dd-MM-yyyy")</MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Filled.Edit" OnClick="@(e => EditRecord(context))" />
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager PageSizeOptions="new int[]{5, 10, 15}" />
+            </PagerContent>
+        </MudTable>
+}
+else
+{
+    <MudAlert Class="mt-3" Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">
+        Je hebt nog geen activiteit-geschiedenis of je staat niet op de bench.
+    </MudAlert>
 }
 
-else if (occupationHistories.Any())
-{
-<MudTable Items="@occupationHistories" Dense="true" Hover="true" Striped="true">
-    <ToolBarContent>
-        <MudText Typo="Typo.h6">Occupation Histories</MudText>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>Activiteit</MudTh>
-        <MudTh>Start Date</MudTh>
-        <MudTh>End Date</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Occupation Type">@context.OccupationType</MudTd>
-            <MudTd DataLabel="Start Date">@context.StartDate.ToString("dd-MM-yyyy")</MudTd>
-            <MudTd DataLabel="End Date">@context.EndDate?.ToString("dd-MM-yyyy")</MudTd>
-            <MudTd>
-                <MudIconButton Icon="@Icons.Filled.Edit" OnClick="@(e => EditRecord(context))" />
-            </MudTd>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager PageSizeOptions="new int[]{5, 10, 15}" />
-        </PagerContent>
-    </MudTable>
-} else {
-    <div class="alert alert-info" role="alert">
-        Nog geen activiteiten.
-    </div>
-}
-
-    @code {
+@code {
     [Parameter]
     public int BenchId { get; set; }
-    public string BenchIdString { get; set; } = "";
     private List<OccupationHistoryDto> occupationHistories = new List<OccupationHistoryDto>();
     private List<Occupation> occupations = new List<Occupation>();
     public bool loadSuccessful { get; set; }
-    public bool notNumber { get; set; }
+    public string ErrorMessage;
 
     protected override async Task OnInitializedAsync()
     {
+        await getUserBenchId();
         await LoadData();
         occupations = await Http.GetFromJsonAsync<List<Occupation>>("https://localhost:7256/occupation");
     }
 
+
+
+
+    private async Task<string> getUserBenchId()
+    {
+        try
+        {
+            var userId = auth.GetIdFromLoggedUser();
+            var response = await Http.GetAsync("https://localhost:7256/user/" + userId);
+            if (response.IsSuccessStatusCode)
+            {
+                var userJson = await response.Content.ReadAsStringAsync();
+                var user = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(userJson);
+                BenchId = user.benchId;
+                return user.benchId;
+            }
+            else
+            {
+                return $"Error: Status code {response.StatusCode} received.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
+            return $"Error: '{ex.Message}'";
+        }
+    }
+
+
     private async Task LoadData()
     {
         loadSuccessful = true;
-        notNumber = false;
         occupationHistories.Clear();
 
-        if (int.TryParse(BenchIdString, out var id))
+        if (BenchId > 0)
         {
-            BenchId = id;
             try
             {
                 var fetchedData = await Http.GetFromJsonAsync<List<OccupationHistoryDto>>($"https://localhost:7256/occupationHistory/{BenchId}");
 
                 if (fetchedData != null && fetchedData.Any())
                 {
-                    // Sorteer eerst op NULL EndDates, dan op de meest recente naar oudere EndDates
                     occupationHistories = fetchedData
                         .OrderBy(o => o.EndDate.HasValue)
                         .ThenByDescending(o => o.EndDate)
@@ -97,37 +119,32 @@ else if (occupationHistories.Any())
                 }
                 else
                 {
-                    // Als fetchedData null is of leeg, behandel het als een succesvolle laadoperatie met geen data
                     loadSuccessful = false;
                 }
             }
             catch (Exception)
             {
-                //mislukt als er een exception optreedt
                 loadSuccessful = false;
             }
         }
         else
         {
-            // Als BenchIdString niet naar een int kan worden geparseerd
             loadSuccessful = false;
         }
     }
 
-
-    // Open een dialoog om de geselcteerde record te weizigen
+    // Open een dialoog om de geselecteerde record te wijzigen
     private async Task EditRecord(OccupationHistoryDto record)
     {
         var parameters = new DialogParameters
             {
                 ["OccupationHistory"] = record,
                 ["Occupations"] = occupations,
-                    ["BenchId"] = BenchId
+                ["BenchId"] = BenchId
             };
 
         var dialog = DialogService.Show<EditOccupationHistoryDialog>("Bewerk Record", parameters);
         var result = await dialog.Result;
-
 
         if (!result.Cancelled)
         {
@@ -135,5 +152,3 @@ else if (occupationHistories.Any())
         }
     }
 }
-
-

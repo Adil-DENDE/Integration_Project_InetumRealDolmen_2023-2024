@@ -78,7 +78,10 @@ else if (!string.IsNullOrEmpty(ErrorMessage))
 }
 else
 {
-    <p>No data available</p>
+    <MudAlert Class="mt-3" Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">
+        <h4 class="alert-heading">De bench is leeg.</h4>
+        <p>Er staat momenteel niemand op de bench.</p>
+    </MudAlert>
 }
 
 
