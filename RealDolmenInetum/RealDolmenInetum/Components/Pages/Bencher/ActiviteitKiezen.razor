@@ -1,4 +1,4 @@
-﻿@page "/activiteit"
+﻿@page "/activiteit/kiezen"
 @rendermode InteractiveServer
 @using ModelLibrary.Models
 @using ModelLibrary.Dto
@@ -13,26 +13,26 @@
 @if (occupations.Any())
 {
     <div class="container mt-5">
+
         <div class="row">
             <div class="col-lg-8">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h1>Welke activiteit ga je starten?</h1>
+                        <h1>Welke activiteit ben je van plan te starten?</h1>
 
                         <form action="#">
-                            <div class="mb-3">
-                                <label for="benchId" class="form-label">Bench ID:</label>
-                                <input type="number" class="form-control" id="benchId" @bind="benchId">
 
+                            <div class="mb-3">
                                 <label for="activiteiten" class="form-label">Kies een activiteit:</label>
                                 <select class="form-select" id="activiteiten" @bind="selectedOccupationType">
+									<option>Kies een activiteit..</option>
                                     @foreach (var occupation in occupations)
                                     {
+                                        
                                         <option value="@occupation.Type">@occupation.Type</option>
                                     }
                                 </select>
                             </div>
-
 
                             <MudButton OnClick="UpdateOccupation" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Primary">Opslaan</MudButton>
                         </form>
@@ -41,19 +41,23 @@
             </div>
 
             <div class="col-lg-4">
-            <aside id="cardContainer">
+                <aside id="cardContainer">
                     @foreach (var occupation in occupations)
                     {
-                        <div class="card mb-3">
+                        <div class="card mb-3 shadow-sm">
+                            <div class="card-header bg-secondary text-white text">
+                                <h2 class="m-0">@occupation.Type</h2>
+                            </div>
                             <div class="card-body">
-                                <h2>@occupation.Type</h2>
                                 <p>@occupation.Remark</p>
                             </div>
                         </div>
                     }
-				</aside>
-			</div>
+                </aside>
+            </div>
+
         </div>
+
     </div>
 }
 else if (!string.IsNullOrWhiteSpace(ErrorMessage))
@@ -69,7 +73,6 @@ else
 @code {
     public List<Occupation> occupations = new List<Occupation>();
     public string ErrorMessage = "";
-    private int benchId;
     private string selectedOccupationType;
     private int userBenchId;
 
@@ -78,6 +81,33 @@ else
         await getUserBenchId();
         await FetchOccupations();
     }
+
+
+    private async Task<string> getUserBenchId()
+    {
+        try
+        {
+            var userId = auth.GetIdFromLoggedUser();
+            var response = await Http.GetAsync("https://localhost:7256/user/" + userId);
+            if (response.IsSuccessStatusCode)
+            {
+                var userJson = await response.Content.ReadAsStringAsync();
+                var user = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(userJson);
+                userBenchId = user.benchId;
+                return user.benchId;
+            }
+            else
+            {
+                return $"Error: Status code {response.StatusCode} received.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
+            return $"Error: '{ex.Message}'";
+        }
+    }
+
 
     // Data ophalen uit de api en daar een lijst mee vullen maken
     public async Task FetchOccupations()
@@ -127,40 +157,11 @@ else
         return occupations.FirstOrDefault(o => o.Type == selectedOccupationType);
     }
 
-    // Methode om de benchid van de current user te vinden // HIER MARWAN =============
-    private async Task<string> getUserBenchId()
-    {
-        try
-        {
-            var userId = auth.GetIdFromLoggedUser();
-            var response = await Http.GetAsync("https://localhost:7256/user/" + userId);
-            if (response.IsSuccessStatusCode)
-            {
-                var userJson = await response.Content.ReadAsStringAsync();
-                var user = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(userJson);
-                userBenchId = user.benchId;
-                return user.benchId ; 
-            }
-            else
-            {
-                return $"Error: Status code {response.StatusCode} received.";
-            }
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = $"Er is een onverwachte fout opgetreden: {ex.Message}";
-            return $"Error: '{ex.Message}'";
-        }
-    }
 
-
-
-
-
-    // Methode om de occupation_id van een Bench record te updaten. // MOET AANGEPAST WORDEN
+    // Methode om de occupation_id van een Bench record te updaten.
     private async Task<bool> UpdateOccupationInBench(Occupation selectedOccupation)
     {
-        var updateResponse = await Http.PutAsJsonAsync($"https://localhost:7256/user/bench/occupation/{benchId}", new { type = selectedOccupationType });
+        var updateResponse = await Http.PutAsJsonAsync($"https://localhost:7256/user/bench/occupation/{userBenchId}", new { type = selectedOccupationType });
         if (!updateResponse.IsSuccessStatusCode)
         {
             ErrorMessage = "Fout bij het updaten van de occupation.";
@@ -174,7 +175,7 @@ else
     {
         var historyDto = new OccupationHistoryDto
             {
-                BenchId = benchId,
+                BenchId = userBenchId,
                 OccupationId = selectedOccupation.Id,
                 StartDate = DateTime.Now,
                 EndDate = null
@@ -183,7 +184,7 @@ else
         var addHistoryResponse = await Http.PostAsJsonAsync("https://localhost:7256/occupationHistory/add", historyDto);
         if (addHistoryResponse.IsSuccessStatusCode)
         {
-            NavigationManager.NavigateTo($"/activiteit/einde?benchId={benchId}&occupationType={Uri.EscapeDataString(selectedOccupationType)}");
+            NavigationManager.NavigateTo($"/activiteiten");
         }
         else
         {
