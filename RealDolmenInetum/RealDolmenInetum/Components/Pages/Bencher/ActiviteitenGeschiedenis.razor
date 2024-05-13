@@ -11,9 +11,15 @@
 
 <PageTitle>Activiteiten geschiedenis</PageTitle>
 
-@*<MudText Typo="Typo.h6">Enter Bench ID:</MudText>*@
-@*<MudNumericField @bind-Value="@BenchId" Label="Bench ID" Variant="Variant.Outlined" HideSpinButtons />*@
-@*<MudButton OnClick="@LoadData" Color="Color.Primary">Load Data</MudButton>*@
+@if (auth.GetRolFromLoggedUser() == "admin")
+{
+    <MudText Typo="Typo.h6">Enter Bench ID:</MudText>
+
+    <MudNumericField @bind-Value="@BenchId" Label="Bench ID" Variant="Variant.Outlined" HideSpinButtons />
+
+    <MudButton OnClick="@LoadData" Color="Color.Primary">Load Data</MudButton>
+}
+
 
 @if (occupationHistories.Any())
 {

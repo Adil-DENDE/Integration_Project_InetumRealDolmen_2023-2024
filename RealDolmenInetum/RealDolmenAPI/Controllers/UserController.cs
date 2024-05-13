@@ -21,22 +21,6 @@ namespace RealDolmenAPI.Controllers
             // Gebruik MapGroup om een groep te definiëren
             var userGroup = app.MapGroup("/user");
 
-            // Gewoon om te testen
-            userGroup.MapPost("/register", async (UserRegistrationDto model, UserManager<User> userManager) =>
-            {
-                var user = new User { UserName = model.Email, Email = model.Email, First_Name = model.First_Name, Last_Name = model.Last_Name };
-                var result = await userManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
-                {
-                    return Results.Ok("User account is gecreerd!");
-                }
-                else
-                {
-                    return Results.BadRequest(result.Errors);
-                }
-            });
-
             userGroup.MapPost("/account/create", async (string email, string password, string role, string first_name, string last_name, UserManager<User> userManager) =>
             {
                 User User = await userManager.FindByEmailAsync(email);
@@ -95,8 +79,6 @@ namespace RealDolmenAPI.Controllers
 
                 return Results.Ok(new JwtSecurityTokenHandler().WriteToken(token));
             });
-
-
 
 
 
