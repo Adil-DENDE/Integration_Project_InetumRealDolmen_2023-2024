@@ -13,7 +13,7 @@
 
 <PageTitle>Dashboard</PageTitle>
 
-
+@if(rol == "admin" || rol == "manager") {
 <div class="btnToevoegenMobile">
     <MudButton Href="/toevoegen" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Rounded.PersonAdd" Color="Color.Primary">Toevoegen</MudButton>
 </div>
@@ -82,8 +82,15 @@ else
         <h4 class="alert-heading">De bench is leeg.</h4>
         <p>Er staat momenteel niemand op de bench.</p>
     </MudAlert>
+    }
+} else
+{
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+            U hebt niet de rechten om deze pagina te bekijken.
+        </div>
+    </div>
 }
-
 
 @code {
     public List<UserViewModel> usersOpBench;
@@ -92,11 +99,13 @@ else
     private int daysOnBench;
     private string managerName = "Laden...";
     private int managerBenchId;
+    private string rol;
 
     protected override async Task OnInitializedAsync()
     {
         await FetchData();
         await FetchCurrentBenchManager();
+        rol = auth.GetRolFromLoggedUser();
     }
 
 

@@ -20,20 +20,20 @@
     <div class="vh-100 d-flex justify-content-center align-items-center">
         <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
             <div class="shadow">
-                <div class="card-body bg-white rounded-3 ">
-                    <MudText Typo="Typo.h3" Align="Align.Center">Login</MudText>
+                <div class="card-body bg-white loginContainer ">
+                    <MudText Class="" Typo="Typo.h4" Align="Align.Center">Inloggen</MudText>
 
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <label for="email">Email</label>
                         <InputText id="email" class="form-control"  @bind-Value="userLoginModel.Email" />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <label for="password">Password</label>
                         <InputText id="password" class="form-control" @bind-Value="userLoginModel.Password" type="password" />
                     </div>
-                    <div class="d-flex justify-content-end">
-                    <MudButton Class="mt-2 mb-2" ButtonType="ButtonType.Submit" Variant="Variant.Filled" StartIcon=@Icons.Material.Filled.Login Color="Color.Primary">Login</MudButton>
+                    <div class="d-flex justify-content-end mt-3">
+                    <MudButton Class="mt-2 mb-2" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Inloggen</MudButton>
                     </div>
                     <p class="text-center text-danger mt-3">@errorMessage</p>
                 </div>
@@ -67,7 +67,7 @@
         }
         else
         {
-            errorMessage = "Failed to log in. Please check your credentials and try again.";
+            errorMessage = "Inloggen mislukt. Controleer uw inloggegevens en probeer het opnieuw.";
             userLoginModel.Email = "adil@gmail.com";
             userLoginModel.Password = "Test123!";
         }

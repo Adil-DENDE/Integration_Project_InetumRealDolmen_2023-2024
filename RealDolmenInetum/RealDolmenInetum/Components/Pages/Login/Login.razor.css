@@ -1,1 +1,4 @@
-﻿
+﻿.loginContainer {
+    border: double 1px black;
+    border-radius: 10px;
+}
