@@ -118,6 +118,7 @@
         rol = auth.GetRolFromLoggedUser();
         currentUserId = auth.GetIdFromLoggedUser();
         await FetchUserData();
+        await FetchCurrentBenchManager();
         await FetchBenchManagerDetails();
         await FetchUserBenchId();
     }

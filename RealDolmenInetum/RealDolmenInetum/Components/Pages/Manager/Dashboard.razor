@@ -36,9 +36,13 @@
                         <p class="mb-0 text-muted">Bench manager</p>
                     </div>
                 </div>
-                <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit">
-                    Wijzigen
-                </MudButton>
+                    @if (rol == "admin" || rol == "manager")
+                    {
+                        <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit">
+                          Wijzigen
+                          </MudButton>  
+                    }
+                    
             </div>
         </div>
     </MudItem>
