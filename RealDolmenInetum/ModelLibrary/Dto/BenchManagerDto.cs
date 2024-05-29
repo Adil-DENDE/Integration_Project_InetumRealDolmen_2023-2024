@@ -9,6 +9,7 @@ namespace ModelLibrary.Dto
     public class BenchManagerDto
     {
         public int BenchId { get; set; }
+        public int userId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }

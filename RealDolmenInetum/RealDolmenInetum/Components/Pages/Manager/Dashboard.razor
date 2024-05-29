@@ -13,7 +13,8 @@
 
 <PageTitle>Dashboard</PageTitle>
 
-@if(rol == "admin" || rol == "manager") {
+@if (currentUserId == currentManagerUserId.ToString() || rol == "admin" || rol == "manager")
+{
 <div class="btnToevoegenMobile">
     <MudButton Href="/toevoegen" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Rounded.PersonAdd" Color="Color.Primary">Toevoegen</MudButton>
 </div>
@@ -99,6 +100,8 @@ else
     private int daysOnBench;
     private string managerName = "Laden...";
     private int managerBenchId;
+    private string currentUserId;
+    private int currentManagerUserId;
     private string rol;
 
     protected override async Task OnInitializedAsync()
@@ -106,6 +109,7 @@ else
         await FetchData();
         await FetchCurrentBenchManager();
         rol = auth.GetRolFromLoggedUser();
+        currentUserId = auth.GetIdFromLoggedUser();
     }
 
 
@@ -156,6 +160,7 @@ else
                 var manager = await response.Content.ReadFromJsonAsync<BenchManagerDto>();
                 managerName = $"{manager.FirstName} {manager.LastName}";
                 managerBenchId = manager.BenchId;
+                currentManagerUserId = manager.userId;
             }
             else
             {
