@@ -1,4 +1,8 @@
-﻿.loginContainer {
-    border: double 1px black;
-    border-radius: 10px;
+﻿.topBarLogin {
+    background-color: #673AB7;
+}
+
+
+.loginPage {
+
 }

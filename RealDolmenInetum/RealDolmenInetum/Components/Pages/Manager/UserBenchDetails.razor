@@ -2,6 +2,7 @@
 @using ModelLibrary.ViewModels
 @using ModelLibrary.Models
 @using ModelLibrary.Dto
+@using RealDolmenInetum.Components.Pages.General
 @using RealDolmenInetum.Components.Pages.Manager
 @using Newtonsoft.Json
 @inject NavigationManager NavigationManager
@@ -10,75 +11,86 @@
 @inject ISnackbar Snackbar
 @using System
 @inject IDialogService DialogService
+@inject AuthService auth
 
-<MudButton Href="/home" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary">Terug</MudButton>
-<div class="card-body"> 
-@if (usersDetails != null)
+
+@if (currentUserId == currentManagerUserId.ToString() || rol == "admin" || rol == "manager")
 {
-    <h3 class="text-center">@usersDetails.UserName op de bench sinds: @usersDetails.StartBench.ToString("dd-MM-yyyy") (@daysOnBench dagen)</h3>
-        <MudExpansionPanels MultiExpansion="true">
-            <MudExpansionPanel Text="Gebruikersdetails">
-                <div>
-                    <h5>Projectgeschiedenis:</h5>
-                    @if (usersDetails.ProjectDetails != null && usersDetails.ProjectDetails.Any())
-                    {
-                        <ul class="list-group">
-                            @foreach (var detail in usersDetails.ProjectDetails)
-                            {
-                                <li class="list-group-item">@detail</li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                    <li class="list-group-item">Nog geen projecten.</li>
-                    }
+    <MudButton Href="/home" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary">Terug</MudButton>
+    <div class="card-body">
+        @if (usersDetails != null)
+        {
+            <h3 class="text-center">@usersDetails.UserName op de bench sinds: @usersDetails.StartBench.ToString("dd-MM-yyyy") (@daysOnBench dagen)</h3>
+            <MudExpansionPanels MultiExpansion="true">
+                <MudExpansionPanel Text="Gebruikersdetails">
+                    <div>
+                        <h5>Projectgeschiedenis:</h5>
+                        @if (usersDetails.ProjectDetails != null && usersDetails.ProjectDetails.Any())
+                        {
+                            <ul class="list-group">
+                                @foreach (var detail in usersDetails.ProjectDetails)
+                                {
+                                    <li class="list-group-item">@detail</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                        <li class="list-group-item">Nog geen projecten.</li>
+                        }
 
                     <br />
-					<h5>Activiteit:</h5>
-                    @if (usersDetails.OccupationDetails != null)
-                    {
+                    <h5>Activiteit:</h5>
+                        @if (usersDetails.OccupationDetails != null)
+                        {
                         <ul class="list-group">
                             <li class="list-group-item">@usersDetails.OccupationDetails</li>
                         </ul>
-                    }
-                    else
-                    {
+                        }
+                        else
+                        {
                         <ul class="list-group">
                             <li class="list-group-item">Momenteel geen activiteit.</li>
                         </ul>
-                    }
+                        }
                     <br />
-                    
-                @*<MudGrid>
-                    <MudItem xs="12" sm="6" md="4">
-                        <MudTextField Label="Bench Manager" Variant="Variant.Filled" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountCircle" Value="@($"{usersDetails.BenchManagerFirstName} {usersDetails.BenchManagerLastName}")" ReadOnly="true"></MudTextField>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4" Class="d-flex align-items-center">
-                        <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
-                            Wijzigen
-                        </MudButton>
-                    </MudItem>
-                </MudGrid>*@
-                <div class="form-check form-switch">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Is Bench Manager</label>
-                    <input class="form-check-input" type="checkbox" @onclick="ToggleManagerStatus" checked="@isManager" />
-                </div>
+
+                        @*<MudGrid>
+            <MudItem xs="12" sm="6" md="4">
+            <MudTextField Label="Bench Manager" Variant="Variant.Filled" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountCircle" Value="@($"{usersDetails.BenchManagerFirstName} {usersDetails.BenchManagerLastName}")" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4" Class="d-flex align-items-center">
+            <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
+            Wijzigen
+            </MudButton>
+            </MudItem>
+            </MudGrid>*@
+                    <div class="form-check form-switch">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Is Bench Manager</label>
+                        <input class="form-check-input" type="checkbox" @onclick="ToggleManagerStatus" checked="@isManager" />
+                    </div>
+        </div>
+                    @*@bind-Value="usersDetails.IsCurrentBenchManager"*@
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+
+        }
+        else
+        {
+        <p>Gegevens worden geladen of zijn niet beschikbaar.</p>
+        }
+
     </div>
-                @*@bind-Value="usersDetails.IsCurrentBenchManager"*@
-            </MudExpansionPanel>
-        </MudExpansionPanels>
-
-}
-else
+    <input type="number" @bind="benchId" class="form-control mb-2" placeholder="Bench ID" readonly />
+    <MudButton Href="/home" FullWidth="true" @onclick="Einde" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Primary">Einde</MudButton>
+} else
 {
-    <p>Gegevens worden geladen of zijn niet beschikbaar.</p>
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+            U hebt niet de rechten om deze pagina te bekijken.
+        </div>
+    </div>
 }
-
-</div>
-<input type="number" @bind="benchId" class="form-control mb-2" placeholder="Bench ID" readonly />
-<MudButton Href="/home" FullWidth="true" @onclick="Einde" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Primary">Einde</MudButton>
-
 
 
 
@@ -95,9 +107,16 @@ else
     public string ErrorMessage = "";
     private int daysOnBench;
     bool isManager;
+    private string rol;
+    private string currentUserId;
+    private int currentManagerUserId;
+
+
 
     protected override async Task OnInitializedAsync()
     {
+        rol = auth.GetRolFromLoggedUser();
+        currentUserId = auth.GetIdFromLoggedUser();
         await FetchUserData();
         await FetchBenchManagerDetails();
         await FetchUserBenchId();
@@ -275,6 +294,23 @@ else
         parameters.Add("Id", Id);
 
         DialogService.Show<ManagerUpdateDialog>("Manager bijwerken", parameters, options);
+    }
+
+    private async Task FetchCurrentBenchManager()
+    {
+        try
+        {
+            var response = await Http.GetAsync("https://localhost:7256/user/bench/CurrentBenchManager");
+            if (response.IsSuccessStatusCode)
+            {
+                var manager = await response.Content.ReadFromJsonAsync<BenchManagerDto>();
+                currentManagerUserId = manager.userId;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error bij het ophalen van de huidige bench manager: {ex.Message}");
+        }
     }
 
 }

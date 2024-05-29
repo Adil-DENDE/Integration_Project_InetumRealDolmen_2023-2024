@@ -7,49 +7,61 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @inject ISnackbar Snackbar
+@inject AuthService auth
 
-<MudButton Href="/home" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary">Terug</MudButton>
+@if (currentUserId == currentManagerUserId.ToString() || rol == "admin" || rol == "manager")
+{
+    <MudButton Href="/home" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary">Terug</MudButton>
 
-<div class="card-body border-1 shadow-hover mb-20 rounded border border-primary mt-3">
-<EditForm Model="@formModel" OnSubmit="@Submit" Context="EditContext">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-		<label for="Email">Zoek gebruiker op email:</label>
-    <div class="form-group d-flex">
-        <div class="input-group mb-3">
-            <InputText id="Email" class="form-control" placeholder="email.." @bind-Value="@formModel.Email"  />
-        </div>
-            <MudButton id="zoekBtn" class="mb-3" @onclick="@PerformSearch" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Search" Color="Color.Primary"></MudButton>
-        
+    <div class="card-body border-1 shadow-hover mb-20 rounded border border-primary mt-3">
+        <EditForm Model="@formModel" OnSubmit="@Submit" Context="EditContext">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <label for="Email">Zoek gebruiker op email:</label>
+            <div class="form-group d-flex">
+                <div class="input-group mb-3">
+                    <InputText id="Email" class="form-control" placeholder="email.." @bind-Value="@formModel.Email" />
+                </div>
+                <MudButton id="zoekBtn" class="mb-3" @onclick="@PerformSearch" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Search" Color="Color.Primary"></MudButton>
+
+            </div>
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ErrorMessage
+                </div>
+            }
+            @if (suggestedUsers.Any())
+            {
+                <MudPaper Width="300px">
+                    <MudList Clickable="true">
+                        @foreach (var user in suggestedUsers)
+                        {
+                            <MudListItem @onclick="() => SelectUser(user)" Text="@user.Email" />
+                        }
+                    </MudList>
+                </MudPaper>
+            }
+            else if (searchPerformed && !string.IsNullOrWhiteSpace(formModel.Email) && selectedUser == null)
+            {
+                <p>Geen gebruikers gevonden.</p>
+            }
+            <div class="form-group">
+                <label for="StartBench">Begindatum</label>
+                <InputDate id="StartBench" class="d-block p-2 w-100 border-1 border-bottom-1 rounded border" @bind-Value="@formModel.StartBench" />
+            </div>
+            <MudButton Class="mt-3" ButtonType="ButtonType.Submit" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Primary">Save</MudButton>
+        </EditForm>
     </div>
-		@if (!string.IsNullOrEmpty(ErrorMessage))
-		{
-			<div class="alert alert-danger" role="alert">
-				@ErrorMessage
-			</div>
-		}
-    @if (suggestedUsers.Any())
-    {
-            <MudPaper Width="300px">
-        <MudList Clickable="true">
-                    @foreach (var user in suggestedUsers)
-                    {
-                    <MudListItem @onclick="() => SelectUser(user)" Text="@user.Email" />
-                    }
-        </MudList>
-    </MudPaper>
-    }
-    else if (searchPerformed && !string.IsNullOrWhiteSpace(formModel.Email) && selectedUser == null)
-    {
-        <p>Geen gebruikers gevonden.</p>
-    }
-    <div class="form-group">
-        <label for="StartBench">Begindatum</label>
-            <InputDate id="StartBench" class="d-block p-2 w-100 border-1 border-bottom-1 rounded border" @bind-Value="@formModel.StartBench" />
-    </div> 
-        <MudButton Class="mt-3" ButtonType="ButtonType.Submit" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Primary">Save</MudButton>
-</EditForm>
-</div>
+} else
+{
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+            U hebt niet de rechten om deze pagina te bekijken.
+        </div>
+    </div>
+}
+
 
 @code {
     [SupplyParameterFromForm]
@@ -60,10 +72,19 @@
     private bool searchPerformed = false;
     public string ErrorMessage = "";
     public bool userSuccesToegevoegd = false;
+    private string currentUserId;
+    private int currentManagerUserId;
+    private string rol;
 
     // NOUVELLE INSTANCE DU FORM
     protected override void OnInitialized() => formModel ??= new UserBenchDto() { StartBench = DateTime.Today };
 
+    protected override async Task OnInitializedAsync()
+    {
+        //await FetchCurrentBenchManager();
+        rol = auth.GetRolFromLoggedUser();
+        currentUserId = auth.GetIdFromLoggedUser();
+    }
 
     private async Task Submit(EditContext editContext)
     {
@@ -214,4 +235,21 @@
         }
     }
 
+    private async Task FetchCurrentBenchManager()
+    {
+        try
+        {
+            var response = await Http.GetAsync("https://localhost:7256/user/bench/CurrentBenchManager");
+            if (response.IsSuccessStatusCode)
+            {
+                var manager = await response.Content.ReadFromJsonAsync<BenchManagerDto>();
+                currentManagerUserId = manager.userId;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error bij het ophalen van de huidige bench manager: {ex.Message}");
+        }
+    }
 }

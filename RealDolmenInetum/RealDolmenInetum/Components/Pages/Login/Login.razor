@@ -12,32 +12,30 @@
 
 <PageTitle>Inloggen - Realdolmen Inetum</PageTitle>
 
-
 <EditForm Model="@userLoginModel" OnValidSubmit="HandleLogin">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="vh-100 d-flex justify-content-center align-items-center">
+    <div class="vh-100 d-flex justify-content-center align-items-center loginPage">
         <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
-            <div class="shadow">
-                <div class="card-body bg-white loginContainer ">
-                    <MudText Class="" Typo="Typo.h4" Align="Align.Center">Inloggen</MudText>
-
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div  class="card-header text-white text-center topBarLogin rounded-2">
+                    <MudText Typo="Typo.h4" Align="Align.Center" Class="m-0">Inloggen</MudText>
+                </div>
+                <div class="card-body bg-white loginContainer rounded-2">
                     <div class="form-group mt-3">
-                        <label for="email">Email</label>
-                        <InputText id="email" class="form-control"  @bind-Value="userLoginModel.Email" />
+                        <label for="email" class="form-label">Email</label>
+                        <InputText id="email" class="form-control" @bind-Value="userLoginModel.Email" />
                     </div>
-
                     <div class="form-group mt-3">
-                        <label for="password">Password</label>
+                        <label for="password" class="form-label">Password</label>
                         <InputText id="password" class="form-control" @bind-Value="userLoginModel.Password" type="password" />
                     </div>
-                    <div class="d-flex justify-content-end mt-3">
-                    <MudButton Class="mt-2 mb-2" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Inloggen</MudButton>
+                    <div class="d-grid gap-2 mt-4">
+                        <MudButton Class="btn btn-primary btn-block" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Inloggen</MudButton>
                     </div>
                     <p class="text-center text-danger mt-3">@errorMessage</p>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -46,42 +44,3 @@
 
 
 
-
-@code {
-    private UserLoginDto userLoginModel = new UserLoginDto();
-    private string errorMessage = "";
-    private bool shouldShowInvalidLoginAlert = false;
-
-    private async Task HandleLogin(EditContext editContext)
-    {
-        var response = await Http.PostAsJsonAsync("https://localhost:7256/user/login", userLoginModel);
-        if (response.IsSuccessStatusCode)
-        {
-            var token = await response.Content.ReadAsStringAsync();
-            token.Trim().Trim('"');
-
-            auth.SetToken(token);
-            await LocalStorage.SetItemAsync("authToken", token);
-
-            NavigationManager.NavigateTo("/home");
-        }
-        else
-        {
-            errorMessage = "Inloggen mislukt. Controleer uw inloggegevens en probeer het opnieuw.";
-            userLoginModel.Email = "adil@gmail.com";
-            userLoginModel.Password = "Test123!";
-        }
-    }
-
-    // CHECKT OF DE TOKEN AL BESTAAT ZODAT JE REDIRECT ALS JE AL INGELOGD ZIJT.
-    /*
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-        var tokenSaved = await LocalStorage.GetItemAsStringAsync("authToken");
-        auth.SetToken(tokenSaved);
-        if (auth.GetToken() != null)
-            {
-            NavigationManager.NavigateTo("/home");
-    }
-    }*/
-}
