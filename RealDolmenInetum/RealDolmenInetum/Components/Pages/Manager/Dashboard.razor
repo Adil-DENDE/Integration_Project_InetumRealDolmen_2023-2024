@@ -13,7 +13,8 @@
 
 <PageTitle>Dashboard</PageTitle>
 
-
+@if (currentUserId == currentManagerUserId.ToString() || rol == "admin" || rol == "manager")
+{
 <div class="btnToevoegenMobile">
     <MudButton Href="/toevoegen" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Rounded.PersonAdd" Color="Color.Primary">Toevoegen</MudButton>
 </div>
@@ -35,9 +36,13 @@
                         <p class="mb-0 text-muted">Bench manager</p>
                     </div>
                 </div>
-                <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit">
-                    Wijzigen
-                </MudButton>
+                    @if (rol == "admin" || rol == "manager")
+                    {
+                        <MudButton OnClick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit">
+                          Wijzigen
+                          </MudButton>  
+                    }
+                    
             </div>
         </div>
     </MudItem>
@@ -82,8 +87,15 @@ else
         <h4 class="alert-heading">De bench is leeg.</h4>
         <p>Er staat momenteel niemand op de bench.</p>
     </MudAlert>
+    }
+} else
+{
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+            U hebt niet de rechten om deze pagina te bekijken.
+        </div>
+    </div>
 }
-
 
 @code {
     public List<UserViewModel> usersOpBench;
@@ -92,11 +104,16 @@ else
     private int daysOnBench;
     private string managerName = "Laden...";
     private int managerBenchId;
+    private string currentUserId;
+    private int currentManagerUserId;
+    private string rol;
 
     protected override async Task OnInitializedAsync()
     {
         await FetchData();
         await FetchCurrentBenchManager();
+        rol = auth.GetRolFromLoggedUser();
+        currentUserId = auth.GetIdFromLoggedUser();
     }
 
 
@@ -147,10 +164,11 @@ else
                 var manager = await response.Content.ReadFromJsonAsync<BenchManagerDto>();
                 managerName = $"{manager.FirstName} {manager.LastName}";
                 managerBenchId = manager.BenchId;
+                currentManagerUserId = manager.userId;
             }
             else
             {
-                managerName = "Geen manager gevonden";
+                managerName = "Er is momenteel geen Manager";
             }
         }
         catch (Exception ex)

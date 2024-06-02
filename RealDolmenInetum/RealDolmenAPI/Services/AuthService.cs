@@ -52,5 +52,15 @@ namespace RealDolmenAPI.Services
             var usernameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             return usernameClaim?.Value;
         }
+
+        public string GetRolFromLoggedUser()
+        {
+            var token = GetToken().Trim('\"');
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var usernameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            return usernameClaim?.Value;
+        }
     }
 }
