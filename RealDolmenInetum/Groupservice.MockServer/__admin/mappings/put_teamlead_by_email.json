@@ -1,0 +1,23 @@
+{
+  "request": {
+    "method": "PUT",
+    "urlPathPattern": "/api/Teamleads/{email}",
+    "pathParams": {
+      "email": {
+        "matches": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.name"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"name\": \"Updated Name\", \"email\": \"{{request.path.email}}\", \"role\": \"Team Lead\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

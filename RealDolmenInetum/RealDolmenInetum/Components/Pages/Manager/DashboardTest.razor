@@ -1,0 +1,258 @@
+﻿@page "/teamleads"
+@using ModelLibrary.ViewModels
+@using ModelLibrary.Models
+@using Newtonsoft.Json
+@using RealDolmenAPI.Services
+@using Helper
+@rendermode InteractiveServer
+@inject HttpClient HttpClient
+@inject MockTeamService mockTeamService
+@inject NavigationManager NavigationManager
+@using MudBlazor
+
+<PageTitle>Teamleden Dashboard</PageTitle>
+
+<div class="btnToevoegenMobile">
+    <MudButton Href="/toevoegen" FullWidth="true" Variant="Variant.Filled" StartIcon="@Icons.Material.Rounded.PersonAdd" Color="Color.Primary">Toevoegen</MudButton>
+</div>
+
+<div id="btnToevoegenComputer">
+    <MudFab Href="/toevoegen" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" />
+</div>
+
+<MudGrid>
+    <MudItem xs="12">
+        <div class="card border-1 shadow-hover mb-20">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div class="pr-3">
+                        <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Default" Size="Size.Large" />
+                    </div>
+                    <div>
+                        <h5 class="mb-1">@teamleadDetail?.FirstName @teamleadDetail?.LastName</h5>
+                        <p class="mb-0 text-muted">@teamleadDetail?.Email</p>
+                        <p class="mb-0 text-muted">@teamleadDetail?.UserName</p>
+                        <p class="mb-0 text-muted">Groepen: @string.Join(", ", teamleadDetail?.DirectoryGroupNames ?? Enumerable.Empty<string>())</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </MudItem>
+</MudGrid>
+
+@if (teamleadDetail == null)
+{
+    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">
+        <h4 class="alert-heading">Teamleider niet gevonden.</h4>
+        <p>Geen gegevens beschikbaar voor de teamleider.</p>
+    </MudAlert>
+}
+else if (teamMembers == null)
+{
+    <MudProgressCircular Indeterminate="true" />
+}
+else
+{
+    <h4>Teamleden</h4>
+    <MudGrid>
+        @foreach (var member in teamMembers)
+        {
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <div class="card border-1 shadow-hover mb-20">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="pr-3">
+                            <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Default" Title="Person" Size="Size.Large" />
+                        </div>
+                        <div>
+                            <h5 class="mb-1">@member.Username</h5>
+                            <p class="mb-0 text-muted"><MudIcon Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Email" Title="Email" /> @member.Email</p>
+                        </div>
+                    </div>
+                </div>
+            </MudItem>
+        }
+    </MudGrid>
+
+    <MudButton OnClick="CheckBenchStatus" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Info">Check Bench Status</MudButton>
+
+    @if (benchCheckCompleted)
+    {
+        <h4 class="mt-4">Bench Status</h4>
+        @if (benchInfoResults != null && benchInfoResults.Count > 0)
+        {
+            @foreach (var member in teamMembers.Where(m => m.BenchInfo != null))
+            {
+                <div class="col-md-12" id="userContainer">
+                    <div id="userContainer" class="card border-1 shadow-hover mb-20">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="pr-3">
+                                <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Default" Title="Person" Size="Size.Large" />
+                            </div>
+                            <div>
+                                <h5 class="mb-1">@member.Username</h5>
+                                <p class="mb-0 text-muted"><MudIcon Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Email" Title="Email" /> @member.Email</p>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <div>
+                                <strong>Bench started:</strong>
+                                <span>@member.BenchInfo.StartBench.ToString("dd-MM-yyyy")</span>
+                                <div>
+                                    <strong>Dagen op de bench:</strong> @DateHelper.CalculateDaysSince(member.BenchInfo.StartBench)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">
+                <h4 class="alert-heading">De bench is leeg.</h4>
+                <p>Er staat momenteel niemand op de bench.</p>
+            </MudAlert>
+        }
+    }
+}
+
+@code {
+    private TeamleadDetail teamleadDetail;
+    private List<EmployeeItemWithBenchInfo> teamMembers;
+    private List<string> benchInfoResults;
+    private bool benchCheckCompleted;
+    private const string BaseUrl = "https://localhost:7256/user/teamleads/";
+    private const string BenchUrl = "https://localhost:7256/user/bench/search?email=";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchTeamleadDetail("test@example.com");
+        if (teamleadDetail != null)
+        {
+            await FetchTeamMembers(teamleadDetail.Email);
+        }
+    }
+
+    private async Task FetchTeamleadDetail(string email)
+    {
+        try
+        {
+            var response = await HttpClient.GetAsync($"{BaseUrl}{email}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                teamleadDetail = JsonConvert.DeserializeObject<TeamleadDetail>(content);
+            }
+            else
+            {
+                Console.WriteLine($"Failed to fetch team lead details: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching team lead details: {ex.Message}");
+        }
+    }
+
+    private async Task FetchTeamMembers(string email)
+    {
+        try
+        {
+            var response = await HttpClient.GetAsync($"{BaseUrl}{email}/members");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<FindMembersOut>(content);
+                teamMembers = new List<EmployeeItemWithBenchInfo>();
+
+                foreach (var member in result.Members)
+                {
+                    teamMembers.Add(new EmployeeItemWithBenchInfo
+                        {
+                            Email = member.Email,
+                            Username = member.Username,
+                            FirstName = member.FirstName,
+                            LastName = member.LastName,
+                            DirectoryGroupNames = member.DirectoryGroupNames ?? new List<string>(),
+                            MemberCount = member.MemberCount,
+                            LeadType = member.LeadType,
+                            BenchInfo = null // Placeholder, will be updated later
+                        });
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Failed to fetch team members: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching team members: {ex.Message}");
+        }
+    }
+
+    private async Task CheckBenchStatus()
+    {
+        benchInfoResults = new List<string>();
+
+        foreach (var member in teamMembers)
+        {
+            member.BenchInfo = await FetchBenchInfo(member.Email);
+
+            if (member.BenchInfo != null)
+            {
+                benchInfoResults.Add($"{member.Username} - Bench ID: {member.BenchInfo.BenchId}, Start Bench: {member.BenchInfo.StartBench}");
+            }
+            else
+            {
+                benchInfoResults.Add($"{member.Username} - Niet op de bench");
+            }
+        }
+
+        benchCheckCompleted = true;
+
+        // Update UI
+        StateHasChanged();
+    }
+
+    private async Task<BenchInfo> FetchBenchInfo(string email)
+    {
+        try
+        {
+            var response = await HttpClient.GetAsync($"{BenchUrl}{email}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var results = JsonConvert.DeserializeObject<List<BenchInfo>>(content);
+                return results.FirstOrDefault();
+            }
+            else
+            {
+                Console.WriteLine($"Failed to fetch bench info for {email}: {response.StatusCode}");
+                return null;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching bench info for {email}: {ex.Message}");
+            return null;
+        }
+    }
+
+    private class FindMembersOut
+    {
+        public List<EmployeeItem> Members { get; set; }
+        public int TotalCount { get; set; }
+    }
+
+    private class EmployeeItemWithBenchInfo : EmployeeItem
+    {
+        public BenchInfo BenchInfo { get; set; }
+    }
+
+    private class BenchInfo
+    {
+        public int BenchId { get; set; }
+        public DateTime StartBench { get; set; }
+    }
+}

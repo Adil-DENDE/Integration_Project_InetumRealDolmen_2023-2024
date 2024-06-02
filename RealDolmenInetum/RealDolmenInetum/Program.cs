@@ -28,6 +28,9 @@ builder.Services.AddMudServices(config =>
 builder.Services.AddBlazoredLocalStorage();
 
 
+// Register the MockTeamService
+builder.Services.AddSingleton<MockTeamService>();
+
 // ZODAT DE INJECT WERKT IN HET PROJECT
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

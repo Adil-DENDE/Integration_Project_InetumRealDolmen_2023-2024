@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ModelLibrary.Data;
 using ModelLibrary.Models;
+using Moq;
 using RealDolmenAPI.Controllers;
 using RealDolmenAPI.Error;
 using RealDolmenAPI.Services;
@@ -16,9 +17,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IBenchService, BenchService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<AuthService>();
-
+builder.Services.AddScoped<MockTeamService>(); //test
+//builder.Services.AddScoped<IGroupServiceService, GroupServiceService>("groupsservice");
+builder.Services.AddKeyedScoped<IGroupServiceService, GroupServiceService>("groupservice");
+//builder.Services.AddScoped<IGroupServiceService, GroupServiceService>();
+builder.Services.AddHttpClient();
 
 builder.Services.AddEndpointsApiExplorer();
+
+// Register MockTeamService
+builder.Services.AddSingleton<MockTeamService>();
 
 
 //Om via de dbcontext data beheren
@@ -111,6 +119,7 @@ builder.Services.AddSwaggerGen(swagger =>
 
 
 var app = builder.Build();
+
 UserController.Map(app);
 BenchController.Map(app);
 OccupationController.Map(app);

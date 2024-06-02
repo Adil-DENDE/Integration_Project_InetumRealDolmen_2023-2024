@@ -3,17 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealDolmenInetum", "RealDolmenInetum\RealDolmenInetum.csproj", "{F1EE92F5-8552-4E52-8A86-82349AB7B389}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E06C864D-9497-4C1A-970C-E6AB35C6894E} = {E06C864D-9497-4C1A-970C-E6AB35C6894E}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealDolmenAPI", "RealDolmenAPI\RealDolmenAPI.csproj", "{D83B3327-C6B4-4227-B3BB-8F31440D9DF0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealDolmenAPI", "RealDolmenAPI\RealDolmenAPI.csproj", "{C525C179-C2AF-4192-B155-22F1E711BB5E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E06C864D-9497-4C1A-970C-E6AB35C6894E} = {E06C864D-9497-4C1A-970C-E6AB35C6894E}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealDolmenInetum", "RealDolmenInetum\RealDolmenInetum.csproj", "{1A9D0D9C-2F04-45EB-9900-BD45BE23D7A3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelLibrary", "ModelLibrary\ModelLibrary.csproj", "{E06C864D-9497-4C1A-970C-E6AB35C6894E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelLibrary", "ModelLibrary\ModelLibrary.csproj", "{8144713E-8AEC-412C-90D4-8F6C22863D62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F1EE92F5-8552-4E52-8A86-82349AB7B389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1EE92F5-8552-4E52-8A86-82349AB7B389}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1EE92F5-8552-4E52-8A86-82349AB7B389}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1EE92F5-8552-4E52-8A86-82349AB7B389}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C525C179-C2AF-4192-B155-22F1E711BB5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C525C179-C2AF-4192-B155-22F1E711BB5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C525C179-C2AF-4192-B155-22F1E711BB5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C525C179-C2AF-4192-B155-22F1E711BB5E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E06C864D-9497-4C1A-970C-E6AB35C6894E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E06C864D-9497-4C1A-970C-E6AB35C6894E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E06C864D-9497-4C1A-970C-E6AB35C6894E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E06C864D-9497-4C1A-970C-E6AB35C6894E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D83B3327-C6B4-4227-B3BB-8F31440D9DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D83B3327-C6B4-4227-B3BB-8F31440D9DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D83B3327-C6B4-4227-B3BB-8F31440D9DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D83B3327-C6B4-4227-B3BB-8F31440D9DF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A9D0D9C-2F04-45EB-9900-BD45BE23D7A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A9D0D9C-2F04-45EB-9900-BD45BE23D7A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A9D0D9C-2F04-45EB-9900-BD45BE23D7A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A9D0D9C-2F04-45EB-9900-BD45BE23D7A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8144713E-8AEC-412C-90D4-8F6C22863D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8144713E-8AEC-412C-90D4-8F6C22863D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8144713E-8AEC-412C-90D4-8F6C22863D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8144713E-8AEC-412C-90D4-8F6C22863D62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

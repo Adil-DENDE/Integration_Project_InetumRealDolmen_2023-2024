@@ -1,0 +1,14 @@
+{
+  "request": {
+    "urlPath": "/api/test",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "body": "Hello World",
+    "headers": {
+      "Content-Type": "text/plain"
+    }
+  }
+}
+

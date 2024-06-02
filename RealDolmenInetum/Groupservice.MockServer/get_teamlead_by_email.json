@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/api/Teamleads/{email}",
+    "pathParams": {
+      "email": {
+        "matches": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"name\":\"John Doe\", \"email\":\"john.doe@example.com\", \"role\":\"Team Lead\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
