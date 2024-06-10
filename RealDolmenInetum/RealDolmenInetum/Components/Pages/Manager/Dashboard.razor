@@ -50,6 +50,7 @@
 
 @if (usersOpBench != null && usersOpBench.Count > 0)
 {
+        <MudContainer Style="max-height: 550px; width: 1,8rem; overflow-y: scroll; margin-top: 10px">
     @foreach (var userBench in usersOpBench)
     {
         <div class="col-md-12" id="userContainer">
@@ -75,7 +76,8 @@
                 </div>
             </div>
         </div>
-}
+    }
+        </MudContainer>
 }
 else if (!string.IsNullOrEmpty(ErrorMessage))
 {
