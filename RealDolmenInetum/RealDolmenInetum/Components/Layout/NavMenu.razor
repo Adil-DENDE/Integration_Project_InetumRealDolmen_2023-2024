@@ -48,12 +48,5 @@
     </nav>
 </div>
 
-@code {
-    private async Task Logout()
-    {
-        await LocalStorage.RemoveItemAsync("authToken");
-        auth.ClearToken();
-        Navigation.NavigateTo("/", forceLoad: true);
-    }
-}
+
 
