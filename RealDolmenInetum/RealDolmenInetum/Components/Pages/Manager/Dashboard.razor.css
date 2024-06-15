@@ -9,11 +9,9 @@
 
 .btnToevoegenMobile {
     display: none;
-
 }
 
 #userContainer {
-    margin:10px;
     cursor: pointer;
 }
 
