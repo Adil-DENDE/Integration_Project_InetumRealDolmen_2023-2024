@@ -24,10 +24,15 @@ Properties: Bevat projecteigenschappen en -instellingen.
 Controllers: Bevat API controllers die HTTP-verzoeken afhandelen en antwoorden teruggeven.
 
 Data: Bevat data access en database-gerelateerde bestanden.
+
 Error: Bevat error handling en logging bestanden.
+
 Migrations: Bevat database migratiebestanden.
+
 Services: Bevat serviceklassen die de bedrijfslogica implementeren.
+
 appsettings.json: Configuratiebestand voor applicatie-instellingen.
+
 Program.cs: Het hoofdingangspunt voor de applicatie.
 
 
