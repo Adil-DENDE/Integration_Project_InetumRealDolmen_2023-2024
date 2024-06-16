@@ -26,8 +26,7 @@ namespace RealDolmenInetum.Components.Pages.Login
             else
             {
                 errorMessage = "Inloggen mislukt. Controleer uw inloggegevens en probeer het opnieuw.";
-                userLoginModel.Email = "adil@gmail.com";
-                userLoginModel.Password = "Test123!";
+          
             }
         }
     }
