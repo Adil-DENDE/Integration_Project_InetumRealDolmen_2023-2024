@@ -20,7 +20,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
                 await FetchTeamMembers(teamleadDetail.Email);
             }
         }
-
+        // Haal info van de teamlead op
         private async Task FetchTeamleadDetail(string email)
         {
             try
@@ -42,6 +42,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
             }
         }
 
+        // Haal members van een team
         private async Task FetchTeamMembers(string email)
         {
             try
@@ -79,6 +80,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
             }
         }
 
+        // Kijk ofdat ze op de bench zitten
         private async Task CheckBenchStatus()
         {
             benchInfoResults = new List<string>();
@@ -99,10 +101,10 @@ namespace RealDolmenInetum.Components.Pages.Manager
 
             benchCheckCompleted = true;
 
-            // Update UI
             StateHasChanged();
         }
 
+        // Verkrijg hun bench info
         private async Task<BenchInfo> FetchBenchInfo(string email)
         {
             try

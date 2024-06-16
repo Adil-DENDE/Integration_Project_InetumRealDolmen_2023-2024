@@ -6,9 +6,9 @@
 @inject ISnackbar Snackbar
 
 <EditForm Model="@OccupationHistory" OnValidSubmit="Save">
-    <div class="container mt-3">
+    <div class="container mt-3" style="padding-bottom: 20px;">
         <div class="mb-3">
-            <label for="occupationSelect" class="form-label">Occupatie:</label>
+            <label for="occupationSelect" class="form-label">Activiteit:</label>
             <select @bind="OccupationHistory.OccupationId" id="occupationSelect" class="form-select">
                 @foreach (var occupation in Occupations)
                 {
@@ -28,7 +28,7 @@
             <button type="submit" class="btn btn-primary">Opslaan</button>
         </div>
     </div>
-    <p class="text-center mt-3">@BenchId</p>
+    @*<p class="text-center mt-3">@BenchId</p>*@
 </EditForm>
 
 

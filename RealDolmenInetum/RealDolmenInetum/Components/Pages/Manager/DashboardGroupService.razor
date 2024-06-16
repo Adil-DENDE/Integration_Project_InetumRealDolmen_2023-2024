@@ -73,7 +73,7 @@ else
         }
     </MudGrid>
 
-    <MudButton OnClick="CheckBenchStatus" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Info">Check Bench Status</MudButton>
+    <MudButton OnClick="CheckBenchStatus" class="bench-status-button" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Info">Bench Status</MudButton>
 
     @if (benchCheckCompleted)
     {
@@ -95,7 +95,7 @@ else
                         </div>
                         <div class="card-footer d-flex justify-content-between">
                             <div>
-                                <strong>Bench started:</strong>
+                                <strong>Startdatum bench:</strong>
                                 <span>@member.BenchInfo.StartBench.ToString("dd-MM-yyyy")</span>
                                 <div>
                                     <strong>Dagen op de bench:</strong> @DateHelper.CalculateDaysSince(member.BenchInfo.StartBench)

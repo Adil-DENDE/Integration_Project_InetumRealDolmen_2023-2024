@@ -16,6 +16,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
 
         [CascadingParameter] MudDialogInstance DialogService { get; set; }
 
+        // Voer de zoekopdracht uit
         private async Task PerformSearch()
         {
             searchPerformed = true;
@@ -23,6 +24,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
             StateHasChanged();
         }
 
+        // Het opzoeke van een user met email
         private async Task<List<BencherDto>> SearchUsersByEmail(string email)
         {
             try
@@ -47,6 +49,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
             }
         }
 
+        
         private void SelectUser(BencherDto user)
         {
             selectedBenchId = user.BenchId;
@@ -62,10 +65,8 @@ namespace RealDolmenInetum.Components.Pages.Manager
         {
             if (selectedBenchId.HasValue)
             {
-                // Check if BenchId is null, and call a different function if it is
                 if (BenchId == 0)
                 {
-                    // Call another function to handle when there is no old manager
                     UpdateNewManagerStatus(selectedBenchId.Value, true).ContinueWith(async task =>
                     {
                         if (task.Result)
@@ -82,7 +83,6 @@ namespace RealDolmenInetum.Components.Pages.Manager
                 }
                 else
                 {
-                    // Proceed with updating both managers as previously handled
                     UpdateBenchManagers(BenchId.Value, selectedBenchId.Value).ContinueWith(async task =>
                     {
                         if (task.Result)

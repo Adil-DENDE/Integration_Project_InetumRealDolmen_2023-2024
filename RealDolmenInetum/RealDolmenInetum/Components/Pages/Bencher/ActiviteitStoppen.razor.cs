@@ -15,6 +15,7 @@ namespace RealDolmenInetum.Components.Pages.Bencher
             await getUserBenchId();
         }
 
+        // Zoek benchId  van user
         private async Task<string> getUserBenchId()
         {
             try

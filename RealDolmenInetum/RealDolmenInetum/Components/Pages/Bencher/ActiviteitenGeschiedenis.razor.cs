@@ -28,7 +28,7 @@ namespace RealDolmenInetum.Components.Pages.Bencher
         }
 
 
-
+        // Zoek benchId  van een user
 
         private async Task<string> getUserBenchId()
         {
@@ -118,6 +118,7 @@ namespace RealDolmenInetum.Components.Pages.Bencher
             }
         }
 
+        // Zoek huidige benchmanager
         private async Task FetchCurrentBenchManager()
         {
             try

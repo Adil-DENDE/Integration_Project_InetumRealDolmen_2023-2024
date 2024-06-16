@@ -159,6 +159,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
             }
         }
 
+        // Controleert ofdat de email valid is
         private bool IsValidEmail(string email)
         {
             try
