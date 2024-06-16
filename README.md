@@ -37,11 +37,17 @@ Het RealDolmenIntenum-project is waarschijnlijk het frontend-gedeelte van de app
 **Structuur**
 
 Connected Services: Bevat verbonden services die door de applicatie worden gebruikt.
+
 Dépendances: Afhankelijkheden die door het project worden gebruikt.
+
 Properties: Bevat projecteigenschappen en -instellingen.
+
 wwwroot: Bevat statische bestanden en resources.
+
 Components: Bevat herbruikbare UI-componenten.
+
 Layout: Bevat layout-componenten voor de applicatie.
+
 Pages: Bevat Razor-pagina’s die in de applicatie worden gebruikt.
 
 
