@@ -71,11 +71,3 @@ Het Documentatie-project bevat een korte documentatie over de applicatie.
 **Structuur**
 
 UserStory.docx: Een document dat de gebruikersverhalen en requirements van de applicatie beschrijft.
-
-
-# 📑 Samenvatting
-Dit project is georganiseerd in drie hoofdonderdelen:
-
-**ModelLibrary**: Centrale repository voor modellen, view modellen en DTO's.
-**RealDolmenAPI**: Backend API die gegevens en diensten levert.
-**RealDolmenIntenum**: Frontend applicatie die de gebruikersinterface biedt.
