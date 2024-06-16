@@ -56,9 +56,18 @@ Layout: Bevat layout-componenten voor de applicatie.
 Pages: Bevat Razor-pagina’s die in de applicatie worden gebruikt.
 
 
-# 📑 Samenvatting
-Dit project is georganiseerd in drie hoofdonderdelen:
+# 🗃️ DataBank
+Het DataBank-project bevat een script voor onze database en een afbeelding van het ERD (Entity-Relationship Diagram).
 
-**ModelLibrary**: Centrale repository voor modellen, view modellen en DTO's.
-**RealDolmenAPI**: Backend API die gegevens en diensten levert.
-**RealDolmenIntenum**: Frontend applicatie die de gebruikersinterface biedt.
+**Structuur**
+
+Database script: Het script voor het opzetten van de database.
+
+ERD afbeelding: Een afbeelding van het Entity-Relationship Diagram die de database structuur visualiseert.
+
+#  📄 Documentatie
+Het Documentatie-project bevat een korte documentatie over de applicatie.
+
+**Structuur**
+
+UserStory.docx: Een document dat de gebruikersverhalen en requirements van de applicatie beschrijft.
