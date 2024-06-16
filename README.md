@@ -37,7 +37,7 @@ Program.cs: Het hoofdingangspunt voor de applicatie.
 
 
 # 💻 RealDolmenIntenum
-Het RealDolmenIntenum-project is waarschijnlijk het frontend-gedeelte van de applicatie. Het bevat componenten, pagina’s en andere resources die nodig zijn voor de gebruikersinterface.
+Het RealDolmenIntenum-project is frontend-gedeelte van de applicatie. Het bevat componenten, pagina’s en andere resources die nodig zijn voor de gebruikersinterface.
 
 **Structuur**
 
