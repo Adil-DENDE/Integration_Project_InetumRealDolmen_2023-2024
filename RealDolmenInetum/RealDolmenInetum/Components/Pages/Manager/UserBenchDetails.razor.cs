@@ -36,6 +36,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
             await FetchBenchManagerDetails();
             await FetchUserBenchId();
         }
+        // Informatie van een bepaalde user opzoeken
         public async Task FetchUserData()
         {
             try
@@ -79,10 +80,9 @@ namespace RealDolmenInetum.Components.Pages.Manager
         }
 
 
-        // TODO // DIALOG GEBRUIKEN OM DELETE TE BEVESTIGEN // TODO //
+        // DIALOG GEBRUIKEN OM DELETE TE BEVESTIGEN
         private async Task Einde()
         {
-            // tijdelijk via variable
             var url = $"https://localhost:7256/user/bench/end/{benchId}";
 
             var requestBody = new UpdateEndBenchDto
@@ -105,6 +105,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
             }
         }
 
+        // Zoek benchId  van een user
         private async Task FetchUserBenchId()
         {
             try
@@ -127,6 +128,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
             }
         }
 
+        // Haal de details op van de benchmanager
         public async Task FetchBenchManagerDetails()
         {
             if (usersDetails.IsCurrentBenchManager.HasValue)
@@ -149,6 +151,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
             }
         }
 
+        // Verander de BenchManager status
         private async Task UpdateBenchManagerStatus()
         {
             if (usersDetails.IsCurrentBenchManager.HasValue)
@@ -211,6 +214,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
             DialogService.Show<ManagerUpdateDialog>("Manager bijwerken", parameters, options);
         }
 
+        // Zoek de huidige benchmanager op
         private async Task FetchCurrentBenchManager()
         {
             try

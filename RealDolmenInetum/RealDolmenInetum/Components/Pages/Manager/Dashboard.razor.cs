@@ -27,7 +27,7 @@ namespace RealDolmenInetum.Components.Pages.Manager
             currentUserId = auth.GetIdFromLoggedUser();
         }
 
-
+        // Haal data op van alle benchers
         public async Task FetchData()
         {
             try
@@ -59,12 +59,13 @@ namespace RealDolmenInetum.Components.Pages.Manager
             }
 
         }
+        // Ga naar de detail pagina
 
         public void NavigateUserPage(int id)
         {
             NavigationManager.NavigateTo("/user/" + id);
         }
-
+        // Haal huidige benchmanager op
         private async Task FetchCurrentBenchManager()
         {
             try

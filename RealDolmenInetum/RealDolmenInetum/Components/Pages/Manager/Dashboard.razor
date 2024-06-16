@@ -67,7 +67,7 @@
                 </div>
                 <div class="card-footer d-flex justify-content-between">
                     <div>
-                        <strong>Bench started:</strong>
+                        <strong>Startdatum bench:</strong>
                         <span>@userBench.StartBench.ToString("dd-MM-yyyy")</span>
                         <div>
                             <strong>Dagen op de bench:</strong> @DateHelper.CalculateDaysSince(userBench.StartBench)
@@ -87,7 +87,7 @@ else
 {
     <MudAlert Class="mt-3" Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">
         <h4 class="alert-heading">De bench is leeg.</h4>
-        <p>Er staat momenteel niemand op de bench.</p>
+        <p>Er zit momenteel niemand op de bench.</p>
     </MudAlert>
     }
 } else

@@ -19,11 +19,28 @@
 
 @media only screen and (min-width: 640px) {
     #btnToevoegenComputer {
-    display: none;
-}
+        display: none;
+    }
     .btnToevoegenMobile {
         display: block;
         width: 100%;
         margin-bottom: 10px;
     }
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px !important;
+}
+
+.bench-status-button {
+    margin-top: 20px; 
 }
