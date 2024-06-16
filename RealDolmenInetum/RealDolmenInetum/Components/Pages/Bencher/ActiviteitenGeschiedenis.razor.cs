@@ -9,6 +9,8 @@ namespace RealDolmenInetum.Components.Pages.Bencher
     {
         [Parameter]
         public int BenchId { get; set; }
+        [Parameter]
+        public string searchedUserMail { get; set; } = "sdfsf";
         private List<OccupationHistoryDto> occupationHistories = new List<OccupationHistoryDto>();
         private List<Occupation> occupations = new List<Occupation>();
         public bool loadSuccessful { get; set; }
@@ -135,5 +137,11 @@ namespace RealDolmenInetum.Components.Pages.Bencher
                 Console.WriteLine($"Error bij het ophalen van de huidige bench manager: {ex.Message}");
             }
         }
-    }
+
+        private async Task getHistoryEmail() 
+        { 
+            // TODO //
+        }
+
+	}
 }
